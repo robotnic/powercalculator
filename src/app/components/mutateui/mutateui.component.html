@@ -1,0 +1,137 @@
+<div class="box">
+  <mat-accordion multi="true">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       Navigate 
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+  <mat-form-field  style="width:200px" *ngIf="countries">
+    <mat-select [(value)]="country" (selectionChange)="selectcountry($event.value)">
+      <mat-option [value]="country" *ngFor="let country of countries">{{country}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+<br>
+  <mat-form-field  style="width:200px">
+    <mat-select [(value)]="timetype" (selectionChange)="selecttimetype($event.value)">
+      <mat-option [value]="'day'">day</mat-option>
+      <mat-option [value]="'week'">week</mat-option>
+      <mat-option [value]="'month'">month</mat-option>
+      <mat-option [value]="'year'">year</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br/>
+  <mat-form-field  style="width:200px">
+      <input matInput (input) = "change()" placeholder="week" type="date" min="0" [(ngModel)] ="day" tyle="width:50px;">
+  </mat-form-field>
+  <br/>
+<button mat-button (click)="dectime(timetype)">&lt;</button>
+<button mat-button (click)="inctime(timetype)">&gt;</button>
+<br/>
+<!--
+<button mat-icon-button>⏪</button>
+<button mat-icon-button>&#9664;&#65039;</button>
+<button mat-icon-button>&#9654;&#65039;</button>
+<button mat-icon-button>⏩</button>
+-->
+<!--
+
+  <div class="inputline">
+      <button mat-button color="primary" (click)="dectime('Day')">-</button>
+      <mat-form-field class="md-block" title="day">
+        <input matInput (input) = "change()" placeholder="Day" type="number" min="0" [(ngModel)] ="day" style="width:50px;">
+      </mat-form-field>
+      <button mat-button color="primary" (click)="inctime('Day')">+</button>
+  </div>
+
+  <div class="inputline">
+      <button mat-button color="primary" (click)="dectime('week')">-</button>
+      <mat-form-field class="md-block" title="day">
+        <input matInput (input) = "change()" placeholder="Week" type="number" min="0" [(ngModel)] ="week" style="width:50px;">
+      </mat-form-field>
+      <button mat-button color="primary" (click)="inctime('week')">+</button>
+  </div>
+
+
+
+
+   <div class="inputline">
+      <button mat-button color="primary" (click)="dectime('month')">-</button>
+      <mat-form-field class="md-block" title="day">
+        <input matInput (input) = "change()" placeholder="Month" type="number" min="0" [(ngModel)] ="month" style="width:50px;">
+      </mat-form-field>
+      <button mat-button color="primary" (click)="inctime('month')">+</button>
+  </div>
+ 
+  <div class="inputline">
+      <button mat-button color="primary" (click)="dectime('year')">-</button>
+      <mat-form-field class="md-block" title="day">
+        <input matInput (input) = "change()" placeholder="Year" type="number" min="0" [(ngModel)] ="year" style="width:50px;">
+      </mat-form-field>
+      <button mat-button color="primary" (click)="inctime('year')">+</button>
+  </div>
+--> 
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       Mutate 
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  <div class="inputline">
+      <button mat-button color="primary" (click)="dec('Solar')">-</button>
+      <mat-form-field class="md-block" title="Add {{mutate.Solar}} GWp Photovoltic. This equals to {{mutate.Solar*0.4}} photovoltaic panels per Austrian">
+        <input matInput (input) = "change()" placeholder="Solar" type="number" min="0" [(ngModel)] ="mutate.Solar" style="width:50px;">
+      </mat-form-field>
+      <button mat-button color="primary" (click)="inc('Solar')">+</button>
+  </div>
+  <div class="inputline">
+      <button  mat-button color="primary" (click)="dec('Wind Onshore')">-</button>
+      <mat-form-field class="md-block" lex-gt-sm title="Add {{mutate['Wind Onshore']}} GW Wind. This equals to {{mutate['Wind Onshore']*200}} big Windturbines">
+        <input matInput (input) = "change()" placeholder="Onshore" type="number" min="0" [(ngModel)]="mutate['Wind Onshore']" style="width:50px;">
+      </mat-form-field>
+      <button  mat-button color="primary" (click)="inc('Wind Onshore')">+</button>
+  </div>
+  <div class="inputline">
+      <button  mat-button color="primary" (click)="dec('Transport')">-</button>
+      <mat-form-field class="md-block" lex-gt-sm >
+        <input matInput (input) = "change()" placeholder="EV%" type="number" min="0" [(ngModel)]="mutate['Transport']" style="width:50px;">
+      </mat-form-field>
+      <button  mat-button color="primary" (click)="inc('Transport')">+</button>
+  </div>
+  <div class="inputline">
+    <button  mat-button color="primary" (click)="dec('Power2Gas')">-</button>
+    <mat-form-field class="md-block" lex-gt-sm >
+      <input matInput (input) = "change()" placeholder="P2G" type="number" min="0" [(ngModel)]="mutate['Power2Gas']" style="width:50px;">
+    </mat-form-field>
+    <button  mat-button color="primary" (click)="inc('Power2Gas')">+</button>
+  </div>
+   </mat-expansion-panel>
+   <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       Layers 
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+
+   <mat-checkbox *ngFor="let layer of layers" class="example-margin" [(ngModel)]="layer.value" [style.color]="layer.color">{{layer.key}}</mat-checkbox>
+   </mat-expansion-panel>
+</mat-accordion>
+  <!--
+      <mat-form-field class="md-block" lex-gt-sm title="Add {{mutate['Wind Offshore']}} GW Wind. This equals to {{mutate['Wind Offshore']*200}} big Windturbines">
+        <input matInput (input) = "change()" placeholder="Offshore" type="number" min="0" [(ngModel)]="mutate['Wind Offshore']" style="width:50px;">
+      </mat-form-field>
+      <mat-form-field class="md-block" lex-gt-sm title="Replace Diesel and Benzin by electricity">
+        <input matInput (input) = "change()" placeholder="EV%" type="number" min="0" max="100" step="5" [(ngModel)]="mutate.Transport" >
+      </mat-form-field>
+      <mat-form-field class="md-block" lex-gt-sm title="Electrolysis max Power {{mutate.Power2Gas}} GW">
+        <input matInput (input) = "change()" type="number" placeholder="P2G" min="0" [(ngModel)]="mutate.Power2Gas" style="width:50px;" >
+      </mat-form-field>
+        <button type="button" (mouseover)="over()" (mouseout)="out()" (click)="reset()" style="width:50px;background-color:white;border:1px solid black"  value="click" ng-mouseover="setOriginal()" ng-mouseout="setModified()">
+          Reset
+          <span class="rollover">rollover</span>
+        </button>
+    -->
+  </div>

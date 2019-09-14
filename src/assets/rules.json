@@ -1,0 +1,35 @@
+{
+  "loadShift": {
+    "from": [
+      "Solar",
+      "Wind Onshore",
+      "Wind Offshore"
+    ],
+    "to": [
+      "Fossil Hard coal",
+      "Fossil Brown coal/Lignite",
+      "Transport",
+      "Fossil Oil",
+      "Fossil Gas",
+      "Hydro Water Reservoir",
+      "Biomass",
+      "Hydro Pumped down",
+      "Hydro Pumped up",
+      "Nuclear",
+      "Import",
+      "Power2Gas"
+    ]
+  },
+  "timeShift": {
+    "from": [
+      "Hydro Pumped Storage",
+      "Hydro Water Reservoir"
+    ],
+    "to": [
+      "Transport",
+      "Fossil Hard coal",
+      "Fossil Brown coal/Lignite",
+      "Fossil Gas"
+    ]
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "Fossil Brown coal/Lignite": {
+    "co2": 1100,
+    "color": "brown"
+  },
+  "Fossil Hard coal": {
+    "co2": 882,
+    "color": "black"
+  },
+  "Kohle": {
+    "co2": 340,
+    "color": "black"
+  },
+  "Anthracite": {
+    "co2": 340
+  },
+  "Petroleum Coke": {
+    "co2": 340
+  },
+  "Coke oven coke": {
+    "co2": 340
+  },
+  "Other bituminous coal": {
+    "co2": 400
+  },
+  "Öl": {
+    "co2": 645,
+    "color": "brown"
+  },
+  "Transport": {
+    "co2": 882,
+    "color": "#9f2b60"
+  },
+  "Fossil Gas": {
+    "co2": 440,
+    "color": "orange"
+  },
+  "Coke oven gas": {
+    "co2": 200
+  },
+  "Blast furnace gas": {
+    "co2": 200
+  },
+  "Sub-bituminous coal": {
+    "co2": 300
+  },
+  "Fuel Oil": {
+    "co2": 250
+  },
+  "LPG": {
+    "co2": 230
+  },
+  "Industrial wastes": {
+    "co2": 200
+  },
+  "Biomass": {
+    "co2": 0,
+    "color": "darkgreen"
+  },
+  "Solid biomass": {
+    "co2": 0,
+    "color": "darkgreen"
+  },
+  "Biodiesel": {
+    "co2": 0
+  },
+  "Derived heat": {
+    "co2": 0
+  },
+  "Geothermie": {
+    "co2": 0,
+    "color": "red"
+  },
+  "Solar thermal": {
+    "co2": 0
+  },
+  "Biogas (all)": {
+    "co2": 0
+  },
+  "Bio gasoline": {
+    "co2": 0
+  },
+  "Heizöl": {
+    "co2": 645,
+    "color": "red"
+  },
+  "Gas/Diesel Oil (w/o bio)": {
+    "co2": 252,
+    "color": "#372640"
+  },
+  "Benzin": {
+    "co2": 645,
+    "color": "#7d7a00"
+  },
+  "Motor Gasoline (w/o bio)": {
+    "co2": 255,
+    "color": "#7d7a00"
+  },
+  "Petroleum": {
+    "co2": 260,
+    "color": "lime"
+  },
+  "Kerosene Type Jet Fuel": {
+    "co2": 260
+  },
+  "Natural gas": {
+    "co2": 200,
+    "color": "orange"
+  },
+  "Elektrische Energie": {
+    "color": "gold"
+  },
+  "Hydro Pumped Storage": {
+    "color": "DodgerBlue"
+  },
+  "Hydro Pumped up": {
+    "color": "DodgerBlue"
+  },
+  "Hydro Pumped down": {
+    "color": "DodgerBlue"
+  },
+  "Hydro Water Reservoir": {
+    "color": "DeepSkyBlue"
+  },
+  "Curtailment": {
+    "color": "black"
+  },
+  "Power2Gas": {
+    "color": "orange"
+  },
+  "Hydro Run-of-river and poundage": {
+    "color": "blue"
+  },
+  "Nuclear": {
+    "color": "red"
+  },
+  "Fossil Oil": {
+    "color": "aquamarine"
+  },
+  "Wind Onshore": {
+    "color": "#AECDAC"
+  },
+  "Wind Offshore": {
+    "color": "#d4DDBC"
+  },
+  "Sonstige Erneuerbare": {
+    "color": "red"
+  },
+  "Speicher": {
+    "color": "purple"
+  },
+  "Solar": {
+    "color": "yellow"
+  },
+  "Müll": {
+    "color": "gray"
+  },
+  "Waste": {
+    "color": "purple"
+  },
+  "Andere": {
+    "color": "occer"
+  },
+  "Traktion": {
+    "color": "red"
+  },
+  "Steinkohle": {
+    "color": "red"
+  },
+  "Braunkohle": {
+    "color": "red"
+  },
+  "Koks": {
+    "color": "red"
+  },
+  "Petrolkoks": {
+    "color": "red"
+  },
+  "Gasöl für Heizzwecke": {
+    "color": "#fa4316"
+  },
+  "Flüssiggas": {
+    "color": "red"
+  },
+  "Fernwärme": {
+    "color": "blue"
+  },
+  "Brennholz": {
+    "color": "#3F250B"
+  },
+  "Biogene Brenn- und Treibstoffe": {
+    "color": "#667563"
+  },
+  "Brennbare Abfälle": {
+    "color": "red"
+  },
+  "Umgebungswärme etc.         ": {
+    "color": "red"
+  },
+  "Gichtgas": {
+    "color": "red"
+  },
+  "Kokereigas": {
+    "color": "red"
+  },
+  "Brenntorf": {
+    "color": "red"
+  },
+  "Dampferzeugung": {
+    "color": "orange"
+  },
+  "Raumheizung%20und%20Klimaanlagen": {
+    "color": "beige"
+  },
+  "Industrieöfen": {
+    "color": "blue"
+  },
+  "Import": {
+    "color": "whiteSmoke"
+  },
+  "Export": {
+    "color": "lightgrey"
+  },
+  "Residential": {
+    "color": "blue"
+  },
+  "Electricity": {
+    "color": "gold"
+  },
+  "Marine": {
+    "color": "blue"
+  },
+  "Other": {
+    "color": "lime"
+  },
+  "Leistung [MW]": {
+    "color": "black"
+  }
+}

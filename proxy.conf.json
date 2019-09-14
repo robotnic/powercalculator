@@ -1,0 +1,22 @@
+{
+  "/aapi": {
+    "target": "http://localhost:9000",
+    "secure": false,
+    "pathRewrite": {
+      "^/aapi": "/api"
+    },
+    "logLevel": "debug"
+  },
+  "/api": {
+    "target": "https://entsoe.herokuapp.com:443",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": "/api"
+    },
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "headers": {
+      "Connection": "keep-alive"
+    }
+  }
+}

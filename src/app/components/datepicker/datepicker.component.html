@@ -1,0 +1,98 @@
+<div text-align="right">
+  <mat-form-field  style="width:120px" *ngIf="countries">
+    <mat-select [(value)]="selectedcountry" (selectionChange)="selectcountry($event.value)">
+      <mat-option [value]="country" *ngFor="let country of countries">{{country}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  
+  <mat-form-field  style="width:70px">
+    <mat-select matNativeControl required [(value)] = "timetype" (selectionChange)="onDate()" [(ngModel)]="timetype">
+      <mat-option value="day">day</mat-option>
+      <mat-option value="week">week</mat-option>
+      <mat-option value="month">month</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <!-- week-->
+  <span [hidden] ="timetype !== 'week'">
+  <button mat-flat-button (click)="back('weeks')">
+    <mat-icon inline="true">arrow_back_ios</mat-icon>
+  </button>
+  <mat-form-field  style="width:40px">
+    <mat-select required [(ngModel)] = "week" >
+      <mat-option *ngFor="let weekstr of weeks" [value]="weekstr">{{weekstr}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button (click)="forward('weeks')">
+    <mat-icon inline="true">arrow_forward_ios</mat-icon>
+  </button>
+  </span>
+  
+  
+  <!-- day-->
+  <span [hidden]="timetype !== 'day'">
+  <button mat-flat-button (click)="back('days')">
+    <mat-icon inline="true">arrow_back_ios</mat-icon>
+  </button>
+  <mat-form-field  style="width:40px" *ngIf="days">
+    <mat-select matNativeControl required [(ngModel)] = "day">
+      <mat-option *ngFor="let day of days" value="{{day}}">{{day}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button (click)="forward('days')">
+    <mat-icon inline="true">arrow_forward_ios</mat-icon>
+  </button>
+  </span>
+  
+  
+  <!-- month-->
+  <span [hidden]="timetype === 'week'">
+  <button mat-flat-button (click)="back('month')">
+    <mat-icon inline="true">arrow_back_ios</mat-icon>
+  </button>
+  <mat-form-field  style="width:70px">
+    <mat-select matNativeControl required [(ngModel)] = "month">
+      <mat-option value = "1"> January </ mat-option>
+      <mat-option value = "2"> February </ mat-option>
+      <mat-option value = "3"> March </ mat-option>
+      <mat-option value = "4"> April </ mat-option>
+      <mat-option value = "5"> May </ mat-option>
+      <mat-option value = "6"> June </ mat-option>
+      <mat-option value = "7"> July </ mat-option>
+      <mat-option value = "8"> August </ mat-option>
+      <mat-option value = "9"> September </ mat-option>
+      <mat-option value = "10"> October </ mat-option>
+      <mat-option value = "11"> November </ mat-option>
+      <mat-option value = "12"> December </ mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button (click)="forward('month')">
+    <mat-icon inline="true">arrow_forward_ios</mat-icon>
+  </button>
+  </span>
+  
+  
+  <!-- year-->
+  <button mat-flat-button (click)="back('year')">
+    <mat-icon inline="true">arrow_back_ios</mat-icon>
+  </button>
+  <mat-form-field  style="width:70px">
+    <mat-select matNativeControl required [(ngModel)] = "year">
+      <mat-option value="2019">2019</mat-option>
+      <mat-option value="2018">2018</mat-option>
+      <mat-option value="2017">2017</mat-option>
+      <mat-option value="2016">2016</mat-option>
+      <mat-option value="2015">2015</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button (click)="forward('year')">
+    <mat-icon inline="true">arrow_forward_ios</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon (click)="reload()" title="request view directly from entso-e without cache">refresh</mat-icon>
+  </button>
+
+
+  </div>
+  
