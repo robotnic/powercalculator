@@ -35,11 +35,27 @@ export class PowerComponent implements OnInit {
         top: 150,
         right: 60,
         bottom: 60,
-        left: 60
+        left: 80
       },
       x: function(d) { return d.x; },
       y: function(d) { return d.y; },
-      useInteractiveGuideline: true,
+      useInteractiveGuideline: false,
+      interactiveLayer: {
+        tooltip: {
+          contentGenerator: (e, div) => {
+            const date = moment(e.value).format('YYYY-MM-DD');
+            let html = '<div>';
+            html += '<h1>' + date + '</h1>';
+            html += '<table>'
+            e.series.forEach(chart => {
+              html += `<tr><td style="color:${chart.color}">◼</td><td>${chart.key}</td><td</td><td>${Math.round(chart.value * 10) / 10}</td></tr>`
+            });
+            html += '</table>';
+            html += '</div>';
+            return html;
+          }
+        }
+      },
       xAxis: {
         axisLabel: 'Date Time',
         tickFormat: (d) => {
@@ -100,12 +116,13 @@ export class PowerComponent implements OnInit {
         rotateLabels: 10
 
       },
-      yAxis: {
+      yAxis1: {
         axisLabel: 'GW',
         tickFormat: function(d) {
           return d3.format('.02f')(d);
         },
-        axisLabelDistance: -10
+        axisLabelDistance: -10,
+        showMaxMin: false
       }
 
     }
@@ -129,7 +146,7 @@ export class PowerComponent implements OnInit {
   ngOnInit() {
     this.loader.power().subscribe(data => {
       console.log('power', data);
-//      this.reduce(data.power);
+      //      this.reduce(data.power);
       this.date = moment(data.meta.date, 'YYYYMMDD').format('LL');
       this.country = data.meta.country;
       const chart = this.calculator.mutate(data);

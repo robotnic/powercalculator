@@ -13,23 +13,27 @@
       "Fossil Gas",
       "Hydro Water Reservoir",
       "Biomass",
+      "Import",
       "Hydro Pumped down",
       "Hydro Pumped up",
       "Nuclear",
-      "Import",
-      "Power2Gas"
+      "Power2Gas",
+      "Curtailment"
     ]
   },
   "timeShift": {
     "from": [
-      "Hydro Pumped Storage",
+      "Hydro Pumped up",
+      "Hydro Pumped down",
       "Hydro Water Reservoir"
     ],
     "to": [
       "Transport",
       "Fossil Hard coal",
       "Fossil Brown coal/Lignite",
-      "Fossil Gas"
+      "Fossil Gas",
+      "Import",
+      "Biomass"
     ]
   }
 }

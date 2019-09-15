@@ -10,6 +10,7 @@ export class NormalizeService {
   normalize(data) {
     this.splitPump(data);
     this.sortData(data);
+    this.addCurtailment(data);
     return data;
   }
 
@@ -24,11 +25,11 @@ export class NormalizeService {
         console.log('--------------------');
         pumpUp = JSON.parse(JSON.stringify(chart));
         pumpUp.key = 'Hydro Pumped down';
-        pumpUp.originalKey = 'Hydro Pump down';
+        pumpUp.originalKey = 'Hydro Pumped down';
         pumpUp.seriesIndex = data.power.length;
         pumpDown = JSON.parse(JSON.stringify(chart));
         pumpDown.key = 'Hydro Pumped up';
-        pumpDown.originalKey = 'Hydro Pump up';
+        pumpDown.originalKey = 'Hydro Pumped up';
         pumpDown.seriesIndex = data.power.length + 1;
         pumpUp.values.forEach(value => {
           if (value.y < 0) {
@@ -41,7 +42,6 @@ export class NormalizeService {
             value.y = 0;
           }
         });
-        console.log('splitPump', chart.key, pumpDown.key, pumpUp.key, pumpUp);
       }
     });
     data.power = data.power.filter(chart => {
@@ -53,15 +53,24 @@ export class NormalizeService {
     if (pumpDown) {
       data.power.unshift(pumpDown);
     }
-    console.log('splitPump', data);
     return data;
   }
 
   sortData(data) {
-    const order = ['Hydro Pump up', 'Hydro Pump down', 'Nuclear', 'Hydro Run-of-river and poundage', 'Hydro Water Reservoir', 'Waste', 'Biomass',  'Fossil Oil', 'Fossil Gas', 'Other', 'Fossil Hard coal', 'Fossil Brown coal/Lignite', 'Geothermal', 'Other renewable', 'Solar', 'Wind Offshore', 'Wind Onshore', 'Leistung [MW]'];
+    const order = ['Hydro Pumped up', 'Hydro Pumped down', 'Nuclear', 'Hydro Run-of-river and poundage', 'Hydro Water Reservoir', 'Waste', 'Biomass',  'Fossil Oil', 'Fossil Gas', 'Other', 'Fossil Hard coal', 'Fossil Brown coal/Lignite', 'Geothermal', 'Other renewable', 'Solar', 'Wind Offshore', 'Wind Onshore', 'Leistung [MW]'];
 
     data.power = data.power.sort((a, b) => {
       return order.indexOf(a.key) - order.indexOf(b.key);
     });
+  }
+
+  addCurtailment(data) {
+    const chart = JSON.parse(JSON.stringify(data.power[0]));
+    chart.values.forEach(item => {
+      item.y = 0;
+    });
+    chart.key = 'Curtailment';
+    chart.originalKey = 'Curtailment';
+    data.power.splice(1, 0, chart);
   }
 }

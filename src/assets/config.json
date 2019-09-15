@@ -233,6 +233,10 @@
   "Other": {
     "color": "lime"
   },
+
+  "sum": {
+    "color": "white"
+  },
   "Leistung [MW]": {
     "color": "black"
   }

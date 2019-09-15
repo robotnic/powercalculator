@@ -56,12 +56,11 @@ export class PowerService {
     result[0].forEach((chart ,i) => {
         let values = [];
         result.forEach(month => {
-          if (month) {
+          if (month && month[i]) {
             values = values.concat(month[i].values);
           }
         });
         result[0][i].values = values;
-        console.log('llll', values.length);
     });
     return result[0];
   }

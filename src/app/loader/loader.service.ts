@@ -5,6 +5,9 @@ import { InstalledService } from './installed.service';
 import { ConfigService } from './config.service';
 import { RulesService } from './rules.service';
 import { EventService } from '../eventhandler.service';
+import { HydrofillService } from './hydrofill.service';
+import * as moment from 'moment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +22,15 @@ export class Loader {
     private eventHandler: EventService,
     private installedService: InstalledService,
     private configService: ConfigService,
+    private hydrofillService: HydrofillService,
     private rulesService: RulesService
   ) { }
   power() {
     return new Observable((observer) => {
       // observable execution
       this.load().subscribe(data => {
-        observer.next(data);
+        const rdata = JSON.parse(JSON.stringify(data));
+        observer.next(rdata);
       });
     });
   }
@@ -44,11 +49,13 @@ export class Loader {
           this.currentDate = state.date;
           this.currentCountry = state.country;
           this.currentTimetype = state.timetype;
+          const year = moment(state.date, 'YYYYMMDD').format('YYYY');
           const promises = [
             this.powerService.charts(),
             this.installedService.installed(),
             this.configService.config(),
             this.rulesService.rules(),
+            this.hydrofillService.hydrofill(year, state.country),
           ];
           Promise.all(promises).then(data => {
             this.data = {
@@ -56,6 +63,7 @@ export class Loader {
               installed: data[1],
               config: data[2],
               rules: data[3],
+              hydrofill: data[4],
               meta: {
                 date: this.currentDate,
                 country: this.currentCountry
