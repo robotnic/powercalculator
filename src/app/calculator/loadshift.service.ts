@@ -10,7 +10,6 @@ export class LoadshiftService {
   loadshift(data) {
     const state = this.eventService.getState();
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
-          let rest = {};
     data.power.forEach((chart, c) => {
       this.available = {};
       if (chart.key !== 'Leistung [MW]') {
@@ -29,7 +28,6 @@ export class LoadshiftService {
   }
 
   passEnergy(key, delta, i, data) {
-    const returnvalue = {};
     const year = new Date(data.power[0].values[i].x).getFullYear();
     data.rules.loadShift.to.forEach(to => {
       data.loadshifted.forEach(chart => {
@@ -58,19 +56,10 @@ export class LoadshiftService {
             thisdelta = 0;
           }
           delta -= thisdelta;
-          if (thisdelta) {
-            if (to === 'Hydro Pumped down' || to === 'Hydro Pumped up') {
-              if (!returnvalue[to]) {
-                returnvalue[to] = 0;
-              }
-              returnvalue[to] = delta;
-            }
-          }
         }
       });
 
     });
-    return returnvalue;
   }
   /*
   passEnergy2(key, delta, i, data) {
