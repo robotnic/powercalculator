@@ -33,7 +33,7 @@ export class StorageService {
   }
   interpolateValues(time, values) {
     let result = 0;
-    for (const v = 0; v < values.length; v++) {
+    for (let v = 0; v < values.length; v++) {
       const value = values[v];
       result = value.y;
       if (value.x > time) {

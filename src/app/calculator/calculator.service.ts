@@ -9,7 +9,7 @@ import { ImportexportService } from './importexport.service';
   providedIn: 'root'
 })
 export class Calculator {
-
+  data;
   constructor(
     private normalizeService: NormalizeService,
     private loadshiftService: LoadshiftService,
@@ -18,37 +18,30 @@ export class Calculator {
     private importexportService: ImportexportService
   ) { }
 
-  mutate(data) {
-    const newdata = this.calculate(data);
+  mutate() {
+    const newdata = this.calculate();
     return this.decorate(newdata);
   }
-
-  calculate(data) {
+  init(data) {
     console.log('calculate', data);
     data = this.normalizeService.normalize(data);
     this.importexportService.calc(data);
     console.log('normalized', data);
+    this.data = data;
+  }
+  calculate() {
+    /*
+    console.log('calculate', data);
+    data = this.normalizeService.normalize(data);
+    this.importexportService.calc(data);
+    console.log('normalized', data);
+    */
+    const data = this.data;
     this.loadshiftService.loadshift(data);
     this.timeshiftService.timeshift(data);
     this.storageService.addStorage(data);
-    /*
-    normalize
-    addpower
-    timeshift
-    */
     return data;
   }
-
-  normalize(data) {
-
-  }
-  loadshift(data) {
-
-  }
-  timeshift(data) {
-
-  }
-
 
   decorate(data) {
     data.loadshifted.forEach(chart => {

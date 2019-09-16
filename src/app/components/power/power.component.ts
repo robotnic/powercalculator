@@ -149,10 +149,10 @@ export class PowerComponent implements OnInit {
       //      this.reduce(data.power);
       this.date = moment(data.meta.date, 'YYYYMMDD').format('LL');
       this.country = data.meta.country;
-      const chart = this.calculator.mutate(data);
-      console.log('readypower', chart);
-      this.reduce(data.loadshifted);
-      this.nvd3.updateWithData(chart);
+      const data2 = this.calculator.mutate();
+      console.log('readypower', data2);
+      this.reduce(data2.loadshifted);
+      this.nvd3.updateWithData(data2);
     });
   }
 

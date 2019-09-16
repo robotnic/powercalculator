@@ -7,6 +7,7 @@ import { RulesService } from './rules.service';
 import { EventService } from '../eventhandler.service';
 import { HydrofillService } from './hydrofill.service';
 import * as moment from 'moment';
+import { Calculator } from '../calculator/calculator.service';
 
 
 @Injectable({
@@ -23,7 +24,8 @@ export class Loader {
     private installedService: InstalledService,
     private configService: ConfigService,
     private hydrofillService: HydrofillService,
-    private rulesService: RulesService
+    private rulesService: RulesService,
+    private calculator: Calculator
   ) { }
   power() {
     return new Observable((observer) => {
@@ -70,6 +72,7 @@ export class Loader {
               },
               loadshifted: null
             };
+            this.calculator.init(this.data);
             console.log('have all data', this.data);
             if (this.data.power) {
               observer.next(this.data);
