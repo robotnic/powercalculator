@@ -18,6 +18,7 @@ export class MutateuiComponent implements OnInit {
   year = 2015;
   month = 5;
   day = 6;
+  date = '2018-03-11';
   timetype;
   mutate = {
     'Wind Onshore': 0,
@@ -104,6 +105,13 @@ export class MutateuiComponent implements OnInit {
     this.hrtime(date);
     this.eventService.setState('date', date.format('YYYYMMDD'));
   }
+  setdate(e) {
+    console.log('e', e);
+    console.log('setdate', this.date);
+    const date = moment(this.date, 'YYYY-MM-DD');
+    this.hrtime(date);
+    this.eventService.setState('date', date.format('YYYYMMDD'));
+  }
 
   selectcountry(country) {
     this.eventService.setState('country', country);
@@ -113,6 +121,7 @@ export class MutateuiComponent implements OnInit {
     this.year = date.format('YYYY');
     this.month = date.format('MM');
     this.day = date.format('DD');
+    //this.date = date.format('YYYY-MM-DD');
   }
   selecttimetype(type) {
     this.eventService.setState('timetype', type);

@@ -23,7 +23,7 @@
   </mat-form-field>
   <br/>
   <mat-form-field  style="width:200px">
-      <input matInput (input) = "change()" placeholder="week" type="date" min="0" [(ngModel)] ="day" tyle="width:50px;">
+      <input matInput (change) = "setdate($event.value)" placeholder="date" type="date" [(ngModel)]="date" tyle="width:50px;">
   </mat-form-field>
   <br/>
 <button mat-button (click)="dectime(timetype)">&lt;</button>

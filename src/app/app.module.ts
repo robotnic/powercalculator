@@ -4,7 +4,7 @@ import { NvD3Module } from 'ng2-nvd3';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule, MatTabsModule, MatSelectModule, MatCheckboxModule, MatExpansionModule,
-  MatIconModule, MatButtonModule, MatCardModule } from '@angular/material';
+  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -45,7 +45,9 @@ import 'nvd3';
     MatIconModule,
     MatCardModule,
     MatExpansionModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]
