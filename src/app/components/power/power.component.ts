@@ -33,7 +33,7 @@ export class PowerComponent implements OnInit {
 
       margin: {
         top: 150,
-        right: 60,
+        right: 80,
         bottom: 60,
         left: 80
       },
@@ -123,7 +123,16 @@ export class PowerComponent implements OnInit {
         },
         axisLabelDistance: -10,
         showMaxMin: false
+      },
+      yAxis2: {
+        axisLabel: 'TWh',
+        tickFormat: function(d) {
+          return d3.format('.02f')(d / 1000 / 1000);
+        },
+        axisLabelDistance: -10,
+        showMaxMin: false
       }
+
 
     }
   };
@@ -149,10 +158,10 @@ export class PowerComponent implements OnInit {
       //      this.reduce(data.power);
       this.date = moment(data.meta.date, 'YYYYMMDD').format('LL');
       this.country = data.meta.country;
-      const data2 = this.calculator.mutate();
-      console.log('readypower', data2);
-      this.reduce(data2.loadshifted);
-      this.nvd3.updateWithData(data2);
+      const chart = this.calculator.mutate();
+      console.log('readypower', data);
+      this.reduce(chart);
+      this.nvd3.updateWithData(chart);
     });
   }
 

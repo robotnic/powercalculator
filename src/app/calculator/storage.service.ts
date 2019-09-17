@@ -19,11 +19,6 @@ export class StorageService {
     chart.type = 'line';
     chart.values.forEach((item, i) => {
       item.y = this.interpolateValues(item.x, data.hydrofill.values);
-      /*
-      if (data.hydrofill.values[i]) {
-        item.y = data.hydrofill.values[i].y;
-      }
-      */
     });
     data.loadshifted.push(chart);
     const clone = JSON.parse(JSON.stringify(chart));
@@ -66,7 +61,7 @@ export class StorageService {
           });
         }
       });
-    })
+    });
     console.log('addpumped', data);
 
   }
