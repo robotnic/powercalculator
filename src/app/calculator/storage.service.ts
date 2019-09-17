@@ -18,8 +18,12 @@ export class StorageService {
     chart.originalKey = 'hydrofill';
     chart.type = 'line';
     chart.values.forEach((item, i) => {
+      item.y = 0;
+    });
+    chart.values.forEach((item, i) => {
       item.y = this.interpolateValues(item.x, data.hydrofill.values);
     });
+
     data.loadshifted.push(chart);
     const clone = JSON.parse(JSON.stringify(chart));
     clone.key = 'hydrofillclone';

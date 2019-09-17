@@ -25,7 +25,8 @@
     "from": [
       "Hydro Pumped up",
       "Hydro Pumped down",
-      "Hydro Water Reservoir"
+      "Hydro Water Reservoir",
+      "Biomass"
     ],
     "to": [
       "Transport",
