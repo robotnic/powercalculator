@@ -20,7 +20,7 @@ export class EventService {
     timetype: 'day'
 
   };
-  observers = [];
+  observers = {};
   constructor() { }
   /*
   init() {
@@ -28,16 +28,21 @@ export class EventService {
     this.setState(this.state);
   }
   */
-  stateChange() {
+  on(type?) {
     return new Observable(observer => {
-      this.observers.push(observer);
+      if (!this.observers[type]) {
+        this.observers[type] = [];
+      }
+      this.observers[type].push(observer);
     });
   }
   setState(type, state) {
     this.state[type] = state;
-    this.observers.forEach(observer => {
-      observer.next(this.state);
-    });
+    if (this.observers[type]) {
+      this.observers[type].forEach(observer => {
+        observer.next(this.state);
+      });
+    }
   }
   getState() {
     return this.state;

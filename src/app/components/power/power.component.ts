@@ -20,6 +20,7 @@ export class PowerComponent implements OnInit {
   date;
   country;
   layers;
+  timetype;
   options = {
     chart: {
       type: 'multiChart',
@@ -153,7 +154,8 @@ export class PowerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loader.power().subscribe(data => {
+    this.loader.power().subscribe(power => {
+      const data: any = power;
       console.log('power', data);
       //      this.reduce(data.power);
       this.date = moment(data.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');

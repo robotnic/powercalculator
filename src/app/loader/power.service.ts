@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventService } from '../eventhandler.service';
 import * as moment from 'moment';
+import {unitOfTime} from 'moment';
 
 
 @Injectable({
@@ -15,8 +16,8 @@ export class PowerService {
     return new Promise((resolve) => {
       const state = this.eventService.getState();
       const date = moment(state.date, 'YYYYMMDD');
-      const start = moment(date).startOf(state.timetype);
-      const end = moment(start).add(state.timetype + 's', +1); 
+      const start = moment(date).startOf(state.timetype  as unitOfTime.StartOf);
+      const end = moment(start).add(state.timetype + 's' as unitOfTime.DurationConstructor, +1);
 
       if (state.timetype === 'year') {
         const promises = [];
@@ -24,7 +25,9 @@ export class PowerService {
           const monthStart = moment(start).add(m, 'month');
           const monthEnd = moment(start).add(m + 1, 'month');
           promises.push(this.loadChart(monthStart, monthEnd, state.country));
+          this.eventService.setState('loading', monthStart.format('MMM'));
           Promise.all(promises).then(result => {
+            this.eventService.setState('loaded', monthStart.format('MMM'));
             if (promises.length === result.length) {
               resolve(this.combineResult(result));
             }
@@ -32,7 +35,9 @@ export class PowerService {
         }
       } else {
         console.log(state.timetype, start, end);
+        this.eventService.setState('loading', 'power')
         this.loadChart(start, end, state.country).then(chart => {
+          this.eventService.setState('loaded', 'power')
           resolve(chart);
         });
       }

@@ -9,7 +9,6 @@ import { HydrofillService } from './hydrofill.service';
 import * as moment from 'moment';
 import { Calculator } from '../calculator/calculator.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +25,7 @@ export class Loader {
     private hydrofillService: HydrofillService,
     private rulesService: RulesService,
     private calculator: Calculator
-  ) { }
+  ) {}
   power() {
     return new Observable((observer) => {
       // observable execution
@@ -44,45 +43,55 @@ export class Loader {
       if (this.data) {
         observer.next(this.data);
       }
-      this.eventHandler.stateChange().subscribe(() => {
-        const state = this.eventHandler.getState();
-        console.log('STATE', state, this.currentDate, this.currentCountry);
-        if (this.currentDate !== state.date || this.currentCountry !== state.country || this.currentTimetype !== state.timetype) {
-          this.currentDate = state.date;
-          this.currentCountry = state.country;
-          this.currentTimetype = state.timetype;
-          const year = moment(state.date, 'YYYYMMDD').format('YYYY');
-          const promises = [
-            this.powerService.charts(),
-            this.installedService.installed(),
-            this.configService.config(),
-            this.rulesService.rules(),
-            this.hydrofillService.hydrofill(year, state.country),
-          ];
-          Promise.all(promises).then(data => {
-            this.data = {
-              power: data[0],
-              installed: data[1],
-              config: data[2],
-              rules: data[3],
-              hydrofill: data[4],
-              meta: {
-                date: this.currentDate,
-                country: this.currentCountry
-              },
-              loadshifted: null
-            };
-            this.calculator.init(this.data);
-            console.log('have all data', this.data);
-            if (this.data.power) {
-              observer.next(this.data);
-            }
-          });
-        } else {
-          observer.next(this.data);
-        }
+      this.eventHandler.on('date').subscribe(() => {
+        this.loaddata(observer);
+      });
 
+      this.eventHandler.on('timetype').subscribe(() => {
+        this.loaddata(observer);
+      });
+      this.eventHandler.on('country').subscribe(() => {
+        this.loaddata(observer);
       });
     });
+  }
+
+  loaddata(observer) {
+    const state = this.eventHandler.getState();
+    console.log('STATE', state, this.currentDate, this.currentCountry);
+    if (this.currentDate !== state.date || this.currentCountry !== state.country || this.currentTimetype !== state.timetype) {
+      this.currentDate = state.date;
+      this.currentCountry = state.country;
+      this.currentTimetype = state.timetype;
+      const year = moment(state.date, 'YYYYMMDD').format('YYYY');
+      const promises = [
+        this.powerService.charts(),
+        this.installedService.installed(),
+        this.configService.config(),
+        this.rulesService.rules(),
+        this.hydrofillService.hydrofill(year, state.country),
+      ];
+      Promise.all(promises).then(data => {
+        this.data = {
+          power: data[0],
+          installed: data[1],
+          config: data[2],
+          rules: data[3],
+          hydrofill: data[4],
+          meta: {
+            date: this.currentDate,
+            country: this.currentCountry
+          },
+          loadshifted: null
+        };
+        this.calculator.init(this.data);
+        console.log('have all data', this.data);
+        if (this.data.power) {
+          observer.next(this.data);
+        }
+      });
+    } else {
+      observer.next(this.data);
+    }
   }
 }

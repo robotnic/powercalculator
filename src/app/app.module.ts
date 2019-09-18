@@ -19,6 +19,7 @@ import { MutateuiComponent } from './components/mutateui/mutateui.component';
 
 import 'd3';
 import 'nvd3';
+import { StateComponent } from './components/state/state.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import 'nvd3';
     HomeComponent,
     DateComponent,
     DatepickerComponent,
-    MutateuiComponent
+    MutateuiComponent,
+    StateComponent
   ],
   imports: [
     BrowserModule,

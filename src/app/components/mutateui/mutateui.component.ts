@@ -41,7 +41,8 @@ export class MutateuiComponent implements OnInit {
       console.log(countries);
       this.countries = Object.keys(countries);
     });
-    this.loader.power().subscribe(data => {
+    this.loader.power().subscribe((power) => {
+      const data:any = power;
       console.log('danke für data', data.loadshifted);
       this.layers.length = 0;
       if (data.loadshifted) {
