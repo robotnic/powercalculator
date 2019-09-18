@@ -31,7 +31,7 @@ export class PowerComponent implements OnInit {
           })
         }
       },
-
+      duration: this.duration(),
       margin: {
         top: 150,
         right: 80,
@@ -184,5 +184,9 @@ export class PowerComponent implements OnInit {
       });
       chart.values = values;
     });
+  }
+  duration() {
+    console.log(this.timetype);
+    return 0;
   }
 }
