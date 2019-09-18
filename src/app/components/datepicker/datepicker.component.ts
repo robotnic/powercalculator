@@ -31,8 +31,8 @@ export class DatepickerComponent implements OnInit {
   onDate() {
 
   }
-  back() {}
-  forward() {}
+  back(type) {}
+  forward(type) {}
   reload() {}
   changedate(date) {
     this.eventService.setState('date', date);

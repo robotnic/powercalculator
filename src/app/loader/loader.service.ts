@@ -53,6 +53,9 @@ export class Loader {
       this.eventHandler.on('country').subscribe(() => {
         this.loaddata(observer);
       });
+      this.eventHandler.on('mutate').subscribe(() => {
+        this.loaddata(observer);
+      });
     });
   }
 
