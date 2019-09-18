@@ -24,6 +24,7 @@
     "@angular/router": "~7.2.0",
     "@material-ui/icons": "^4.4.1",
     "core-js": "^2.5.4",
+    "express": "^4.17.1",
     "moment": "^2.24.0",
     "ng2-nvd3": "^2.0.0",
     "rxjs": "~6.3.3",
