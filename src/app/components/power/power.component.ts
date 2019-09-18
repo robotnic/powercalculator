@@ -21,6 +21,7 @@ export class PowerComponent implements OnInit {
   country;
   layers;
   timetype;
+  previoustimetype;
   options = {
     chart: {
       type: 'multiChart',
@@ -31,7 +32,16 @@ export class PowerComponent implements OnInit {
           })
         }
       },
-      duration: this.duration(),
+      duration: () => {
+        let duration = 0;
+        if (this.timetype === 'day' || this.timetype === 'week') {
+          if (this.timetype === this.previoustimetype) {
+            duration = 200;
+          }
+        }
+        this.previoustimetype = this.timetype;
+        return duration;
+      },
       margin: {
         top: 150,
         right: 80,
@@ -160,6 +170,7 @@ export class PowerComponent implements OnInit {
       //      this.reduce(data.power);
       this.date = moment(data.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.country = data.meta.country;
+      this.timetype = data.meta.timetype;
       const chart = this.calculator.mutate();
       console.log('readypower', data);
       this.reduce(chart);
@@ -184,9 +195,5 @@ export class PowerComponent implements OnInit {
       });
       chart.values = values;
     });
-  }
-  duration() {
-    console.log(this.timetype);
-    return 0;
   }
 }

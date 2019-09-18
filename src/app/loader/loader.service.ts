@@ -83,7 +83,8 @@ export class Loader {
           hydrofill: data[4],
           meta: {
             date: this.currentDate,
-            country: this.currentCountry
+            country: this.currentCountry,
+            timetype: this.currentTimetype
           },
           loadshifted: null
         };
