@@ -156,7 +156,7 @@ export class PowerComponent implements OnInit {
     this.loader.power().subscribe(data => {
       console.log('power', data);
       //      this.reduce(data.power);
-      this.date = moment(data.meta.date, 'YYYYMMDD').format('LL');
+      this.date = moment(data.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.country = data.meta.country;
       const chart = this.calculator.mutate();
       console.log('readypower', data);

@@ -7,8 +7,10 @@ export class StorageService {
 
   constructor() {}
   addStorage(data) {
-    this.calcHydrofill(data);
-    this.addPumped(data);
+    if (data.hydrofill) {
+      this.calcHydrofill(data);
+      this.addPumped(data);
+    }
     return data;
   }
   calcHydrofill(data) {
