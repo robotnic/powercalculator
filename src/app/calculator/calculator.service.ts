@@ -18,11 +18,14 @@ export class Calculator {
     private storageService: StorageService,
     private importexportService: ImportexportService,
     private eventService: EventService
-  ) { }
+  ) {}
 
   mutate() {
-    const newdata = this.calculate();
-    return this.decorate(newdata);
+    return new Promise(resolve => {
+      this.calculate().then(data => {
+        resolve(this.decorate(data));
+      });
+    });
   }
   init(data) {
     console.log('calculate', data);
@@ -39,28 +42,31 @@ export class Calculator {
     console.log('normalized', data);
     */
     const data = this.data;
-//    this.eventService.setState('loading', 'calcing');
+    await this.unlock('calcing', 'loadshift');
     this.loadshiftService.loadshift(data);
-    console.log('loadshifted', data)
-//    this.eventService.setState('loaded', 'calcing');
-//    await this.unlock();
-//    this.eventService.setState('loading', 'timeshift');
+    await this.unlock('calced', 'loadshift');
+
+    await this.unlock('calcing', 'timeshift');
     this.timeshiftService.timeshift(data);
-//    this.eventService.setState('loaded', 'timeshift');
-//    await this.unlock();
-//    this.eventService.setState('loading', 'pump');
+    await this.unlock('calced', 'timeshift');
+
+    await this.unlock('calcing', 'pump');
     this.storageService.addStorage(data);
-//    this.eventService.setState('loaded', 'pump');
+    await this.unlock('calced', 'pump');
+
+    await this.unlock('calcing', 'render');
     return data;
   }
 
-  unlock() {
-    return new Promise((resolve ) => {
-      setTimeout(() => resolve(), 1000);
+  unlock(name, value) {
+    this.eventService.setState(name, value);
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), 0);
     });
   }
 
   decorate(data) {
+    console.log(data);
     data.loadshifted.forEach(chart => {
       chart.yAxis = 1;
       if (chart.originalKey === 'hydrofill' || chart.originalKey === 'hydrofillclone') {

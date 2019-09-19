@@ -1,4 +1,12 @@
 <p>
   <span *ngIf="loading.length"> loading: </span>
   <span *ngFor="let thing of loading" title="{{thing}}">{{thing}} </span>
+
+
+  <span *ngFor="let thing of calcing" title="{{thing}}">{{thing}} </span>
+
+  <span *ngIf="!loading.length && !calcing.length"> {{thedate}} </span>
+<br/>
+  <span class="error" *ngIf="notloaded.length"> error: </span>
+  <span class="error" *ngFor="let thing of notloaded" title="{{thing}}">{{thing}} </span>
 </p>

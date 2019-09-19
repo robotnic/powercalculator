@@ -29,7 +29,7 @@ export class HydrofillService {
             this.cache = data;
             resolve(data);
           }, e => {
-            this.eventService.setState('failed', 'hydrofill');
+            this.eventService.setState('notloaded', 'hydrofill');
             reject(e);
           }
         );

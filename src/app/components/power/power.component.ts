@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Loader } from '../../loader/loader.service';
 import { Calculator } from '../../calculator/calculator.service';
+import { EventService } from '../../eventhandler.service';
 declare let d3: any;
 import * as moment from 'moment';
 
@@ -13,11 +14,16 @@ import * as moment from 'moment';
 })
 export class PowerComponent implements OnInit {
 
-  constructor(private loader: Loader, private calculator: Calculator) {}
+  constructor(
+    private loader: Loader,
+    private calculator: Calculator,
+    private eventService: EventService
+  ) {}
   @ViewChild('nvd3') private nvd3: any;
   data;
   meta;
   date;
+  previousdate;
   country;
   layers;
   timetype;
@@ -43,6 +49,9 @@ export class PowerComponent implements OnInit {
             break;
           case 'month':
             duration = 5000;
+            if (this.previousdate !== this.meta.date) {
+              duration = 0;
+            }
             break;
           case 'year':
             duration = 5000;
@@ -140,7 +149,7 @@ export class PowerComponent implements OnInit {
 
       },
       yAxis1: {
-        axisLabel: 'GW',
+        axisLabel: 'Electricity generation GW',
         tickFormat: function(d) {
           return d3.format('.02f')(d);
         },
@@ -148,14 +157,13 @@ export class PowerComponent implements OnInit {
         showMaxMin: false
       },
       yAxis2: {
-        axisLabel: 'TWh',
+        axisLabel: 'Hydro fill TWh',
         tickFormat: function(d) {
           return d3.format('.02f')(d / 1000 / 1000);
         },
         axisLabelDistance: -10,
         showMaxMin: false
       }
-
 
     }
   };
@@ -181,12 +189,15 @@ export class PowerComponent implements OnInit {
       console.log('power', data);
       //      this.reduce(data.power);
       this.date = moment(data.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
+      this.meta = data.meta;
       this.country = data.meta.country;
       this.timetype = data.meta.timetype;
-      const chart = this.calculator.mutate();
-      console.log('readypower', data);
-      this.reduce(chart);
-      this.nvd3.updateWithData(chart);
+      this.calculator.mutate().then(chart => {
+        this.reduce(chart);
+        this.nvd3.updateWithData(chart);
+        this.eventService.setState('calced', 'render');
+        this.previousdate = data.meta.date;
+      });
     });
   }
 
