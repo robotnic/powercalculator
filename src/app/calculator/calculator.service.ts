@@ -4,6 +4,7 @@ import { LoadshiftService } from './loadshift.service';
 import { TimeshiftService } from './timeshift.service';
 import { StorageService } from './storage.service';
 import { ImportexportService } from './importexport.service';
+import { EventService } from '../eventhandler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class Calculator {
     private loadshiftService: LoadshiftService,
     private timeshiftService: TimeshiftService,
     private storageService: StorageService,
-    private importexportService: ImportexportService
+    private importexportService: ImportexportService,
+    private eventService: EventService
   ) { }
 
   mutate() {
@@ -29,7 +31,7 @@ export class Calculator {
     console.log('normalized', data);
     this.data = data;
   }
-  calculate() {
+  async calculate() {
     /*
     console.log('calculate', data);
     data = this.normalizeService.normalize(data);
@@ -37,10 +39,25 @@ export class Calculator {
     console.log('normalized', data);
     */
     const data = this.data;
+//    this.eventService.setState('loading', 'calcing');
     this.loadshiftService.loadshift(data);
+    console.log('loadshifted', data)
+//    this.eventService.setState('loaded', 'calcing');
+//    await this.unlock();
+//    this.eventService.setState('loading', 'timeshift');
     this.timeshiftService.timeshift(data);
+//    this.eventService.setState('loaded', 'timeshift');
+//    await this.unlock();
+//    this.eventService.setState('loading', 'pump');
     this.storageService.addStorage(data);
+//    this.eventService.setState('loaded', 'pump');
     return data;
+  }
+
+  unlock() {
+    return new Promise((resolve ) => {
+      setTimeout(() => resolve(), 1000);
+    });
   }
 
   decorate(data) {

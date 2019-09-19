@@ -34,10 +34,22 @@ export class PowerComponent implements OnInit {
       },
       duration: () => {
         let duration = 0;
-        if (this.timetype === 'day' || this.timetype === 'week') {
-          if (this.timetype === this.previoustimetype) {
-            duration = 200;
-          }
+        switch (this.timetype) {
+          case 'day':
+            duration = 300;
+            break;
+          case 'week':
+            duration = 3000;
+            break;
+          case 'month':
+            duration = 5000;
+            break;
+          case 'year':
+            duration = 5000;
+            break;
+        }
+        if (this.timetype !== this.previoustimetype) {
+          duration = 0;
         }
         this.previoustimetype = this.timetype;
         return duration;
