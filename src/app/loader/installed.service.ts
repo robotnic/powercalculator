@@ -9,24 +9,26 @@ import { Installed } from '../models/installed';
 })
 
 export class InstalledService {
-  data: Installed;
+  cache: Installed;
+  currentUrl: string;
   constructor(private http: HttpClient, private eventService: EventService) {}
   installed() {
     return new Promise((resolve) => {
-      if (this.data) {
-        resolve(this.data);
+      const country: string = this.eventService.getState().country;
+      const url: string = '/api/installed/' + country;
+      if (this.cache && url === this.currentUrl) {
+        resolve(this.cache);
       } else {
-        const country: string = this.eventService.getState().country;
-        const url: string = '/api/installed/' + country;
         this.eventService.setState('loading', 'installed');
         this.http.get(url).toPromise().then((data: Installed) => {
           this.eventService.setState('loaded', 'installed');
-          this.data = data;
+          this.cache = data;
           resolve(data);
         }, e => {
           this.eventService.setState('failed', 'installed');
           reject(e);
         });
+        this.currentUrl = url;
       }
     });
   }

@@ -20,9 +20,13 @@ export class FixchartsService {
         emptyCharts.push(chart.key);
       }
     });
-    console.log('emptyCharts', emptyCharts);
     data.power = data.power.filter(chart => {
       return emptyCharts.indexOf(chart.key) === -1;
     });
+    /*
+    data.power.forEach(chart => {
+      console.log(chart.key, chart.values.length);
+    });
+    */
   }
 }

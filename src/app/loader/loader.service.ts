@@ -72,6 +72,7 @@ export class Loader {
       this.currentCountry = state.country;
       this.currentTimetype = state.timetype;
       const year = moment(state.date, 'YYYYMMDD').format('YYYY');
+      console.log('YEAR', year);
       const promises = [
         this.powerService.charts(),
         this.installedService.installed(),
