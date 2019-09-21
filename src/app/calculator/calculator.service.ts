@@ -6,6 +6,7 @@ import { StorageService } from './storage.service';
 import { ImportexportService } from './importexport.service';
 import { EventService } from '../eventhandler.service';
 import { SummaryService } from './summary.service';
+import { FixchartsService } from './fixcharts.service';
 import { Data } from '../models/data';
 
 @Injectable({
@@ -20,7 +21,8 @@ export class Calculator {
     private storageService: StorageService,
     private importexportService: ImportexportService,
     private eventService: EventService,
-    private summaryService: SummaryService
+    private summaryService: SummaryService,
+    private fixchartsService: FixchartsService
   ) {}
 
   mutate() {
@@ -31,6 +33,9 @@ export class Calculator {
     });
   }
   async init(data) {
+    await this.unlock({ 'calcing': 'fix' });
+    this.fixchartsService.fix(data);
+    await this.unlock({ 'calced': 'fix' });
     this.normalizeService.normalize(data);
     await this.unlock({ 'calcing': 'normalize' });
     this.importexportService.calc(data);
