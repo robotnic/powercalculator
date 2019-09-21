@@ -6,7 +6,7 @@
 <app-state></app-state>
 </div>
 <nvd3 #nvd3 [options]="options" [data]="data"></nvd3>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <!-- Key Column -->
   <ng-container matColumnDef="key">
@@ -37,7 +37,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<pre>{{sum|json}}</pre>
 </div>
 <app-mutateui></app-mutateui>
 </div>
