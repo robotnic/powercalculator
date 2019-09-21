@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventService } from '../eventhandler.service';
 import * as moment from 'moment';
 import { unitOfTime } from 'moment';
+import { Chart } from '../models/charts';
 
 @Injectable({
   providedIn: 'root'
@@ -52,10 +53,8 @@ export class PowerService {
     return new Promise((resolve, reject) => {
       const startString = start.format('YYYYMMDD');
       const endString = end.format('YYYYMMDD');
-      //console.log(start, end, country);
-      // const url = '/api/generated?start=201909050000&end=201909060000&area=' + state.country;
       const url = `/api/generated?start=${startString}0000&end=${endString}0000&area=${country}`;
-      this.http.get(url).toPromise().then(data => {
+      this.http.get(url).toPromise().then((data: Chart) => {
         if (data) {
           resolve(data);
         } else {

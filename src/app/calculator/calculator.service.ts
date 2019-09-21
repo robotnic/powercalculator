@@ -5,6 +5,7 @@ import { TimeshiftService } from './timeshift.service';
 import { StorageService } from './storage.service';
 import { ImportexportService } from './importexport.service';
 import { EventService } from '../eventhandler.service';
+import { SummaryService } from './summary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class Calculator {
     private timeshiftService: TimeshiftService,
     private storageService: StorageService,
     private importexportService: ImportexportService,
-    private eventService: EventService
+    private eventService: EventService,
+    private summaryService: SummaryService
   ) {}
 
   mutate() {
@@ -54,6 +56,10 @@ export class Calculator {
     this.storageService.addStorage(data);
     await this.unlock('calced', 'pump');
 
+    await this.unlock('calcing', 'sum');
+    this.summaryService.calcSummary(data);
+    await this.unlock('calced', 'sum');
+
     await this.unlock('calcing', 'render');
     return data;
   }
@@ -78,6 +84,6 @@ export class Calculator {
         chart.color = data.config[chart.key].color;
       }
     });
-    return data.loadshifted;
+    return data;
   }
 }

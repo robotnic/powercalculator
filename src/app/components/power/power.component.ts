@@ -2,8 +2,11 @@ import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Loader } from '../../loader/loader.service';
 import { Calculator } from '../../calculator/calculator.service';
 import { EventService } from '../../eventhandler.service';
+import { MatTableDataSource } from '@angular/material/table';
+
 declare let d3: any;
 import * as moment from 'moment';
+import { Data } from 'src/app/models/data';
 
 @Component({
   selector: 'app-power',
@@ -13,14 +16,16 @@ import * as moment from 'moment';
 
 })
 export class PowerComponent implements OnInit {
-
+  displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta'];
+  dataSource;
   constructor(
     private loader: Loader,
     private calculator: Calculator,
     private eventService: EventService
   ) {}
   @ViewChild('nvd3') private nvd3: any;
-  data;
+  data: Data;
+  sum = [];
   meta;
   date;
   previousdate;
@@ -184,25 +189,38 @@ export class PowerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loader.power().subscribe(power => {
-      const data: any = power;
-      console.log('power', data);
-      //      this.reduce(data.power);
-      this.date = moment(data.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
-      this.meta = data.meta;
-      this.country = data.meta.country;
-      this.timetype = data.meta.timetype;
-      this.calculator.mutate().then(chart => {
-        this.reduce(chart);
+    this.loader.power().subscribe((original: Data) => {
+      this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
+      this.meta = original.meta;
+      this.country = original.meta.country;
+      this.timetype = original.meta.timetype;
+      this.calculator.mutate().then((modified: Data) => {
+        const sum = this.makeSum(modified.sum);
+        this.dataSource = new MatTableDataSource(sum);
+        const chart = this.reduce(modified);
         this.nvd3.updateWithData(chart);
         this.eventService.setState('calced', 'render');
-        this.previousdate = data.meta.date;
+        this.previousdate = modified.meta.date;
       });
     });
   }
 
+  makeSum(sum) {
+    const sumlist = [];
+    // tslint:disable-next-line:forin
+    for (const key in sum) {
+      sumlist.push({
+        key: key,
+        power: Math.round(sum[key].original),
+        loadshifted: Math.round(sum[key].modified),
+        delta: Math.round(sum[key].delta)
+      });
+    }
+    return sumlist;
+  }
+
   reduce(data) {
-    data.forEach(chart => {
+    data.loadshifted.forEach(chart => {
       //console.log(chart.key, chart.values);
       const l = chart.values.length;
       const factor = Math.ceil(l / 300);
@@ -218,5 +236,6 @@ export class PowerComponent implements OnInit {
       });
       chart.values = values;
     });
+    return data.loadshifted;
   }
 }

@@ -8,6 +8,9 @@ import { EventService } from '../eventhandler.service';
 import { HydrofillService } from './hydrofill.service';
 import * as moment from 'moment';
 import { Calculator } from '../calculator/calculator.service';
+import { Data } from '../models/data';
+import { Chart } from '../models/charts';
+import { Installed } from '../models/installed';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +19,7 @@ export class Loader {
   currentDate;
   currentCountry;
   currentTimetype;
-  data;
+  data: Data;
   constructor(
     private powerService: PowerService,
     private eventHandler: EventService,
@@ -67,6 +70,7 @@ export class Loader {
       this.currentCountry = state.country;
       this.currentTimetype = state.timetype;
       const year = moment(state.date, 'YYYYMMDD').format('YYYY');
+      this.powerService.charts().then((x: Chart) => console.log(x));
       const promises = [
         this.powerService.charts(),
         this.installedService.installed(),
@@ -74,22 +78,22 @@ export class Loader {
         this.rulesService.rules(),
         this.hydrofillService.hydrofill(year, state.country),
       ];
-      Promise.all(promises).then(data => {
+      Promise.all(promises).then((data) => {
         this.data = {
-          power: data[0],
-          installed: data[1],
+          power: <Chart>data[0],
+          installed: <Installed>data[1],
           config: data[2],
           rules: data[3],
-          hydrofill: data[4],
+          hydrofill: <Chart>data[4],
           meta: {
             date: this.currentDate,
             country: this.currentCountry,
             timetype: this.currentTimetype
           },
+          sum: null,
           loadshifted: null
         };
         this.calculator.init(this.data);
-        console.log('have all data', this.data);
         if (this.data.power) {
           observer.next(this.data);
         }

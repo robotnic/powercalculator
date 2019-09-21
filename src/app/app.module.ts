@@ -4,7 +4,7 @@ import { NvD3Module } from 'ng2-nvd3';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule, MatTabsModule, MatSelectModule, MatCheckboxModule, MatExpansionModule,
-  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatTableModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -20,6 +20,10 @@ import { MutateuiComponent } from './components/mutateui/mutateui.component';
 import 'd3';
 import 'nvd3';
 import { StateComponent } from './components/state/state.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -49,7 +53,8 @@ import { StateComponent } from './components/state/state.component';
     MatExpansionModule,
     BrowserAnimationsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

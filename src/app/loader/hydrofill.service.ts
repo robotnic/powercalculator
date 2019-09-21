@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventService } from '../eventhandler.service';
-import { resolve } from 'url';
-import { reject } from 'q';
+import { Chart } from '../models/charts';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class HydrofillService {
-  cache = null;
+  cache: Chart = {
+    key: '',
+    originalKey: '',
+    values: []
+  };
   currentUrl;
   constructor(private http: HttpClient, private eventService: EventService) {}
 
   hydrofill(year, country) {
-    return new Promise((resolve, reject) => {
+    return new Promise<Chart>((resolve, reject) => {
       const url = '/api/filllevel/' + country + '/' + year;
       console.log(url, this.currentUrl, this.cache);
       if (this.currentUrl === url && this.cache) {
@@ -24,7 +27,7 @@ export class HydrofillService {
         this.currentUrl = url;
         this.eventService.setState('loading', 'hydrofill');
         return this.http.get(url).toPromise().then(
-          data => {
+          (data: Chart) => {
             this.eventService.setState('loaded', 'hydrofill');
             this.cache = data;
             resolve(data);
