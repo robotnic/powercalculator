@@ -26,7 +26,8 @@ export class MutateuiComponent implements OnInit {
     'Solar': 0,
     'Power2Gas': 0,
     'Transport': 0,
-    'quickview': false
+    'quickview': false,
+    'refresh': true
   };
 
   constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) { }
@@ -114,6 +115,11 @@ export class MutateuiComponent implements OnInit {
     this.hrtime(date);
     this.eventService.setState('date', date.format('YYYYMMDD'));
   }
+  today() {
+    const date = moment();
+    this.hrtime(date);
+    this.eventService.setState('date', date.format('YYYYMMDD'));
+  }
 
   selectcountry(country) {
     this.eventService.setState('country', country);
@@ -123,8 +129,13 @@ export class MutateuiComponent implements OnInit {
     this.year = date.format('YYYY');
     this.month = date.format('MM');
     this.day = date.format('DD');
+    this.date = date.format('YYYY-MM-DD');
   }
   selecttimetype(type) {
     this.eventService.setState('timetype', type);
+  }
+  refresh() {
+    this.eventService.setState('refresh', true);
+    this.eventService.setState('refresh', false);
   }
 }

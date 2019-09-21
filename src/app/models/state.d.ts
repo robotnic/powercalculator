@@ -6,6 +6,7 @@ export interface State {
   loaded: string;
   loading: string;
   timetype: string;
+  refresh: boolean;
   mutate: Mutate;
 }
 interface Mutate {

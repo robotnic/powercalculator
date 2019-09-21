@@ -22,7 +22,8 @@ export class EventService {
     calced: '',
     calcing: '',
     loaded: '',
-    loading: ''
+    loading: '',
+    refresh: false
   };
   observers = {};
   constructor() { }

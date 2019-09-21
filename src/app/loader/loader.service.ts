@@ -61,13 +61,21 @@ export class Loader {
       this.eventHandler.on('mutate').subscribe(() => {
         this.loaddata(observer);
       });
+      this.eventHandler.on('refresh').subscribe(() => {
+        this.loaddata(observer);
+      });
     });
   }
 
   loaddata(observer) {
     const state = this.eventHandler.getState();
     console.log('STATE', state, this.currentDate, this.currentCountry);
-    if (this.currentDate !== state.date || this.currentCountry !== state.country || this.currentTimetype !== state.timetype) {
+    if (this.currentDate !== state.date ||
+      this.currentCountry !== state.country ||
+      this.currentTimetype !== state.timetype ||
+      state.refresh
+    ) {
+      //this.eventHandler.setState('refresh', false);
       this.currentDate = state.date;
       this.currentCountry = state.country;
       this.currentTimetype = state.timetype;

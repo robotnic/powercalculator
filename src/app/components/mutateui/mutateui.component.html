@@ -7,13 +7,13 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-  <mat-form-field  style="width:250px" *ngIf="countries">
+  <mat-form-field  style="width:200px" *ngIf="countries">
     <mat-select [(value)]="country" (selectionChange)="selectcountry($event.value)">
       <mat-option [value]="country" *ngFor="let country of countries">{{country}}</mat-option>
     </mat-select>
   </mat-form-field>
 <br>
-  <mat-form-field  style="width:250px">
+  <mat-form-field  style="width:200px">
     <mat-select [(value)]="timetype" (selectionChange)="selecttimetype($event.value)">
       <mat-option [value]="'day'">day</mat-option>
       <mat-option [value]="'week'">week</mat-option>
@@ -22,12 +22,23 @@
     </mat-select>
   </mat-form-field>
   <br/>
-  <mat-form-field  style="width:250px">
+  <mat-form-field  style="width:200px">
       <input matInput (change) = "setdate($event.value)" placeholder="date" type="date" [(ngModel)]="date" tyle="width:50px;">
   </mat-form-field>
   <br/>
-<button mat-stroked-button (click)="dectime(timetype)">&lt;</button>&#160;
-<button mat-stroked-button (click)="inctime(timetype)">&gt;</button>
+  <button mat-icon-button aria-label="back"  (click)="dectime(timetype)">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>&#160;
+  <button mat-icon-button aria-label="forward" (click)="inctime(timetype)">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>&#160;
+  <button mat-icon-button aria-label="reload from data source" (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>&#160;
+
+  <button mat-icon-button aria-label="reload from data source" (click)="today()">
+    <mat-icon>today</mat-icon>
+  </button>
 <br/>
 <!--
 <button mat-icon-button>⏪</button>
@@ -80,32 +91,25 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
   <div class="inputline">
-      <button mat-stroked-button (click)="dec('Solar')">-</button>
       <mat-form-field class="md-block" title="Add {{mutate.Solar}} GWp Photovoltic. This equals to {{mutate.Solar*0.4}} photovoltaic panels per Austrian">
         <input matInput (input) = "change()" placeholder="Solar" type="number" min="0" [(ngModel)] ="mutate.Solar" style="width:50px;">
       </mat-form-field>
-      <button mat-stroked-button (click)="inc('Solar')">+</button>
   </div>
   <div class="inputline">
-      <button  mat-stroked-button (click)="dec('Wind Onshore')">-</button>
       <mat-form-field class="md-block" lex-gt-sm title="Add {{mutate['Wind Onshore']}} GW Wind. This equals to {{mutate['Wind Onshore']*200}} big Windturbines">
         <input matInput (input) = "change()" placeholder="Onshore" type="number" min="0" [(ngModel)]="mutate['Wind Onshore']" style="width:50px;">
       </mat-form-field>
-      <button  mat-stroked-button (click)="inc('Wind Onshore')">+</button>
   </div>
+  <br/>
   <div class="inputline">
-      <button  mat-stroked-button (click)="dec('Transport')">-</button>
       <mat-form-field class="md-block" lex-gt-sm >
         <input matInput (input) = "change()" placeholder="EV%" type="number" min="0" [(ngModel)]="mutate['Transport']" style="width:50px;">
       </mat-form-field>
-      <button  mat-stroked-button (click)="inc('Transport')">+</button>
   </div>
   <div class="inputline">
-    <button  mat-stroked-button (click)="dec('Power2Gas')">-</button>
     <mat-form-field class="md-block" lex-gt-sm >
       <input matInput (input) = "change()" placeholder="P2G" type="number" min="0" [(ngModel)]="mutate['Power2Gas']" style="width:50px;">
     </mat-form-field>
-    <button  mat-stroked-button (click)="inc('Power2Gas')">+</button>
   </div>
    </mat-expansion-panel>
    <!--
