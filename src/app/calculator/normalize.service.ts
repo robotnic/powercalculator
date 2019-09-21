@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Chart } from '../models/charts';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,9 @@ export class NormalizeService {
   }
 
   splitPump(data) {
-    //data = JSON.parse(JSON.stringify(data));
     const key = 'Hydro Pumped Storage';
-    let pumpUp = null;
-    let pumpDown = null;
+    let pumpUp: Chart = null;
+    let pumpDown: Chart = null;
     data.power.forEach(chart => {
       if (chart.key === key) {
         console.log(chart.key, '-', key);
@@ -57,7 +57,25 @@ export class NormalizeService {
   }
 
   sortData(data) {
-    const order = ['Hydro Pumped up', 'Hydro Pumped down', 'Nuclear', 'Hydro Run-of-river and poundage', 'Hydro Water Reservoir', 'Waste', 'Biomass',  'Fossil Oil', 'Fossil Gas', 'Other', 'Fossil Hard coal', 'Fossil Brown coal/Lignite', 'Geothermal', 'Other renewable', 'Solar', 'Wind Offshore', 'Wind Onshore', 'Leistung [MW]'];
+    const order: string[] = [
+      'Hydro Pumped up',
+      'Hydro Pumped down',
+      'Nuclear',
+      'Hydro Run-of-river and poundage',
+      'Hydro Water Reservoir',
+      'Waste',
+      'Biomass',
+      'Fossil Oil',
+      'Fossil Gas',
+      'Other',
+      'Fossil Hard coal',
+      'Fossil Brown coal/Lignite',
+      'Geothermal',
+      'Other renewable',
+      'Solar',
+      'Wind Offshore',
+      'Wind Onshore',
+      'Leistung [MW]'];
 
     data.power = data.power.sort((a, b) => {
       return order.indexOf(a.key) - order.indexOf(b.key);
@@ -65,7 +83,7 @@ export class NormalizeService {
   }
 
   addCurtailment(data) {
-    const chart = JSON.parse(JSON.stringify(data.power[0]));
+    const chart: Chart = JSON.parse(JSON.stringify(data.power[0]));
     chart.values.forEach(item => {
       item.y = 0;
     });

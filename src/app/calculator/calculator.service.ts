@@ -6,12 +6,13 @@ import { StorageService } from './storage.service';
 import { ImportexportService } from './importexport.service';
 import { EventService } from '../eventhandler.service';
 import { SummaryService } from './summary.service';
+import { Data } from '../models/data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Calculator {
-  data;
+  data: Data;
   constructor(
     private normalizeService: NormalizeService,
     private loadshiftService: LoadshiftService,
@@ -29,20 +30,14 @@ export class Calculator {
       });
     });
   }
-  init(data) {
-    console.log('calculate', data);
-    data = this.normalizeService.normalize(data);
+  async init(data) {
+    this.normalizeService.normalize(data);
+    await this.unlock('calcing', 'normalize');
     this.importexportService.calc(data);
-    console.log('normalized', data);
+    await this.unlock('calced', 'normalize');
     this.data = data;
   }
   async calculate() {
-    /*
-    console.log('calculate', data);
-    data = this.normalizeService.normalize(data);
-    this.importexportService.calc(data);
-    console.log('normalized', data);
-    */
     const data = this.data;
     await this.unlock('calcing', 'loadshift');
     this.loadshiftService.loadshift(data);
@@ -78,7 +73,6 @@ export class Calculator {
       if (chart.originalKey === 'hydrofill' || chart.originalKey === 'hydrofillclone') {
         chart.yAxis = 2;
       }
-      console.log('yAxis', chart.yAxis)
       chart.originalKey = chart.key;
       if (data.config[chart.key]) {
         chart.color = data.config[chart.key].color;

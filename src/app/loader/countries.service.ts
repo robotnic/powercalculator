@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventService } from '../eventhandler.service';
+import { Countries } from '../models/countries';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountriesService {
-  data;
+  cache: Countries;
   constructor(private http: HttpClient, private eventService: EventService) {}
   countries() {
     return new Promise((resolve) => {
-      if (this.data) {
-        resolve(this.data);
+      if (this.cache) {
+        resolve(this.cache);
       } else {
         const url = '/assets/countries.json';
         this.eventService.setState('loading', 'countries');
-        this.http.get(url).toPromise().then(data => {
+        this.http.get(url).toPromise().then((data: Countries) => {
           this.eventService.setState('loaded', 'countries');
+          this.cache = data;
           resolve(data);
         });
       }

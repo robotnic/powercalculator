@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PowerComponent } from './components/power/power.component';
-import { PowerdiffComponent } from './components/powerdiff/powerdiff.component';
 import { HomeComponent } from './components/home/home.component';
 import { DateComponent } from './components/date/date.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
@@ -29,7 +28,6 @@ registerLocaleData(localeFr);
   declarations: [
     AppComponent,
     PowerComponent,
-    PowerdiffComponent,
     HomeComponent,
     DateComponent,
     DatepickerComponent,

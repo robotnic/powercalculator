@@ -4,6 +4,7 @@ import { EventService } from '../eventhandler.service';
 import * as moment from 'moment';
 import { unitOfTime } from 'moment';
 import { Chart } from '../models/charts';
+import { State } from '../models/state';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +15,19 @@ export class PowerService {
 
   charts() {
     return new Promise((resolve) => {
-      const state = this.eventService.getState();
-      const date = moment(state.date, 'YYYYMMDD');
-      const start = moment(date).startOf(state.timetype as unitOfTime.StartOf);
-      const end = moment(start).add(state.timetype + 's' as unitOfTime.DurationConstructor, +1);
+      const state: State = this.eventService.getState();
+      const date: moment.Moment = moment(state.date, 'YYYYMMDD');
+      const start: moment.Moment = moment(date).startOf(state.timetype as unitOfTime.StartOf);
+      const end: moment.Moment = moment(start).add(state.timetype + 's' as unitOfTime.DurationConstructor, +1);
 
       if (state.timetype === 'year') {
         const promises = [];
         for (let m = 0; m < 12; m++) {
-          const monthStart = moment(start).add(m, 'month');
-          const monthEnd = moment(start).add(m + 1, 'month');
+          const monthStart: moment.Moment = moment(start).add(m, 'month');
+          const monthEnd: moment.Moment = moment(start).add(m + 1, 'month');
           promises.push(this.loadChart(monthStart, monthEnd, state.country));
           this.eventService.setState('loading', monthStart.format('MMM'));
-          Promise.all(promises).then(result => {
+          Promise.all(promises).then((result: Chart[]) => {
             this.eventService.setState('loaded', monthStart.format('MMM'));
             if (promises.length === result.length) {
               resolve(this.combineResult(result));
@@ -36,7 +37,7 @@ export class PowerService {
       } else {
         console.log(state.timetype, start, end);
         this.eventService.setState('loading', 'power');
-        this.loadChart(start, end, state.country).then(chart => {
+        this.loadChart(start, end, state.country).then((chart: Chart) => {
           if (chart) {
             this.eventService.setState('loaded', 'power');
           } else {
@@ -44,6 +45,7 @@ export class PowerService {
           }
           resolve(chart);
         }, error => {
+          console.error(error);
           this.eventService.setState('notloaded', 'power');
         });
       }
@@ -51,8 +53,8 @@ export class PowerService {
   }
   loadChart(start, end, country) {
     return new Promise((resolve, reject) => {
-      const startString = start.format('YYYYMMDD');
-      const endString = end.format('YYYYMMDD');
+      const startString: string = start.format('YYYYMMDD');
+      const endString: string = end.format('YYYYMMDD');
       const url = `/api/generated?start=${startString}0000&end=${endString}0000&area=${country}`;
       this.http.get(url).toPromise().then((data: Chart) => {
         if (data) {

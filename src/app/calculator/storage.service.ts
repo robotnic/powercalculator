@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Chart, ChartValue } from '../models/charts';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,7 @@ export class StorageService {
     return data;
   }
   calcHydrofill(data) {
-    console.log('calchydrofill', data.hydrofill);
-    const chart = JSON.parse(JSON.stringify(data.power[0]));
+    const chart: Chart = JSON.parse(JSON.stringify(data.power[0]));
     chart.key = 'hydrofill';
     chart.originalKey = 'hydrofill';
     chart.type = 'line';
@@ -27,7 +27,7 @@ export class StorageService {
     });
 
     data.loadshifted.push(chart);
-    const clone = JSON.parse(JSON.stringify(chart));
+    const clone: Chart = JSON.parse(JSON.stringify(chart));
     clone.key = 'hydrofillclone';
     clone.originalKey = 'hydrofillclone';
     data.loadshifted.push(clone);
@@ -35,7 +35,7 @@ export class StorageService {
   interpolateValues(time, values) {
     let result = 0;
     for (let v = 0; v < values.length; v++) {
-      const value = values[v];
+      const value: ChartValue = values[v];
       result = value.y;
       if (value.x > time) {
         break;
@@ -44,22 +44,22 @@ export class StorageService {
     return result;
   }
   addPumped(data) {
-    let hydrofillclone = null;
+    let hydrofillclone: Chart = null;
     data.loadshifted.forEach((chart, i) => {
       if (chart.originalKey === 'hydrofillclone') {
         hydrofillclone = chart;
       }
     });
-    const types = ['Hydro Pumped up', 'Hydro Pumped down', 'Hydro Water Reservoir'];
+    const types: string[] = ['Hydro Pumped up', 'Hydro Pumped down', 'Hydro Water Reservoir'];
     types.forEach(type => {
       data.power.forEach((chart, i) => {
         if (chart.key === type) {
           console.log('addPumped', type);
           let total = 0;
           chart.values.forEach((item, v) => {
-            const original = item.y;
-            const modified = data.loadshifted[i].values[v].y;
-            const delta = original - modified;
+            const original: number = item.y;
+            const modified: number = data.loadshifted[i].values[v].y;
+            const delta: number = original - modified;
             if (delta ) {
               total += delta;
             }
@@ -68,7 +68,5 @@ export class StorageService {
         }
       });
     });
-    console.log('addpumped', data);
-
   }
 }

@@ -83,9 +83,14 @@ export class PowerComponent implements OnInit {
             const date = moment(e.value).format('YYYY-MM-DD');
             let html = '<div>';
             html += '<h1>' + date + '</h1>';
-            html += '<table>'
+            html += '<table>';
             e.series.forEach(chart => {
-              html += `<tr><td style="color:${chart.color}">◼</td><td>${chart.key}</td><td</td><td>${Math.round(chart.value * 10) / 10}</td></tr>`
+              html += `<tr>
+              <td style="color:${chart.color}">◼</td>
+              <td>${chart.key}</td>
+              <td</td>
+              <td>${Math.round(chart.value * 10) / 10}</td>
+              </tr>`;
             });
             html += '</table>';
             html += '</div>';
@@ -96,20 +101,19 @@ export class PowerComponent implements OnInit {
       xAxis: {
         axisLabel: 'Date Time',
         tickFormat: (d) => {
-          let t = "0";
+          let t = '0';
           const timetype: String = 'day';
           switch (this.timetype) {
             case 'day':
-              t = moment(d).format('HH:mm'); //d3.time.fmt(rmat('%x')(new Date(d))
+              t = moment(d).format('HH:mm');
               break;
             case 'week':
-              t = moment(d).format('ddd DD.MMM.YYYY '); //d3.time.fmt(rmat('%x')(new Date(d))
+              t = moment(d).format('ddd DD.MMM.YYYY ');
               break;
             default:
-              t = moment(d).format('ddd DD.MMM.YYYY'); //d3.time.fmt(rmat('%x')(new Date(d))
+              t = moment(d).format('ddd DD.MMM.YYYY');
           }
           return t;
-          //return d3.time.fmt(rmat('%x')(new Date(moment(d).format('DD.MMM HH:mm'))));
         },
 
         tickValues: function(charts) {
@@ -221,7 +225,6 @@ export class PowerComponent implements OnInit {
 
   reduce(data) {
     data.loadshifted.forEach(chart => {
-      //console.log(chart.key, chart.values);
       const l = chart.values.length;
       const factor = Math.ceil(l / 300);
       let sum = 0;

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { State } from './models/state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
-  state = {
+  state: State = {
     date: moment().add('day', -1).format('YYYYMMDD'),
     country: 'Austria',
     mutate: {
@@ -17,8 +18,11 @@ export class EventService {
     'Transport': 0,
     'quickview': false
     },
-    timetype: 'day'
-
+    timetype: 'day',
+    calced: '',
+    calcing: '',
+    loaded: '',
+    loading: ''
   };
   observers = {};
   constructor() { }

@@ -16,8 +16,8 @@ export class InstalledService {
       if (this.data) {
         resolve(this.data);
       } else {
-        const country = this.eventService.getState().country;
-        const url = '/api/installed/' + country;
+        const country: string = this.eventService.getState().country;
+        const url: string = '/api/installed/' + country;
         this.eventService.setState('loading', 'installed');
         this.http.get(url).toPromise().then((data: Installed) => {
           this.eventService.setState('loaded', 'installed');

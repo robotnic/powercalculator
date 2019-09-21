@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { RulesService } from '../loader/rules.service';
+import { ChartValue } from '../models/charts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeshiftService {
 
-  constructor(private rulesService: RulesService) {}
+  constructor() {}
 
   timeshift(data) {
     const chartByName = {};
@@ -36,12 +37,12 @@ export class TimeshiftService {
       if (chartByName[from]) {
         let sum = 0;
         chartByName[from].values.forEach((value, i) => {
-          const a = powerByName[from].values[i].y;
-          const b = value.y;
-          const d = a - b;
+          const a: number = powerByName[from].values[i].y;
+          const b: number = value.y;
+          const d: number = a - b;
           sum += d;
 //          console.log('from', from, Math.round(sum), max);
-          let available = sum;
+          let available: number = sum;
           max += value.y;
           if (sum > max) {
             available = max;
@@ -53,8 +54,8 @@ export class TimeshiftService {
             // console.log('sa', sum, available, max);
             data.rules.timeShift.to.forEach(to => {
               if (chartByName[to]) {
-                const val = chartByName[to].values[i];
-                const old = val.y;
+                const val: ChartValue = chartByName[to].values[i];
+                const old: number = val.y;
                 if (available < val.y) {
                   val.y -= available;
                   sum -= available;
@@ -62,7 +63,7 @@ export class TimeshiftService {
                   sum -= val.y;
                   val.y = 0;
                 }
-                const delta = val.y - old;
+                const delta: number = val.y - old;
                 if (delta) {
                   chartByName[from].values[i].y -= delta;
                 }

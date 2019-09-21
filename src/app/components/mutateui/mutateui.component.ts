@@ -3,7 +3,7 @@ import { EventService } from 'src/app/eventhandler.service';
 import { CountriesService } from 'src/app/loader/countries.service';
 import * as moment from 'moment';
 import { Loader } from 'src/app/loader/loader.service';
-import { style } from '@angular/animations';
+import { Data } from 'src/app/models/data';
 
 @Component({
   selector: 'app-mutateui',
@@ -11,7 +11,7 @@ import { style } from '@angular/animations';
   styleUrls: ['./mutateui.component.less']
 })
 export class MutateuiComponent implements OnInit {
-  countries = [];
+  countries: string[] = [];
   timeout = null;
   country;
   layers = [];
@@ -23,16 +23,16 @@ export class MutateuiComponent implements OnInit {
   mutate = {
     'Wind Onshore': 0,
     'Wind Offshore': 0,
-    Solar: 0,
-    Power2Gas: 0,
-    Transport: 0,
-    quickview: false
+    'Solar': 0,
+    'Power2Gas': 0,
+    'Transport': 0,
+    'quickview': false
   };
 
   constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) { }
 
   ngOnInit() {
-    const date = moment().add('day', -2);
+    const date: moment.Moment = moment().add('day', -2);
     this.country = this.eventService.getState().country;
     this.timetype = this.eventService.getState().timetype;
     this.eventService.setState('date', date.format('YYYYMMDD'));
@@ -41,20 +41,21 @@ export class MutateuiComponent implements OnInit {
       console.log(countries);
       this.countries = Object.keys(countries);
     });
-    this.loader.power().subscribe((power) => {
-      const data:any = power;
+    this.loader.power().subscribe((power: Data) => {
+      const data: Data = power;
       console.log('danke für data', data.loadshifted);
       this.layers.length = 0;
       if (data.loadshifted) {
-        data.loadshifted.forEach(chart => {
+        // tslint:disable-next-line:forin
+        for (const c in data.loadshifted) {
+          const chart = data.loadshifted[c];
           this.layers.push({
             key: chart.key,
             value: true,
             color: chart.color
           });
-        });
+        }
       }
-      console.log(this.layers);
     });
   }
   change() {
@@ -63,7 +64,7 @@ export class MutateuiComponent implements OnInit {
     }
     this.timeout = setTimeout(() => {
       this.eventService.setState('mutate', this.mutate);
-    }, 200);
+    }, 0);
   }
 
 
@@ -122,14 +123,8 @@ export class MutateuiComponent implements OnInit {
     this.year = date.format('YYYY');
     this.month = date.format('MM');
     this.day = date.format('DD');
-    //this.date = date.format('YYYY-MM-DD');
   }
   selecttimetype(type) {
     this.eventService.setState('timetype', type);
   }
-
-  refresh() {
-
-  }
-
 }

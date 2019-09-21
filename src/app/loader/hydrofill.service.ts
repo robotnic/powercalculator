@@ -8,20 +8,15 @@ import { Chart } from '../models/charts';
   providedIn: 'root'
 })
 export class HydrofillService {
-  cache: Chart = {
-    key: '',
-    originalKey: '',
-    values: []
-  };
-  currentUrl;
+  cache: Chart;
+  currentUrl: string;
   constructor(private http: HttpClient, private eventService: EventService) {}
 
   hydrofill(year, country) {
     return new Promise<Chart>((resolve, reject) => {
-      const url = '/api/filllevel/' + country + '/' + year;
+      const url: string = '/api/filllevel/' + country + '/' + year;
       console.log(url, this.currentUrl, this.cache);
       if (this.currentUrl === url && this.cache) {
-        console.log('cache hit');
         resolve(this.cache);
       } else {
         this.currentUrl = url;

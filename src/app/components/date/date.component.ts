@@ -10,13 +10,7 @@ export class DateComponent implements OnInit {
 
   constructor(private eventService: EventService) { }
 
-  ngOnInit() {
-    setTimeout(() => {
-      //this.eventService.init();
-      console.log('changedate');
-      this.changedate('20181111');
-    }, 2000);
-  }
+  ngOnInit() {}
   changedate(date) {
     this.eventService.setState('date', date);
   }

@@ -11,6 +11,8 @@ import { Calculator } from '../calculator/calculator.service';
 import { Data } from '../models/data';
 import { Chart } from '../models/charts';
 import { Installed } from '../models/installed';
+import { Config } from '../models/config';
+import { Rules } from '../models/rules';
 
 @Injectable({
   providedIn: 'root'
@@ -82,21 +84,22 @@ export class Loader {
         this.data = {
           power: <Chart>data[0],
           installed: <Installed>data[1],
-          config: data[2],
-          rules: data[3],
+          config: <Config>data[2],
+          rules: <Rules>data[3],
           hydrofill: <Chart>data[4],
           meta: {
-            date: this.currentDate,
-            country: this.currentCountry,
-            timetype: this.currentTimetype
+            date: <string>this.currentDate,
+            country: <string>this.currentCountry,
+            timetype: <string>this.currentTimetype
           },
           sum: null,
           loadshifted: null
         };
-        this.calculator.init(this.data);
-        if (this.data.power) {
-          observer.next(this.data);
-        }
+        this.calculator.init(this.data).then(() => {
+          if (this.data.power) {
+            observer.next(this.data);
+          }
+        });
       });
     } else {
       observer.next(this.data);

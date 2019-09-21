@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { EventService } from '../eventhandler.service';
+import { Data } from '../models/data';
+import { Chart, ChartValue } from '../models/charts';
+import { State } from '../models/state';
 
 @Injectable({
   providedIn: 'root'
@@ -7,36 +10,38 @@ import { EventService } from '../eventhandler.service';
 export class LoadshiftService {
   available = {};
   constructor(private eventService: EventService) {}
-  loadshift(data) {
-    const state = this.eventService.getState();
+  loadshift(data: Data) {
+    const state: State = this.eventService.getState();
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
-    data.power.forEach((chart, c) => {
+    // tslint:disable-next-line:forin
+    for (const c in data.power) {
+      const chart: Chart = data.power[c];
       this.available = {};
       if (chart.key !== 'Leistung [MW]') {
-        const factor = this.makeFaktor(data.installed, state, chart.key);
+        const factor: number = this.makeFaktor(data.installed, state, chart.key);
         if (factor !== 1) {
           chart.values.forEach((item, i) => {
-            const targetItem = data.loadshifted[c].values[i];
+            const targetItem: ChartValue = data.loadshifted[c].values[i];
             targetItem.y = item.y * factor;
-            const delta = targetItem.y - item.y;
+            const delta: number = targetItem.y - item.y;
             this.passEnergy(chart.key, delta, i, data);
           });
         }
       }
-    });
+    }
     return data;
   }
 
   passEnergy(key, delta, i, data) {
-    const year = new Date(data.power[0].values[i].x).getFullYear();
+    const year: number = new Date(data.power[0].values[i].x).getFullYear();
     data.rules.loadShift.to.forEach(to => {
       data.loadshifted.forEach(chart => {
         if (chart.key === to) {
-          let max = data.installed[year][to] / 1000;
+          let max: number = data.installed[year][to] / 1000;
           if (isNaN(max)) {
             max = 0;
           }
-          const origY = chart.values[i].y;
+          const origY: number = chart.values[i].y;
           let min = 0;
           switch (chart.key) {
             case 'Hydro Pumped up':
@@ -61,51 +66,6 @@ export class LoadshiftService {
 
     });
   }
-  /*
-  passEnergy2(key, delta, i, data) {
-    if (data.rules.loadShift.from.indexOf(key) !== -1) {
-      //      console.log(key, delta, i, data.rules.loadShift);
-      data.rules.loadShift.to.forEach((to) => {
-        data.loadshifted.forEach(chart => {
-          if (chart.key === to) {
-            console.log('kurti', key, to, delta);
-            const toItem = chart.values[i];
-            if (toItem && !isNaN(toItem.y)) {
-              if (chart.key === 'Hydro Pumped up') {
-                //console.log(toItem.y, delta, data.installed[year]['Hydro Pumped Storage']);
-                let installed = 0;
-                try {
-                  installed = data.installed[year]['Hydro Pumped Storage'] / 1000;
-                } catch (e) {}
-                if (delta > (installed + toItem.y)) {
-                  delta -= (installed + toItem.y);
-                  toItem.y = -installed;
-                } else {
-                  toItem.y -= delta;
-                  delta = 0;
-                }
-              } else {
-                if (delta > toItem.y) {
-                  delta -= toItem.y;
-                  toItem.y = 0;
-                } else {
-                  toItem.y -= delta;
-                  delta = 0;
-                }
-              }
-            }
-          }
-        });
-      });
-    }
-    data.loadshifted.forEach(chart => {
-      if (chart.key === 'Curtailment') {
-        //        chart.values[i].y = -delta;
-      }
-    });
-    return delta;
-  }
-  */
 
   makeFaktor(installed, state, key) {
     const year = state.date.substring(0, 4);

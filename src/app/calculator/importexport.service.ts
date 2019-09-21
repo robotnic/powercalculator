@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Chart } from '../models/charts';
+import { Data } from '../models/data';
 
 @Injectable({
   providedIn: 'root'
@@ -6,21 +8,23 @@ import { Injectable } from '@angular/core';
 export class ImportexportService {
 
   constructor() {}
-  calc(data) {
-    console.log('----------import export--------');
+  calc(data: Data) {
+    console.log('----------import export--------', data);
     //    const sum = JSON.parse(JSON.stringify(data.power[0]));
-    const sum = this.chartClone(data.power[0], 'sum');
+    const sum: Chart = this.chartClone(data.power[0], 'sum');
     sum.color = 'white';
     sum.type = 'line';
-    const imp = this.chartClone(data.power[0], 'Import');
-    const exp = this.chartClone(data.power[0], 'Export');
+    const imp: Chart = this.chartClone(data.power[0], 'Import');
+    const exp: Chart = this.chartClone(data.power[0], 'Export');
     /*
     const import = this.chartClone(data.power[0], 'import');
     const export = this.chartClone(data.power[0], 'export');
     */
     sum.values.forEach((value, i) => {
       value.y = 0;
-      data.power.forEach(chart => {
+      // tslint:disable-next-line:forin
+      for (const key in data.power) {
+        const chart: Chart = data.power[key];
         if (chart.key !== 'Leistung [MW]') {
           value.y -= chart.values[i].y;
         } else {
@@ -28,24 +32,20 @@ export class ImportexportService {
             value.y += chart.values[i].y;
           }
         }
-      });
-    });
-    console.log('hallo summe', sum);
-    //data.power.push(sum);
-    data.power.push(imp);
-    data.power.push(exp);
-    console.log('DATATATA', data);
-    sum.values.forEach((value, i) => {
-      if (value.y > 0) {
-       imp.values[i].y = value.y;
-      } else {
-       exp.values[i].y = value.y;
       }
+      data.power['import'] = imp;
+      data.power['export'] = exp;
+      sum.values.forEach((item, ii) => {
+        if (item.y > 0) {
+          imp.values[ii].y = item.y;
+        } else {
+          exp.values[ii].y = item.y;
+        }
+      });
     });
   }
   chartClone(template, name) {
-    const sum = JSON.parse(JSON.stringify(template));
-//    sum.type = 'line';
+    const sum: Chart = JSON.parse(JSON.stringify(template));
     sum.key = name;
     sum.originalKey = name;
     sum.values.forEach((value) => {

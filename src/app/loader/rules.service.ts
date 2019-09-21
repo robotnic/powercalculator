@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Rules } from '../models/rules';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RulesService {
-  data;
+  data: Rules;
   constructor(private http: HttpClient) {}
   rules() {
     return new Promise((resolve) => {
@@ -13,7 +14,7 @@ export class RulesService {
         resolve(this.data);
       } else {
         const url = '/assets/rules.json';
-        this.http.get(url).toPromise().then(data => {
+        this.http.get(url).toPromise().then((data: Rules) => {
           console.log('rules', data);
           this.data = data;
           resolve(data);

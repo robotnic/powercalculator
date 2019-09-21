@@ -1,10 +1,13 @@
 export interface Chart {
   key: string;
   originalKey: string;
-  values: Value[];
+  color: string;
+  type: string;
+  seriesIndex: number,
+  values: ChartValue[];
 }
 
-interface Value {
+interface ChartValue {
   x: number;
   y: number;
 }
