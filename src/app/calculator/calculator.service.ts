@@ -32,35 +32,30 @@ export class Calculator {
   }
   async init(data) {
     this.normalizeService.normalize(data);
-    await this.unlock('calcing', 'normalize');
+    await this.unlock({ 'calcing': 'normalize' });
     this.importexportService.calc(data);
-    await this.unlock('calced', 'normalize');
+    await this.unlock({ 'calced': 'normalize' });
     this.data = data;
   }
   async calculate() {
     const data = this.data;
-    await this.unlock('calcing', 'loadshift');
+    await this.unlock({ 'calcing': 'loadshift' });
     this.loadshiftService.loadshift(data);
-    await this.unlock('calced', 'loadshift');
-
-    await this.unlock('calcing', 'timeshift');
+    await this.unlock({ 'calced': 'loadshift', 'calcing': 'timeshift' });
     this.timeshiftService.timeshift(data);
-    await this.unlock('calced', 'timeshift');
-
-    await this.unlock('calcing', 'pump');
+    await this.unlock({ 'calced': 'timeshift', 'calcing': 'pump' });
     this.storageService.addStorage(data);
-    await this.unlock('calced', 'pump');
-
-    await this.unlock('calcing', 'sum');
+    await this.unlock({ 'calced': 'pump', 'calcing': 'sum' });
     this.summaryService.calcSummary(data);
-    await this.unlock('calced', 'sum');
-
-    await this.unlock('calcing', 'render');
+    await this.unlock({ 'calced': 'sum', 'calcing': 'render' });
     return data;
   }
 
-  unlock(name, value) {
-    this.eventService.setState(name, value);
+  unlock(obj) {
+    // tslint:disable-next-line:forin
+    for (const name in obj) {
+      this.eventService.setState(name, obj[name]);
+    }
     return new Promise((resolve) => {
       setTimeout(() => resolve(), 0);
     });

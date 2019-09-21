@@ -3,13 +3,14 @@ import { Rules } from './rules';
 import { Installed } from './installed';
 import { Config } from './config';
 import { Sum } from './sum';
+import { Meta } from './meta';
 
 export interface Data {
   power: Chart;
   loadshifted: Chart;
   hydrofill: Chart;
   installed: Installed;
-  meta: any;
+  meta: Meta;
   config: Config;
   rules: Rules;
   sum: Sum;
