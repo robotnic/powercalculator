@@ -10,6 +10,8 @@
       "Fossil Brown coal/Lignite",
       "Transport",
       "Fossil Oil",
+      "Fossil Oil shale",
+      "Fossil Coal-derived gas",
       "Fossil Gas",
       "Hydro Water Reservoir",
       "Biomass",
@@ -32,6 +34,9 @@
       "Transport",
       "Fossil Hard coal",
       "Fossil Brown coal/Lignite",
+      "Fossil Oil",
+      "Fossil Oil shale",
+      "Fossil Coal-derived gas",
       "Fossil Gas",
       "Import",
       "Biomass"

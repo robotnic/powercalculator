@@ -16,25 +16,23 @@ export class ImportexportService {
     sum.type = 'line';
     const imp: Chart = this.chartClone(data.power[0], 'Import');
     const exp: Chart = this.chartClone(data.power[0], 'Export');
-    /*
-    const import = this.chartClone(data.power[0], 'import');
-    const export = this.chartClone(data.power[0], 'export');
-    */
+      data.power.push(imp);
+      data.power.push(exp);
     sum.values.forEach((value, i) => {
       value.y = 0;
       // tslint:disable-next-line:forin
       for (const key in data.power) {
         const chart: Chart = data.power[key];
         if (chart.key !== 'Leistung [MW]') {
-          value.y -= chart.values[i].y;
+          if (chart.values[i]) {
+            value.y -= chart.values[i].y;
+          }
         } else {
           if (chart.values[i]) {
             value.y += chart.values[i].y;
           }
         }
       }
-      data.power['import'] = imp;
-      data.power['export'] = exp;
       sum.values.forEach((item, ii) => {
         if (item.y > 0) {
           imp.values[ii].y = item.y;

@@ -41,7 +41,13 @@ export class LoadshiftService {
           if (isNaN(max)) {
             max = 0;
           }
-          const origY: number = chart.values[i].y;
+          let origY = 0;
+          // for finnland
+          try {
+            origY = chart.values[i].y;
+          } catch (e) {
+            origY = 0;
+          }
           let min = 0;
           switch (chart.key) {
             case 'Hydro Pumped up':
@@ -52,13 +58,16 @@ export class LoadshiftService {
               //        console.log(rest);
               break;
           }
-          chart.values[i].y -= delta; // (delta + available[to]);
-          if (chart.values[i].y < min) {
-            chart.values[i].y = min;
-          }
-          let thisdelta = origY - chart.values[i].y;
-          if (thisdelta < 0) {
-            thisdelta = 0;
+          let thisdelta = 0;  // for finland bug
+          if (chart.values[i]) {
+            chart.values[i].y -= delta; // (delta + available[to]);
+            if (chart.values[i].y < min) {
+              chart.values[i].y = min;
+            }
+            thisdelta = origY - chart.values[i].y;
+            if (thisdelta < 0) {
+              thisdelta = 0;
+            }
           }
           delta -= thisdelta;
         }

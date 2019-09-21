@@ -6,8 +6,8 @@ import { Sum } from './sum';
 import { Meta } from './meta';
 
 export interface Data {
-  power: Chart;
-  loadshifted: Chart;
+  power: Chart[];
+  loadshifted: Chart[];
   hydrofill: Chart;
   installed: Installed;
   meta: Meta;

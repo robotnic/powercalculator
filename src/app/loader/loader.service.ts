@@ -81,7 +81,7 @@ export class Loader {
       ];
       Promise.all(promises).then((data) => {
         this.data = {
-          power: <Chart>data[0],
+          power: <Chart[]>data[0],
           installed: <Installed>data[1],
           config: <Config>data[2],
           rules: <Rules>data[3],

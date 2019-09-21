@@ -55,17 +55,19 @@ export class TimeshiftService {
             data.rules.timeShift.to.forEach(to => {
               if (chartByName[to]) {
                 const val: ChartValue = chartByName[to].values[i];
-                const old: number = val.y;
-                if (available < val.y) {
-                  val.y -= available;
-                  sum -= available;
-                } else {
-                  sum -= val.y;
-                  val.y = 0;
-                }
-                const delta: number = val.y - old;
-                if (delta) {
-                  chartByName[from].values[i].y -= delta;
+                if (val) {  // for finland bug
+                  const old: number = val.y;
+                  if (available < val.y) {
+                    val.y -= available;
+                    sum -= available;
+                  } else {
+                    sum -= val.y;
+                    val.y = 0;
+                  }
+                  const delta: number = val.y - old;
+                  if (delta) {
+                    chartByName[from].values[i].y -= delta;
+                  }
                 }
               }
             });
