@@ -24,7 +24,7 @@ export class TimeshiftService {
       chartByName[chart.originalKey] = chart;
     });
 
-    data.rules.timeShift.from.forEach(from => {
+    data.rules.timeshift.from.forEach(from => {
  //     console.log('installed', from,  installed[from]);
       let min = 0;
       let max = installed[from] / 1000;
@@ -37,7 +37,7 @@ export class TimeshiftService {
           const a: number = powerByName[from].values[i].y;
           const b: number = value.y;
           const d: number = a - b;
-          sum += d;
+          sum += d ;
 //          console.log('from', from, Math.round(sum), max);
           let available: number = sum;
           max += value.y;
@@ -48,8 +48,7 @@ export class TimeshiftService {
             available = 0;
           }
           if (available) {
-            // console.log('sa', sum, available, max);
-            data.rules.timeShift.to.forEach(to => {
+            data.rules.timeshift.to.forEach(to => {
               if (chartByName[to]) {
                 const val: ChartValue = chartByName[to].values[i];
                 if (val) {  // for finland bug
