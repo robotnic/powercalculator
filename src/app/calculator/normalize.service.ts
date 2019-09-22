@@ -9,9 +9,9 @@ export class NormalizeService {
   constructor() { }
 
   normalize(data) {
-    this.splitPump(data);
-    this.sortData(data);
+    //this.splitPump(data);
     this.addCurtailment(data);
+    this.sortData(data);
     return data;
   }
 
@@ -58,8 +58,8 @@ export class NormalizeService {
 
   sortData(data) {
     const order: string[] = [
-      'Hydro Pumped up',
-      'Hydro Pumped down',
+      'Hydro Pumped Storage',
+      'Curtailment',
       'Nuclear',
       'Hydro Run-of-river and poundage',
       'Hydro Water Reservoir',
@@ -89,6 +89,7 @@ export class NormalizeService {
     });
     chart.key = 'Curtailment';
     chart.originalKey = 'Curtailment';
-    data.power.splice(1, 0, chart);
+    //data.power.splice(1, 0, chart);
+    data.power.unshift(chart);
   }
 }

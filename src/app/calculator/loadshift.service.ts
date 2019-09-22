@@ -3,24 +3,128 @@ import { EventService } from '../eventhandler.service';
 import { Data } from '../models/data';
 import { Chart, ChartValue } from '../models/charts';
 import { State } from '../models/state';
+import { PowerByName } from '../models/powerbyname';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadshiftService {
   available = {};
+  powerByName: PowerByName = {};
   constructor(private eventService: EventService) {}
+
+  loadshift(data: Data) {
+    console.log('installed', data.installed);
+    data.loadshifted = JSON.parse(JSON.stringify(data.power));
+    console.log('rules in loadshift', data.rules.loadshift);
+    this.getPowerByName(data.loadshifted);
+    const state: State = this.eventService.getState();
+    const year = state.date.substring(0, 4);
+    data.rules.loadshift.from.forEach(from => {
+      let savings = 0;
+      const faktor: number = this.makeFaktor(data.installed, state, from);
+      for (let i = 0; i < data.power[0].values.length; i++) {
+        let harvest: number = this.harvestPower(from, i, faktor);
+        data.rules.loadshift.to.forEach(to => {
+          if (harvest > 0) {
+            harvest = this.movePower(harvest, savings, data.installed[year][to], to, i);
+          }
+        });
+        savings += harvest;
+        if (harvest > 0) {
+          console.log(from, harvest, 'wegschmeissen');
+        }
+      }
+    });
+  }
+
+  harvestPower(from, i, faktor) {
+    let harvest = 0;
+    if (this.powerByName[from]) {
+      const fromValue = this.powerByName[from].values[i];
+      const oldFromY = fromValue.y;
+      fromValue.y = fromValue.y * faktor;
+      harvest = fromValue.y - oldFromY;
+    }
+    return harvest;
+  }
+  movePower(harvest, savings, installed, to, i) {
+    let delta = 0;
+    if (this.powerByName[to]) {
+      let min = 0;
+      let max = installed / 1000;
+      if (to === 'Hydro Pumped Storage') {
+        min = -installed / 1000;
+      }
+      if (to === 'Curtailment') {
+        min = -99999999999999999;
+        max = 0;
+      }
+      //onsole.log('minmax', min, max);
+      const value = this.powerByName[to].values[i];
+      const oldY = value.y;
+      let takeCapacity = value.y - min;
+      if (takeCapacity > max - min) {
+        takeCapacity = max - min;
+      }
+      if (takeCapacity > harvest) {
+        takeCapacity = harvest;
+      }
+      value.y -= takeCapacity;
+      /*
+      if (takeCapacity > value.y) {
+        value.y = 0;
+      } else {
+        value.y -= takeCapacity;
+      }
+      */
+      delta = value.y - oldY;
+    }
+    return harvest + delta;
+  }
+  /*
+    movePower(installed, from, to, i) {
+      const state: State = this.eventService.getState();
+      const faktor: number = this.makeFaktor(installed, state, from);
+
+      if (faktor !== 1) {
+        if (i === 12) {
+          console.log('movepoer', from, to, faktor);
+        }
+        this.movePowerFaktor(from, to, faktor, i);
+      }
+
+    }
+
+    movePowerFaktor(from, to, faktor, i) {
+      const fromValue = this.powerByName[from].values[i];
+      const oldFromY = fromValue.y;
+      fromValue.y = fromValue.y + zauberformel();
+
+      const toValues = this.powerByName[to].values[i];
+
+    }
+    */
+
+  getPowerByName(power) {
+    this.powerByName = {};
+    power.forEach(element => {
+      this.powerByName[element.key] = element;
+    });
+  }
+
+  /*
   loadshift(data: Data) {
     const state: State = this.eventService.getState();
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
     // tslint:disable-next-line:forin
-    for (const c in data.power) {
+    for (const c in data.power) {  // loop over charts
       const chart: Chart = data.power[c];
       this.available = {};
       if (chart.key !== 'Leistung [MW]') {
         const factor: number = this.makeFaktor(data.installed, state, chart.key);
         if (factor !== 1) {
-          chart.values.forEach((item, i) => {
+          chart.values.forEach((item, i) => {  // loop over time
             const targetItem: ChartValue = data.loadshifted[c].values[i];
             targetItem.y = item.y * factor;
             const delta: number = targetItem.y - item.y;
@@ -75,6 +179,7 @@ export class LoadshiftService {
 
     });
   }
+  */
 
   makeFaktor(installed, state, key) {
     const year = state.date.substring(0, 4);

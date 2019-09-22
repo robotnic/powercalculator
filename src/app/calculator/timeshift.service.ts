@@ -15,8 +15,6 @@ export class TimeshiftService {
 
     const year = data.meta.date.substring(0, 4);
     const installed = data.installed[year];
-    installed['Hydro Pumped up'] = -installed['Hydro Pumped Storage'];
-    installed['Hydro Pumped down'] = installed['Hydro Pumped Storage'];
 
     data.power.forEach(chart => {
       powerByName[chart.originalKey] = chart;
@@ -30,8 +28,7 @@ export class TimeshiftService {
  //     console.log('installed', from,  installed[from]);
       let min = 0;
       let max = installed[from] / 1000;
-      if (from === 'Hydro Pumped up') {
-        max = 0;
+      if (from === 'Hydro Pumped Storage') {
         min = installed[from] / 1000;
       }
       if (chartByName[from]) {

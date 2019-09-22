@@ -1,5 +1,5 @@
 {
-  "loadShift": {
+  "loadshift": {
     "from": [
       "Solar",
       "Wind Onshore",
@@ -16,17 +16,15 @@
       "Hydro Water Reservoir",
       "Biomass",
       "Import",
-      "Hydro Pumped down",
-      "Hydro Pumped up",
+      "Hydro Pumped Storage",
       "Nuclear",
       "Power2Gas",
       "Curtailment"
     ]
   },
-  "timeShift": {
+  "timeshift": {
     "from": [
-      "Hydro Pumped up",
-      "Hydro Pumped down",
+      "Hydro Pumped Storage",
       "Hydro Water Reservoir",
       "Biomass"
     ],
