@@ -5,4 +5,5 @@ export interface SumItem {
   original: number;
   modified: number;
   delta: number;
+  co2: number;
 }

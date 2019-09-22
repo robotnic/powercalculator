@@ -20,6 +20,7 @@ export class SummaryService {
       original: 0,
       modified: 0,
       delta: 0,
+      co2: 0
     };
     const deltaTime = this.getResolution(data.power[p]);
     data.power[p].values.forEach((item, i) => {
@@ -30,6 +31,7 @@ export class SummaryService {
       sum.original += original * deltaTime;
       sum.modified += modified * deltaTime;
       sum.delta += delta * deltaTime;
+      sum.co2 += delta * deltaTime * data.config[data.power[p].key].co2;
     });
     return sum;
   }

@@ -16,8 +16,9 @@ import { Data } from 'src/app/models/data';
 
 })
 export class PowerComponent implements OnInit {
-  displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta'];
+  displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta', 'money', 'co2'];
   dataSource;
+  math = Math;
   constructor(
     private loader: Loader,
     private calculator: Calculator,
@@ -217,7 +218,9 @@ export class PowerComponent implements OnInit {
         key: key,
         power: Math.round(sum[key].original),
         loadshifted: Math.round(sum[key].modified),
-        delta: Math.round(sum[key].delta)
+        delta: Math.round(sum[key].delta),
+        money: sum[key].delta * 40 * 1000,
+        co2: sum[key].co2
       });
     }
     return sumlist;
