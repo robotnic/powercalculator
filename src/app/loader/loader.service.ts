@@ -75,7 +75,7 @@ export class Loader {
       this.currentTimetype !== state.timetype ||
       state.refresh
     ) {
-      //this.eventHandler.setState('refresh', false);
+      // this.eventHandler.setState('refresh', false);
       this.currentDate = state.date;
       this.currentCountry = state.country;
       this.currentTimetype = state.timetype;

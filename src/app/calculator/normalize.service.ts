@@ -9,7 +9,7 @@ export class NormalizeService {
   constructor() { }
 
   normalize(data) {
-    //this.splitPump(data);
+    // this.splitPump(data);
     this.addCurtailment(data);
     this.sortData(data);
     return data;
@@ -89,7 +89,6 @@ export class NormalizeService {
     });
     chart.key = 'Curtailment';
     chart.originalKey = 'Curtailment';
-    //data.power.splice(1, 0, chart);
     data.power.unshift(chart);
   }
 }
