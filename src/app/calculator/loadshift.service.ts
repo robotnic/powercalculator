@@ -14,25 +14,30 @@ export class LoadshiftService {
   constructor(private eventService: EventService) {}
 
   loadshift(data: Data) {
-    console.log('installed', data.installed);
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
-    console.log('rules in loadshift', data.rules.loadshift);
     this.getPowerByName(data.loadshifted);
     const state: State = this.eventService.getState();
     const year = state.date.substring(0, 4);
+
+    /* Iterate over rules.json and values */
     data.rules.loadshift.from.forEach(from => {
       const faktor: number = this.makeFaktor(data.installed, state, from);
-      for (let i = 0; i < data.power[0].values.length; i++) {
+      for (let i = 0; i < data.power[0].values.length; i++) {  // loop over time
         let harvest: number = this.harvestPower(from, i, faktor);
         data.rules.loadshift.to.forEach(to => {
           if (harvest > 0) {
-            harvest = this.movePower(harvest, data.installed[year][to], to, i);
+            const delta = this.movePower(harvest, data.installed[year][to], to, i);
+            harvest += delta;
           }
         });
       }
     });
   }
 
+  /*
+  Based on rules.json and user input the new generated power is calculated.
+  The harvest can be used to reduct coal, gas, ...
+  */
   harvestPower(from, i, faktor) {
     let harvest = 0;
     if (this.powerByName[from]) {
@@ -43,38 +48,52 @@ export class LoadshiftService {
     }
     return harvest;
   }
+
+  /*
+  The new added power replaces CO2 intensive electricity generation
+  */
   movePower(harvest, installed, to, i) {
     let delta = 0;
     if (this.powerByName[to]) {
-      let min = 0;
-      let max = installed / 1000;
-      if (to === 'Hydro Pumped Storage') {
-        min = -installed / 1000;
-      }
-      if (to === 'Curtailment') {
-        min = -99999999999999999;
-        max = 0;
-      }
+      const min = this.getMin(installed, to);
       const value = this.powerByName[to].values[i];
       const oldY = value.y;
-      let takeCapacity = value.y - min;
-      if (takeCapacity > max - min) {
-        takeCapacity = max - min;
+
+      let useable = harvest;
+      if (useable > value.y - min) {
+        useable = value.y - min;
       }
-      if (takeCapacity > harvest) {
-        takeCapacity = harvest;
-      }
-      value.y -= takeCapacity;
+      value.y -= useable;
       delta = value.y - oldY;
     }
-    return harvest + delta;
+    return delta;
   }
+
+  /*
+  minimum is a negativ value für pumps,...
+  */
+  getMin(installed, to) {
+      // add power2gas, batteries here, ...
+      let minimum = 0;
+      if (to === 'Hydro Pumped Storage') {
+        minimum = -installed / 1000;
+      }
+      if (to === 'Curtailment') {
+        minimum = -99999999999999999;
+      }
+      return minimum;
+  }
+  /* helper */
   getPowerByName(power) {
     this.powerByName = {};
     power.forEach(element => {
       this.powerByName[element.key] = element;
     });
   }
+  /*
+  if already 1 GWp PV is installed, we assume that if we add 1 more GWp the output is doubled.
+  In this example, the faktor would be 2.
+  */
   makeFaktor(installed, state, key) {
     const year = state.date.substring(0, 4);
     let selected = null;

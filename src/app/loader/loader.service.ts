@@ -69,7 +69,7 @@ export class Loader {
 
   loaddata(observer) {
     const state = this.eventHandler.getState();
-    console.log('STATE', state, this.currentDate, this.currentCountry);
+//    console.log('STATE', state, this.currentDate, this.currentCountry);
     if (this.currentDate !== state.date ||
       this.currentCountry !== state.country ||
       this.currentTimetype !== state.timetype ||
