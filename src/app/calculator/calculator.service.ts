@@ -36,10 +36,19 @@ export class Calculator {
     await this.unlock({ 'calcing': 'fix' });
     this.fixchartsService.fix(data);
     await this.unlock({ 'calced': 'fix' });
-    this.normalizeService.normalize(data);
+
     await this.unlock({ 'calcing': 'normalize' });
-    this.importexportService.calc(data);
+    this.normalizeService.normalize(data);
     await this.unlock({ 'calced': 'normalize' });
+
+    await this.unlock({ 'calcing': 'importexport' });
+    this.importexportService.calc(data);
+    await this.unlock({ 'calced': 'importexport' });
+
+    await this.unlock({ 'calcing': 'hydro' });
+    this.storageService.calcHydrofill(data);
+    await this.unlock({ 'calced': 'hydro' });
+
     this.data = data;
   }
   async calculate() {

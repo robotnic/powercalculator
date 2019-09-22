@@ -11,7 +11,9 @@ export class SummaryService {
     data.sum = {};
     for (let p = 0; p < data.power.length; p++) {
       const key = data.power[p].key;
-      data.sum[key] = this.makeSum(data, p);
+      if (!key.startsWith('hydrofill')) {
+        data.sum[key] = this.makeSum(data, p);
+      }
     }
   }
 
@@ -31,7 +33,9 @@ export class SummaryService {
       sum.original += original * deltaTime;
       sum.modified += modified * deltaTime;
       sum.delta += delta * deltaTime;
-      sum.co2 += delta * deltaTime * data.config[data.power[p].key].co2;
+      if (data.power[p] && data.config[data.power[p].originalKey]) {
+        sum.co2 += delta * deltaTime * data.config[data.power[p].key].co2;
+      }
     });
     return sum;
   }

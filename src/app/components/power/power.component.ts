@@ -16,7 +16,7 @@ import { Data } from 'src/app/models/data';
 
 })
 export class PowerComponent implements OnInit {
-  displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta', 'money', 'co2'];
+  displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta', 'money', 'co2', 'co2percent'];
   dataSource;
   math = Math;
   constructor(
@@ -214,13 +214,18 @@ export class PowerComponent implements OnInit {
     const sumlist = [];
     // tslint:disable-next-line:forin
     for (const key in sum) {
+      let co2percent = '';
+      if (sum[key].co2) {
+        co2percent = Math.round(sum[key].modified / sum[key].original * 100).toString();
+      }
       sumlist.push({
         key: key,
         power: Math.round(sum[key].original),
         loadshifted: Math.round(sum[key].modified),
         delta: Math.round(sum[key].delta),
         money: sum[key].delta * 40 * 1000,
-        co2: sum[key].co2
+        co2: sum[key].co2,
+        co2percent: co2percent
       });
     }
     return sumlist;

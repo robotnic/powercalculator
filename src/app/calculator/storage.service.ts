@@ -9,7 +9,6 @@ export class StorageService {
   constructor() {}
   addStorage(data) {
     if (data.hydrofill) {
-      this.calcHydrofill(data);
       this.addPumped(data);
     }
     return data;
@@ -26,11 +25,11 @@ export class StorageService {
       item.y = this.interpolateValues(item.x, data.hydrofill.values);
     });
 
-    data.loadshifted.push(chart);
+    data.power.push(chart);
     const clone: Chart = JSON.parse(JSON.stringify(chart));
     clone.key = 'hydrofillclone';
     clone.originalKey = 'hydrofillclone';
-    data.loadshifted.push(clone);
+    data.power.push(clone);
   }
   interpolateValues(time, values) {
     let result = 0;

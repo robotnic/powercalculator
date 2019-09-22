@@ -44,6 +44,12 @@
     <td mat-cell *matCellDef="let element">  <span *ngIf="element.co2">{{element.co2 | number:'0.0-0':'fr'}} Mt</span></td>
   </ng-container>
 
+  <!-- Name Column -->
+  <ng-container matColumnDef="co2percent">
+    <th mat-header-cell *matHeaderCellDef> co2% </th>
+    <td mat-cell *matCellDef="let element">  <span *ngIf="element.co2percent">{{element.co2percent}} %</span></td>
+  </ng-container>
+
 
 
 
