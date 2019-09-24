@@ -20,14 +20,14 @@ export class HydrofillService {
         resolve(this.cache);
       } else {
         this.currentUrl = url;
-        this.eventService.setState('loading', 'hydrofill');
+        this.eventService.setState('message.loading', 'hydrofill');
         return this.http.get(url).toPromise().then(
           (data: Chart) => {
-            this.eventService.setState('loaded', 'hydrofill');
+            this.eventService.setState('message.loaded', 'hydrofill');
             this.cache = data;
             resolve(data);
           }, e => {
-            this.eventService.setState('notloaded', 'hydrofill');
+            this.eventService.setState('message.notloaded', 'hydrofill');
             reject(e);
           }
         );

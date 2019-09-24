@@ -48,20 +48,10 @@ export class Loader {
       if (this.data) {
         observer.next(this.data);
       }
-      this.eventHandler.on('date').subscribe(() => {
-        this.loaddata(observer);
-      });
-
-      this.eventHandler.on('timetype').subscribe(() => {
-        this.loaddata(observer);
-      });
-      this.eventHandler.on('country').subscribe(() => {
+      this.eventHandler.on('navigate').subscribe(() => {
         this.loaddata(observer);
       });
       this.eventHandler.on('mutate').subscribe(() => {
-        this.loaddata(observer);
-      });
-      this.eventHandler.on('refresh').subscribe(() => {
         this.loaddata(observer);
       });
     });
@@ -70,23 +60,23 @@ export class Loader {
   loaddata(observer) {
     const state = this.eventHandler.getState();
 //    console.log('STATE', state, this.currentDate, this.currentCountry);
-    if (this.currentDate !== state.date ||
-      this.currentCountry !== state.country ||
-      this.currentTimetype !== state.timetype ||
-      state.refresh
+    if (this.currentDate !== state.navigate.date ||
+      this.currentCountry !== state.navigate.country ||
+      this.currentTimetype !== state.navigate.timetype ||
+      state.navigate.refresh
     ) {
       // this.eventHandler.setState('refresh', false);
-      this.currentDate = state.date;
-      this.currentCountry = state.country;
-      this.currentTimetype = state.timetype;
-      const year = moment(state.date, 'YYYYMMDD').format('YYYY');
+      this.currentDate = state.navigate.date;
+      this.currentCountry = state.navigate.country;
+      this.currentTimetype = state.navigate.timetype;
+      const year = moment(state.navigate.date, 'YYYYMMDD').format('YYYY');
       console.log('YEAR', year);
       const promises = [
         this.powerService.charts(),
         this.installedService.installed(),
         this.configService.config(),
         this.rulesService.rules(),
-        this.hydrofillService.hydrofill(year, state.country),
+        this.hydrofillService.hydrofill(year, state.navigate.country),
       ];
       Promise.all(promises).then((data) => {
         this.data = {

@@ -16,8 +16,8 @@ export class LoadshiftService {
   loadshift(data: Data) {
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
     this.getPowerByName(data.loadshifted);
-    const state: State = this.eventService.getState();
-    const year = state.date.substring(0, 4);
+    const state = this.eventService.getState();
+    const year = state.navigate.date.substring(0, 4);
 
     /* Iterate over rules.json and values */
     data.rules.loadshift.from.forEach(from => {
@@ -114,7 +114,7 @@ export class LoadshiftService {
   In this example, the faktor would be 2.
   */
   makeFaktor(installed, state, key) {
-    const year = state.date.substring(0, 4);
+    const year = state.navigate.date.substring(0, 4);
     let selected = null;
     let latest = null;
     let factor = 1;

@@ -1,13 +1,7 @@
 export interface State {
-  calced: string;
-  calcing: string;
-  country: string;
-  date: string;
-  loaded: string;
-  loading: string;
-  timetype: string;
-  refresh: boolean;
+  navigate: Navigate;
   mutate: Mutate;
+  message: Message;
 }
 interface Mutate {
   'Wind Onshore': number;
@@ -16,4 +10,18 @@ interface Mutate {
   'Power2Gas': number;
   'Transport': number;
   'quickview': boolean;
+}
+
+interface Navigate {
+  country: string;
+  date: string;
+  timetype: string;
+  refresh: boolean;
+}
+
+interface Message {
+  calced: string;
+  calcing: string;
+  loaded: string;
+  loading: string;
 }

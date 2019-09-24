@@ -16,9 +16,10 @@ export class CountriesService {
         resolve(this.cache);
       } else {
         const url = '/assets/countries.json';
-        this.eventService.setState('loading', 'countries');
+        this.eventService.setState('message.loading', 'countries');
         this.http.get(url).toPromise().then((data: Countries) => {
-          this.eventService.setState('loaded', 'countries');
+          this.eventService.setState('message.loading', null);
+          this.eventService.setState('message.loaded', 'countries');
           this.cache = data;
           resolve(data);
         });

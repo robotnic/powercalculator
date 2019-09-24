@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from 'src/app/eventhandler.service';
 import * as moment from 'moment';
+import { State } from 'src/app/models/state';
 
 @Component({
   selector: 'app-state',
@@ -15,51 +16,53 @@ export class StateComponent implements OnInit {
   constructor(private eventService: EventService) {}
 
   ngOnInit() {
-    this.eventService.on('loading').subscribe(state => {
-      const thing: any = state;
-      if (thing.loading) {
-        this.loading.push(thing.loading);
+    this.eventService.on('message').subscribe((state: State) => {
+      // tslint:disable-next-line:forin
+      for (const k in state.message) {
+        switch (k) {
+          case 'loading':
+            if (state.message[k]) {
+              this.loading.push(state.message[k]);
+              state.message[k] = '';
+            }
+            break;
+          case 'loaded':
+            this.loading = this.loading.filter(item => {
+              return item !== state.message[k];
+            });
+            this.notloaded = this.notloaded.filter(item => {
+              return item !== state.message[k];
+            });
+            break;
+          case 'calcing':
+            if (state.message[k]) {
+              this.calcing.push(state.message[k]);
+            }
+            break;
+          case 'calced':
+            this.calcing = this.calcing.filter(item => {
+              return item !== state.message[k];
+            });
+            this.thedate = this.calcDate(); // date
+            break;
+          case 'notloaded':
+            const thing: any = state;
+            if (thing.notloaded) {
+              this.notloaded.push(state.message[k]);
+            }
+            this.loading = this.loading.filter(item => {
+              return item !== state.message[k];
+            });
+            break;
+        }
       }
     });
-    this.eventService.on('loaded').subscribe(state => {
-      const thing: any = state;
-      this.loading = this.loading.filter(item => {
-        return item !== thing.loaded;
-      });
-      this.notloaded = this.notloaded.filter(item => {
-        return item !== thing.loaded;
-      });
-    });
-    this.eventService.on('calcing').subscribe(state => {
-      const thing: any = state;
-      if (thing.calcing) {
-        this.calcing.push(thing.calcing);
-      }
-    });
-    this.eventService.on('calced').subscribe(state => {
-      const thing: any = state;
-      this.calcing = this.calcing.filter(item => {
-        return item !== thing.calced;
-      });
-      const eventstate = this.eventService.getState();
-      this.thedate = this.calcDate();
-    });
-    this.eventService.on('notloaded').subscribe(state => {
-      const thing: any = state;
-      if (thing.notloaded) {
-        this.notloaded.push(thing.notloaded);
-      }
-      this.loading = this.loading.filter(item => {
-        return item !== thing.notloaded;
-      });
-    });
-
   }
   calcDate() {
     const eventstate = this.eventService.getState();
-    const date = moment(eventstate.date, 'YYYYMMDD');
+    const date = moment(eventstate.navigate.date, 'YYYYMMDD');
     let thedate = 'unknown';
-    switch (eventstate.timetype) {
+    switch (eventstate.navigate.timetype) {
       case 'day':
         thedate = date.format('YYYY MMM DD');
         break;

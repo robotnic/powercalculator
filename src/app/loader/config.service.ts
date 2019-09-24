@@ -15,10 +15,10 @@ export class ConfigService {
         resolve(this.cache);
       } else {
         const url = '/assets/config.json';
-        this.eventService.setState('loading', 'config');
+        this.eventService.setState('message.loading', 'config');
         this.http.get(url).toPromise().then((data: Config) => {
           this.cache = data;
-          this.eventService.setState('loaded', 'config');
+          this.eventService.setState('message.loaded', 'config');
           resolve(data);
         });
       }

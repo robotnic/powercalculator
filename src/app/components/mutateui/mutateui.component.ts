@@ -8,6 +8,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 
 import * as moment from 'moment';
+import { State } from 'src/app/models/state';
 // tslint:disable-next-line:no-duplicate-imports
 // import {default as _rollupMoment} from 'moment';
 
@@ -49,33 +50,23 @@ export class MutateuiComponent implements OnInit {
   month = 5;
   day = 6;
   date;
+  state: State;
 
   timetype;
-  mutate = {
-    'Wind Onshore': 0,
-    'Wind Offshore': 0,
-    'Solar': 0,
-    'Power2Gas': 0,
-    'Transport': 0,
-    'quickview': false,
-    'refresh': true
-  };
 
   constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) { }
 
   ngOnInit() {
     const date: moment.Moment = moment().add('day', -2);
-    this.country = this.eventService.getState().country;
-    this.timetype = this.eventService.getState().timetype;
-    this.eventService.setState('date', date.format('YYYYMMDD'));
-    this.hrtime(date);
+    const state = this.eventService.getState();
+    this.state = state;
+    this.eventService.setState('navigate', state.navigate);
+
     this.countryService.countries().then(countries => {
-      console.log(countries);
       this.countries = Object.keys(countries);
     });
     this.loader.power().subscribe((power: Data) => {
       const data: Data = power;
-      console.log('danke für data', data.loadshifted);
       this.layers.length = 0;
       if (data.loadshifted) {
         // tslint:disable-next-line:forin
@@ -95,8 +86,8 @@ export class MutateuiComponent implements OnInit {
       clearTimeout(this.timeout);
     }
     this.timeout = setTimeout(() => {
-      this.eventService.setState('mutate', this.mutate);
-    }, 0);
+      this.eventService.setState('mutate', this.state.mutate);
+    }, 30);
   }
 
 
@@ -105,9 +96,9 @@ export class MutateuiComponent implements OnInit {
     if (type === 'Transport') {
       delta = 5;
     }
-    this.mutate[type] += delta;
-    if (type === 'Transport' && this.mutate[type] > 100) {
-      this.mutate[type] = 100;
+    this.state.mutate[type] += delta;
+    if (type === 'Transport' && this.state.mutate[type] > 100) {
+      this.state.mutate[type] = 100;
     }
     this.change();
   }
@@ -117,53 +108,43 @@ export class MutateuiComponent implements OnInit {
     if (type === 'Transport') {
       delta = 5;
     }
-    this.mutate[type] -= delta;
-    if (this.mutate[type] < 0) {
-      this.mutate[type] = 0;
+    this.state.mutate[type] -= delta;
+    if (this.state.mutate[type] < 0) {
+      this.state.mutate[type] = 0;
     }
     this.change();
   }
 
   inctime(type) {
     const state = this.eventService.getState();
-    const date = moment(state.date, 'YYYYMMDD');
+    const date = moment(state.navigate.date, 'YYYYMMDD');
     date.add(type, 1);
-    this.hrtime(date);
-    this.eventService.setState('date', date.format('YYYYMMDD'));
+    this.eventService.setState('navigate.date', date.format('YYYYMMDD'));
   }
 
   dectime(type) {
     const state = this.eventService.getState();
-    const date = moment(state.date, 'YYYYMMDD');
+    const date = moment(state.navigate.date, 'YYYYMMDD');
     date.add(type, -1);
-    this.hrtime(date);
-    this.eventService.setState('date', date.format('YYYYMMDD'));
+    this.eventService.setState('navigate.date', date.format('YYYYMMDD'));
   }
   setdate(date) {
-    this.hrtime(date);
-    this.eventService.setState('date', date.format('YYYYMMDD'));
+    this.eventService.setState('navigate.date', date.format('YYYYMMDD'));
   }
   today() {
     const date = moment();
-    this.hrtime(date);
-    this.eventService.setState('date', date.format('YYYYMMDD'));
+    this.eventService.setState('navigate.date', date.format('YYYYMMDD'));
   }
 
   selectcountry(country) {
-    this.eventService.setState('country', country);
+    this.eventService.setState('navigate.country', country);
   }
 
-  hrtime(date) {
-    this.year = date.format('YYYY');
-    this.month = date.format('MM');
-    this.day = date.format('DD');
-    this.date = date;
-  }
   selecttimetype(type) {
-    this.eventService.setState('timetype', type);
+    this.eventService.setState('navigate.timetype', type);
   }
   refresh() {
-    this.eventService.setState('refresh', true);
-    this.eventService.setState('refresh', false);
+    this.eventService.setState('navigate.refresh', true);
+    this.eventService.setState('navigate.refresh', false);
   }
 }

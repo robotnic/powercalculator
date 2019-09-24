@@ -33,35 +33,35 @@ export class Calculator {
     });
   }
   async init(data) {
-    await this.unlock({ 'calcing': 'fix' });
+    await this.unlock({ 'message.calcing': 'fix' });
     this.fixchartsService.fix(data);
-    await this.unlock({ 'calced': 'fix' });
+    await this.unlock({ 'message.calced': 'fix' });
 
-    await this.unlock({ 'calcing': 'normalize' });
+    await this.unlock({ 'message.calcing': 'normalize' });
     this.normalizeService.normalize(data);
-    await this.unlock({ 'calced': 'normalize' });
+    await this.unlock({ 'message.calced': 'normalize' });
 
-    await this.unlock({ 'calcing': 'importexport' });
+    await this.unlock({ 'message.calcing': 'importexport' });
     this.importexportService.calc(data);
-    await this.unlock({ 'calced': 'importexport' });
+    await this.unlock({ 'message.calced': 'importexport' });
 
-    await this.unlock({ 'calcing': 'hydro' });
+    await this.unlock({ 'message.calcing': 'hydro' });
     this.storageService.calcHydrofill(data);
-    await this.unlock({ 'calced': 'hydro' });
+    await this.unlock({ 'message.calced': 'hydro' });
 
     this.data = data;
   }
   async calculate() {
     const data = this.data;
-    await this.unlock({ 'calcing': 'loadshift' });
+    await this.unlock({ 'message.calcing': 'loadshift' });
     this.loadshiftService.loadshift(data);
-    await this.unlock({ 'calced': 'loadshift', 'calcing': 'timeshift' });
+    await this.unlock({ 'message.calced': 'loadshift', 'message.calcing': 'timeshift' });
     this.timeshiftService.timeshift(data);
-    await this.unlock({ 'calced': 'timeshift', 'calcing': 'pump' });
+    await this.unlock({ 'message.calced': 'timeshift', 'message.calcing': 'pump' });
     this.storageService.addStorage(data);
-    await this.unlock({ 'calced': 'pump', 'calcing': 'sum' });
+    await this.unlock({ 'message.calced': 'pump', 'message.calcing': 'sum' });
     this.summaryService.calcSummary(data);
-    await this.unlock({ 'calced': 'sum', 'calcing': 'render' });
+    await this.unlock({ 'message.calced': 'sum', 'message.calcing': 'render' });
     return data;
   }
 
@@ -76,7 +76,6 @@ export class Calculator {
   }
 
   decorate(data) {
-    console.log(data);
     data.loadshifted.forEach(chart => {
       chart.yAxis = 1;
       if (chart.originalKey === 'hydrofill' || chart.originalKey === 'hydrofillclone') {

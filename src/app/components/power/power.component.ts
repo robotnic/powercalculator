@@ -196,7 +196,9 @@ export class PowerComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('start');
     this.loader.power().subscribe((original: Data) => {
+    console.log('got data');
       this.data = original;
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
@@ -207,7 +209,8 @@ export class PowerComponent implements OnInit {
         this.dataSource = new MatTableDataSource(sum);
         const chart = this.reduce(modified);
         this.nvd3.updateWithData(chart);
-        this.eventService.setState('calced', 'render');
+        this.eventService.setState('message.calced', 'render');
+        this.eventService.setState('message.calcing', '');
         this.previousdate = modified.meta.date;
       });
     });

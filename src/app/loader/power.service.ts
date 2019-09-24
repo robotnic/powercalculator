@@ -17,37 +17,38 @@ export class PowerService {
     return new Promise((resolve) => {
       const state: State = this.eventService.getState();
       console.log(state);
-      const date: moment.Moment = moment(state.date, 'YYYYMMDD');
-      const start: moment.Moment = moment(date).startOf(state.timetype as unitOfTime.StartOf);
-      const end: moment.Moment = moment(start).add(state.timetype + 's' as unitOfTime.DurationConstructor, +1);
+      const date: moment.Moment = moment(state.navigate.date, 'YYYYMMDD');
+      const start: moment.Moment = moment(date).startOf(state.navigate.timetype as unitOfTime.StartOf);
+      const end: moment.Moment = moment(start).add(state.navigate.timetype + 's' as unitOfTime.DurationConstructor, +1);
 
-      if (state.timetype === 'year') {
+      if (state.navigate.timetype === 'year') {
         const promises = [];
         for (let m = 0; m < 12; m++) {
           const monthStart: moment.Moment = moment(start).add(m, 'month');
           const monthEnd: moment.Moment = moment(start).add(m + 1, 'month');
-          promises.push(this.loadChart(monthStart, monthEnd, state.country, state.refresh));
-          this.eventService.setState('loading', monthStart.format('MMM'));
+          promises.push(this.loadChart(monthStart, monthEnd, state.navigate.country, state.navigate.refresh));
+          this.eventService.setState('message.loading', monthStart.format('MMM'));
           Promise.all(promises).then((result: Chart[]) => {
-            this.eventService.setState('loaded', monthStart.format('MMM'));
+            this.eventService.setState('message.loaded', monthStart.format('MMM'));
             if (promises.length === result.length) {
               resolve(this.combineResult(result));
             }
           });
         }
       } else {
-        console.log(state.timetype, start, end);
-        this.eventService.setState('loading', 'power');
-        this.loadChart(start, end, state.country, state.refresh).then((chart: Chart) => {
+        console.log(state.navigate.timetype, start, end);
+        this.eventService.setState('message.loading', 'power');
+        this.loadChart(start, end, state.navigate.country, state.navigate.refresh).then((chart: Chart) => {
+          this.eventService.setState('message.loading', '');
           if (chart) {
-            this.eventService.setState('loaded', 'power');
+            this.eventService.setState('message.loaded', 'power');
           } else {
-            this.eventService.setState('notloaded', 'power');
+            this.eventService.setState('message.notloaded', 'power');
           }
           resolve(chart);
         }, error => {
           console.error(error);
-          this.eventService.setState('notloaded', 'power');
+          this.eventService.setState('message.notloaded', 'power');
         });
       }
     });

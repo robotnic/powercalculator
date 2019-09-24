@@ -12,10 +12,10 @@ export class DateComponent implements OnInit {
 
   ngOnInit() {}
   changedate(date) {
-    this.eventService.setState('date', date);
+    this.eventService.setState('navigate.date', date);
   }
   changecountry(country) {
-    this.eventService.setState('country', country);
+    this.eventService.setState('navigate.country', country);
   }
 
 }

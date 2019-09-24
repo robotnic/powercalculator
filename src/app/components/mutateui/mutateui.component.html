@@ -8,13 +8,13 @@
       </mat-expansion-panel-header>
 
       <mat-form-field style="width:200px" *ngIf="countries">
-        <mat-select [(value)]="country" (selectionChange)="selectcountry($event.value)">
+        <mat-select [(value)]="state.navigate.country" (selectionChange)="selectcountry($event.value)">
           <mat-option [value]="country" *ngFor="let country of countries">{{country}}</mat-option>
         </mat-select>
       </mat-form-field>
       <br>
       <mat-form-field style="width:200px">
-        <mat-select [(value)]="timetype" (selectionChange)="selecttimetype($event.value)">
+        <mat-select [(value)]="state.navigate.timetype" (selectionChange)="selecttimetype($event.value)">
           <mat-option [value]="'day'">show day</mat-option>
           <mat-option [value]="'week'">show week</mat-option>
           <mat-option [value]="'month'">show month</mat-option>
@@ -29,15 +29,15 @@
       <br/>
       -->
       <mat-form-field style="width:200px">
-        <input matInput [matDatepicker]="dp" placeholder="date" [(ngModel)]="date" (dateChange)="setdate($event.value)">
+        <input matInput [matDatepicker]="dp" placeholder="date" [(ngModel)]="state.navigate.date" (dateChange)="setdate($event.value)">
         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
         <mat-datepicker #dp></mat-datepicker>
       </mat-form-field>
       <br />
-      <button mat-icon-button aria-label="back" (click)="dectime(timetype)">
+      <button mat-icon-button aria-label="back" (click)="dectime(state.navigate.timetype)">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>&#160;
-      <button mat-icon-button aria-label="forward" (click)="inctime(timetype)">
+      <button mat-icon-button aria-label="forward" (click)="inctime(state.navigate.timetype)">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>&#160;
       <button mat-icon-button aria-label="reload from data source" (click)="refresh()">
@@ -99,24 +99,24 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="inputline">
-        <mat-form-field class="md-block" title="Add {{mutate.Solar}} GWp Photovoltic. This equals to {{mutate.Solar*0.4}} photovoltaic panels per Austrian">
-          <input matInput (input)="change()" placeholder="Solar" type="number" min="0" [(ngModel)]="mutate.Solar" style="width:50px;">
+        <mat-form-field class="md-block" title="Add {{state.mutate.Solar}} GWp Photovoltic. This equals to {{state.mutate.Solar*0.4}} photovoltaic panels per Austrian">
+          <input matInput (input)="change()" placeholder="Solar" type="number" min="0" [(ngModel)]="state.mutate.Solar" style="width:50px;">
         </mat-form-field>
       </div>
       <div class="inputline">
-        <mat-form-field class="md-block" lex-gt-sm title="Add {{mutate['Wind Onshore']}} GW Wind. This equals to {{mutate['Wind Onshore']*200}} big Windturbines">
-          <input matInput (input)="change()" placeholder="Onshore" type="number" min="0" [(ngModel)]="mutate['Wind Onshore']" style="width:50px;">
+        <mat-form-field class="md-block" lex-gt-sm title="Add {{state.mutate['Wind Onshore']}} GW Wind. This equals to {{state.mutate['Wind Onshore']*200}} big Windturbines">
+          <input matInput (input)="change()" placeholder="Onshore" type="number" min="0" [(ngModel)]="state.mutate['Wind Onshore']" style="width:50px;">
         </mat-form-field>
       </div>
       <br />
       <div class="inputline">
         <mat-form-field class="md-block" lex-gt-sm>
-          <input matInput (input)="change()" placeholder="EV%" type="number" min="0" [(ngModel)]="mutate['Transport']" style="width:50px;">
+          <input matInput (input)="change()" placeholder="EV%" type="number" min="0" [(ngModel)]="state.mutate['Transport']" style="width:50px;">
         </mat-form-field>
       </div>
       <div class="inputline">
         <mat-form-field class="md-block" lex-gt-sm>
-          <input matInput (input)="change()" placeholder="P2G" type="number" min="0" [(ngModel)]="mutate['Power2Gas']" style="width:50px;">
+          <input matInput (input)="change()" placeholder="P2G" type="number" min="0" [(ngModel)]="state.mutate['Power2Gas']" style="width:50px;">
         </mat-form-field>
       </div>
     </mat-expansion-panel>

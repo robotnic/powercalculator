@@ -35,10 +35,10 @@ export class DatepickerComponent implements OnInit {
   forward(type) {}
   reload() {}
   changedate(date) {
-    this.eventService.setState('date', date);
+    this.eventService.setState('navigate.date', date);
   }
   selectcountry(country) {
-    this.eventService.setState('country', country);
+    this.eventService.setState('navigate.country', country);
   }
 
 }

@@ -16,21 +16,21 @@ export class InstalledService {
   installed() {
     return new Promise((resolve) => {
       const state: State = this.eventService.getState();
-      const country = state.country;
+      const country = state.navigate.country;
       let url: string = '/api/installed/' + country;
-      if (state.refresh) {
+      if (state.navigate.refresh) {
         url += '?refresh=true';
       }
       if (this.cache && url === this.currentUrl) {
         resolve(this.cache);
       } else {
-        this.eventService.setState('loading', 'installed');
+        this.eventService.setState('message.loading', 'installed');
         this.http.get(url).toPromise().then((data: Installed) => {
-          this.eventService.setState('loaded', 'installed');
+          this.eventService.setState('message.loaded', 'installed');
           this.cache = data;
           resolve(data);
         }, e => {
-          this.eventService.setState('failed', 'installed');
+          this.eventService.setState('message.failed', 'installed');
           reject(e);
         });
         this.currentUrl = url;
