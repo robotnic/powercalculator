@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "node index.js",
     "test": "ng serve --proxy-config proxy.conf.json --watch",
-    "install": "ng serve --proxy-config localproxy.conf.json --watch",
     "build": "ng build --prod --source-map  --build-optimizer",
     "test2": "ng test",
     "lint": "ng lint",
