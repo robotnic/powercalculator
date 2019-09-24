@@ -1,3 +1,96 @@
+<div>
+<div class="home">
+<h1>Power Calculator</h1>
+This tool visualizes historic electricity production data provided by ENTSO-E.
+
+<h2>Add Renewable Power</h2>
 <p>
-  home works!
+Based on these data, the user can simulate a past with more renewables.
+
 </p>
+We can select a day in the past and simulate the replacement of fossils by renewables.
+<br/>
+<br/>
+
+
+<img src="/assets/addenergy.gif"/>
+<br/>
+<a href="/power#datechange=date:20190319;timetype:day;country:Austria;refresh:false;&mutate=Wind%2520Onshore:0;Wind%2520Offshore:0;Solar:0;Power2Gas:0;Transport:0;quickview:false;&view=layers:111111111111111111110;&state=">
+Try yourself
+</a>
+<p>
+1 GWp Solar ~10 km²; 3 000 000 panels.
+<br/>
+1 GWp Wind ~200 * 5 MW Wind Turbine
+</p>
+
+<h2>Energy</h2>
+Electricity is only a part of the energy we need.
+In this tool the effect of electrified transport is shown.<br/>
+<img src="/assets/energy-transport.gif"/>
+<p>
+Replacing fossils by electricity, reduces the energy <strong>used by the customers</strong>.
+Please have in mind, that that's not equivalent to primary energy.<br/>
+
+<a href="/energy">try here</a>
+</p>
+
+<h2>Szenarios</h2>
+<h3>Austria 15 GWp PV, 100% EV. April 2019.</h3>
+In the simulation we show the load of charging vehicles as a constant value.<br>
+We don't know when the E-Cars will charge. 
+<p>
+But our simulations shows that shifting charging time by some hours, could have a big impact.
+</p>
+<p>
+The red area shows the additional energy needed by electric vehicles that is not coverd by renewables.
+The black areas are curtailed energy.
+</p>
+<p>
+If there is lots of PV in the system, it would be benefitial for the grid, to charge comuter vehicles during worktime.
+</p>
+<img src="/assets/curtailment-transport.png"/>
+<br/>
+<a href="/power#datechange=date:20190423;timetype:week;country:Austria;refresh:false;&mutate=Wind%2520Onshore:7;Wind%2520Offshore:0;Solar:15;Power2Gas:0;Transport:100;quickview:false;&view=layers:0010000000000000100;&state=">
+Try
+</a>
+<h3>Power2Gas</h3>
+In this diagram PV and Power2Gas are dominant. Power2Gas is shown here before conversion losses.  
+<br/>
+<img src="/assets/pvh2.png"/>
+<br/>
+<a href="/energy#datechange=date:20190423;timetype:week;country:Austria;refresh:false;&mutate=Wind%20Onshore:7;Wind%20Offshore:0;Solar:56;Power2Gas:30;Transport:0;quickview:false;&view=layers:1111111111111111111;&state=">
+try
+</a>
+<h3>PV Map</h3>
+How much space is needed for PV. Where do we put the installations.<br/>
+<img src="/assets/pvmap.png"/>
+<br/>
+<h3>Software Architecture</h3>
+<pre>
+backend
+  scraping
+  caching
+  ENTSOE in json format 
+
+Frontend
+  Angular.io based
+  Loaders
+  Viewers
+  Calculators
+  Event Handling
+</pre>
+<h3>Lessons learned by programming</h3>
+
+
+
+
+<h3>The challenge </h3>
+This tool may give an overoptimisitc view of our challenge. 
+There are so many variables an unknows and this isn't much more of a best guess.
+
+
+
+
+
+</div>

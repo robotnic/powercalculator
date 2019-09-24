@@ -5,7 +5,8 @@ import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   { path: 'power', component: PowerComponent },
-  { path: 'home',      component: HomeComponent }
+  { path: '',      component: HomeComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

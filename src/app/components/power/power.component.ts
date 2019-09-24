@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 declare let d3: any;
 import * as moment from 'moment';
 import { Data } from 'src/app/models/data';
+import { Chart } from 'src/app/models/charts';
 
 @Component({
   selector: 'app-power',
@@ -26,6 +27,7 @@ export class PowerComponent implements OnInit {
   ) {}
   @ViewChild('nvd3') private nvd3: any;
   data: Data;
+  modified;
   sum = [];
   meta;
   date;
@@ -169,7 +171,7 @@ export class PowerComponent implements OnInit {
       yAxis2: {
         axisLabel: 'Hydro fill TWh',
         tickFormat: function(d) {
-          return d3.format('.02f')(d / 1000 / 1000);
+          return d3.format('.03f')(d / 1000 / 1000);
         },
         axisLabelDistance: -10,
         showMaxMin: false
@@ -195,6 +197,7 @@ export class PowerComponent implements OnInit {
 
   ngOnInit() {
     this.loader.power().subscribe((original: Data) => {
+      this.data = original;
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
       this.country = original.meta.country;

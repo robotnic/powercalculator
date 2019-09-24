@@ -21,13 +21,17 @@ export class LoadshiftService {
 
     /* Iterate over rules.json and values */
     data.rules.loadshift.from.forEach(from => {
+      let totalharvest = 0;
       const faktor: number = this.makeFaktor(data.installed, state, from);
       for (let i = 0; i < data.power[0].values.length; i++) {  // loop over time
         let harvest: number = this.harvestPower(from, i, faktor);
         data.rules.loadshift.to.forEach(to => {
           if (harvest > 0) {
-            const delta = this.movePower(harvest, data.installed[year][to], to, i);
+            const delta = this.movePower(harvest, data.installed[year][to], to, i, totalharvest);
             harvest += delta;
+            if (to === 'Hydro Pumped Storage') {
+              totalharvest -= delta;
+            }
           }
         });
       }
@@ -52,14 +56,29 @@ export class LoadshiftService {
   /*
   The new added power replaces CO2 intensive electricity generation
   */
-  movePower(harvest, installed, to, i) {
+  movePower(harvest, installed, to, i, totalharvest) {
+    const totalEnergy = 2000;
     let delta = 0;
+    let useable = harvest;
     if (this.powerByName[to]) {
+      if (this.powerByName['hydrofill']) {
+        if (to === 'Hydro Pumped Storage') {
+          const hydrofill = this.powerByName['hydrofill'].values[i];
+          const untilfull = totalEnergy - hydrofill.y / 1000 - totalharvest;
+          if (untilfull < 0) {
+            useable = 0;
+          }
+          /*
+          if (harvest > 0.0001 && untilfull < 0) {
+            console.log('hydrofill', i, hydrofill.y / 1000, harvest, totalharvest, untilfull);
+          }
+          */
+        }
+      }
       const min = this.getMin(installed, to);
       const value = this.powerByName[to].values[i];
       const oldY = value.y;
 
-      let useable = harvest;
       if (useable > value.y - min) {
         useable = value.y - min;
       }

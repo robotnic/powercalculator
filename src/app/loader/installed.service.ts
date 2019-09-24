@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventService } from '../eventhandler.service';
 import { reject } from 'q';
 import { Installed } from '../models/installed';
+import { State } from '../models/state';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,12 @@ export class InstalledService {
   constructor(private http: HttpClient, private eventService: EventService) {}
   installed() {
     return new Promise((resolve) => {
-      const country: string = this.eventService.getState().country;
-      const url: string = '/api/installed/' + country;
+      const state: State = this.eventService.getState();
+      const country = state.country;
+      let url: string = '/api/installed/' + country;
+      if (state.refresh) {
+        url += '?refresh=true';
+      }
       if (this.cache && url === this.currentUrl) {
         resolve(this.cache);
       } else {

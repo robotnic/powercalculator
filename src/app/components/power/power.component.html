@@ -5,7 +5,13 @@
 <h1> {{country}}</h1>
 <app-state></app-state>
 </div>
-<nvd3 #nvd3 [options]="options" [data]="data"></nvd3>
+<nvd3 #nvd3 [options]="options" ></nvd3>
+<br/>
+<br/>
+<br/>
+<br/>
+<h2>Energie</h2>
+<p>The money in the table is based on 40 €/MHh.</p>
 <table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <!-- Key Column -->
@@ -41,7 +47,7 @@
   <!-- Name Column -->
   <ng-container matColumnDef="co2">
     <th mat-header-cell *matHeaderCellDef> co2 </th>
-    <td mat-cell *matCellDef="let element">  <span *ngIf="element.co2">{{element.co2 | number:'0.0-0':'fr'}} Mt</span></td>
+    <td mat-cell *matCellDef="let element">  <span *ngIf="element.co2">{{element.co2/1000 | number:'0.0-0':'fr'}} Mt</span></td>
   </ng-container>
 
   <!-- Name Column -->
@@ -58,6 +64,36 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<div *ngIf="data">
+  <br/>
+  <br/>
+  <br/>
+  <mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      data source
+    </mat-panel-title>
+    <mat-panel-description>
+      ENTSOE API urls
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+<h2>source</h2>
+<p *ngFor="let chart of data.power" style="font-size:10px">
+  {{chart.key}} - {{chart.source}}
+</p>
+
+</mat-expansion-panel>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</div>
+<!--
+<pre>
+  {{data|json}}
+</pre>
+-->
 </div>
 <app-mutateui></app-mutateui>
 </div>

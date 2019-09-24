@@ -24,7 +24,6 @@ export class StorageService {
     chart.values.forEach((item, i) => {
       item.y = this.interpolateValues(item.x, data.hydrofill.values);
     });
-
     data.power.push(chart);
     const clone: Chart = JSON.parse(JSON.stringify(chart));
     clone.key = 'hydrofillclone';
