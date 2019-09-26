@@ -9,7 +9,6 @@ export class ImportexportService {
 
   constructor() {}
   calc(data: Data) {
-    console.log('----------import export--------', data);
     //    const sum = JSON.parse(JSON.stringify(data.power[0]));
     const sum: Chart = this.chartClone(data.power[0], 'sum');
     sum.color = 'white';

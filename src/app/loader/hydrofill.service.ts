@@ -15,7 +15,6 @@ export class HydrofillService {
   hydrofill(year, country) {
     return new Promise<Chart>((resolve, reject) => {
       const url: string = '/api/filllevel/' + country + '/' + year;
-      console.log(url, this.currentUrl, this.cache);
       if (this.currentUrl === url && this.cache) {
         resolve(this.cache);
       } else {

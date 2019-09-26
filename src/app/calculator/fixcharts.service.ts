@@ -7,7 +7,6 @@ export class FixchartsService {
 
   constructor() { }
   fix(data) {
-    console.log('fix', data);
     const emptyCharts = [];
     data.power.forEach(chart => {
       let found = false;
@@ -23,10 +22,5 @@ export class FixchartsService {
     data.power = data.power.filter(chart => {
       return emptyCharts.indexOf(chart.key) === -1;
     });
-    /*
-    data.power.forEach(chart => {
-      console.log(chart.key, chart.values.length);
-    });
-    */
   }
 }

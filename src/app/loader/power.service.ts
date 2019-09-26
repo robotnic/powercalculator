@@ -33,6 +33,8 @@ export class PowerService {
             if (promises.length === result.length) {
               resolve(this.combineResult(result));
             }
+          }, error => {
+            console.log('promise failed');
           });
         }
       } else {
@@ -69,7 +71,7 @@ export class PowerService {
         }
       }).catch(e => {
         console.log(e);
-        reject(e);
+        resolve(null);
       });
     });
   }

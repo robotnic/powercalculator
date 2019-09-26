@@ -51,6 +51,7 @@ export class Calculator {
 
     this.data = data;
   }
+
   async calculate() {
     const data = this.data;
     await this.unlock({ 'message.calcing': 'loadshift' });

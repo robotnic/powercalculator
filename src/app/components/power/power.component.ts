@@ -182,12 +182,10 @@ export class PowerComponent implements OnInit {
 
   height() {
     const h = window.innerHeight - 200;
-    console.log(h);
     return h;
   }
 
   onResize(event) {
-    console.log(this.nvd3);
     this.nvd3.updateWithOptions(this.options);
   }
 
@@ -196,9 +194,7 @@ export class PowerComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('start');
     this.loader.power().subscribe((original: Data) => {
-    console.log('got data');
       this.data = original;
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
@@ -245,8 +241,10 @@ export class PowerComponent implements OnInit {
       const values = [];
       chart.values.forEach((value, i) => {
         sum += value.y;
-        if (i++ % factor === 0) {
-          value.y = sum / factor;
+        if ((i % factor) === 0) {
+          if ( i > 0) {
+            value.y = sum / factor;
+          }
           values.push(value);
           sum = 0;
         }

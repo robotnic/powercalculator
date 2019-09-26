@@ -4,6 +4,7 @@ import { Data } from '../models/data';
 import { Chart, ChartValue } from '../models/charts';
 import { State } from '../models/state';
 import { PowerByName } from '../models/powerbyname';
+import { assertNotNull } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class LoadshiftService {
 
   loadshift(data: Data) {
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
+    console.log(data.power);
+    
     this.getPowerByName(data.loadshifted);
     const state = this.eventService.getState();
     const year = state.navigate.date.substring(0, 4);

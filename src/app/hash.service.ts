@@ -45,7 +45,6 @@ export class HashService {
             } else {
               if (kvss[0] === 'mutate') {
                 value = parseInt(value, 10) || 0;
-                console.log(kvs, value);
               }
             }
             state[kvss[0]][decodeURIComponent(kv[0])] = value;

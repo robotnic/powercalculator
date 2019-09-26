@@ -48,11 +48,10 @@ export class StorageService {
         hydrofillclone = chart;
       }
     });
-    const types: string[] = ['Hydro Pumped up', 'Hydro Pumped down', 'Hydro Water Reservoir'];
+    const types: string[] = ['Hydro Pumped Storage', 'Hydro Water Reservoir'];
     types.forEach(type => {
       data.power.forEach((chart, i) => {
         if (chart.key === type) {
-          console.log('addPumped', type);
           let total = 0;
           chart.values.forEach((item, v) => {
             const original: number = item.y;
@@ -61,7 +60,7 @@ export class StorageService {
             if (delta ) {
               total += delta;
             }
-            hydrofillclone.values[v].y += total * 1000 / 4;
+            hydrofillclone.values[v].y += total * 1000 / 4;   // todo: will not work for all countries
           });
         }
       });
