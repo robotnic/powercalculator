@@ -75,9 +75,9 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
 <h2>source</h2>
-<p *ngFor="let chart of data.power" style="font-size:10px">
+<div *ngFor="let chart of data.loadshifted" style="font-size:10px">
   {{chart.key}} - {{chart.source}}
-</p>
+</div>
 
 </mat-expansion-panel>
 <br/>

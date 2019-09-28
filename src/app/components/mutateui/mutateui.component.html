@@ -1,6 +1,6 @@
 <div class="box">
   <mat-accordion multi="true">
-    <mat-expansion-panel>
+    <mat-expansion-panel expanded="state.view.navigate" (opened)="panelaction()" (closed)="panelaction()">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Navigate
@@ -92,7 +92,7 @@
   </div>
 -->
     </mat-expansion-panel>
-    <mat-expansion-panel>
+    <mat-expansion-panel [(expanded)]="state.view.mutate" (opened)="panelaction()" (closed)="panelaction()">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Mutate
@@ -111,7 +111,7 @@
       <br />
       <div class="inputline">
         <mat-form-field class="md-block" lex-gt-sm>
-          <input matInput (input)="change()" placeholder="EV%" type="number" min="0" [(ngModel)]="state.mutate['Transport']" style="width:50px;">
+          <input matInput (input)="change()" placeholder="EV%" type="number" step="5" min="0" max="100" [(ngModel)]="state.mutate['Transport']" style="width:50px;">
         </mat-form-field>
       </div>
       <div class="inputline">
@@ -120,16 +120,20 @@
         </mat-form-field>
       </div>
     </mat-expansion-panel>
-    <!--
+
    <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
        Layers 
       </mat-panel-title>
     </mat-expansion-panel-header>
-   <mat-checkbox *ngFor="let layer of layers" class="example-margin" [(ngModel)]="layer.value" [style.color]="layer.color">{{layer.key}}</mat-checkbox>
+   <mat-checkbox *ngFor="let layer of layers" class="example-margin" [(ngModel)]="layer.value" (change)="layeraction()">
+   <span [style.backgroundColor]="layer.color" class="legendcolor"></span>  {{layer.key}}
+   </mat-checkbox>
+   <button mat-button (click)="showall()">show all</button>
+   <button mat-button (click)="toggle()">toggle</button>
    </mat-expansion-panel>
-  -->
+
   </mat-accordion>
   <!--
       <mat-form-field class="md-block" lex-gt-sm title="Add {{mutate['Wind Offshore']}} GW Wind. This equals to {{mutate['Wind Offshore']*200}} big Windturbines">

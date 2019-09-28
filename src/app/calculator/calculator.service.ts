@@ -7,6 +7,8 @@ import { ImportexportService } from './importexport.service';
 import { EventService } from '../eventhandler.service';
 import { SummaryService } from './summary.service';
 import { FixchartsService } from './fixcharts.service';
+import { ChartvisibilityService } from './chartvisibility.service';
+import { TransportService } from './transport.service';
 import { Data } from '../models/data';
 
 @Injectable({
@@ -22,13 +24,15 @@ export class Calculator {
     private importexportService: ImportexportService,
     private eventService: EventService,
     private summaryService: SummaryService,
+    private chartvisibilityService: ChartvisibilityService,
+    private transportService: TransportService,
     private fixchartsService: FixchartsService
   ) {}
 
   mutate() {
     return new Promise(resolve => {
       this.calculate().then(data => {
-        resolve(this.decorate(data));
+        resolve(data);
       });
     });
   }
@@ -48,13 +52,18 @@ export class Calculator {
     await this.unlock({ 'message.calcing': 'hydro' });
     this.storageService.calcHydrofill(data);
     await this.unlock({ 'message.calced': 'hydro' });
-
+    await this.unlock({ 'message.calcing': 'decorate' });
+    this.decorate(data);
+    await this.unlock({ 'message.calced': 'decorate' });
     this.data = data;
   }
 
   async calculate() {
     const data = this.data;
+    data.loadshifted = JSON.parse(JSON.stringify(data.power));
+
     await this.unlock({ 'message.calcing': 'loadshift' });
+    this.transportService.add(data);
     this.loadshiftService.loadshift(data);
     await this.unlock({ 'message.calced': 'loadshift', 'message.calcing': 'timeshift' });
     this.timeshiftService.timeshift(data);
@@ -63,6 +72,7 @@ export class Calculator {
     await this.unlock({ 'message.calced': 'pump', 'message.calcing': 'sum' });
     this.summaryService.calcSummary(data);
     await this.unlock({ 'message.calced': 'sum', 'message.calcing': 'render' });
+    this.chartvisibilityService.set(data);
     return data;
   }
 
@@ -77,7 +87,8 @@ export class Calculator {
   }
 
   decorate(data) {
-    data.loadshifted.forEach(chart => {
+    console.log(data);
+    data.power.forEach(chart => {
       chart.yAxis = 1;
       if (chart.originalKey === 'hydrofill' || chart.originalKey === 'hydrofillclone') {
         chart.yAxis = 2;

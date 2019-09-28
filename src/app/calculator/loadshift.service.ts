@@ -15,7 +15,7 @@ export class LoadshiftService {
   constructor(private eventService: EventService) {}
 
   loadshift(data: Data) {
-    data.loadshifted = JSON.parse(JSON.stringify(data.power));
+    // data.loadshifted = JSON.parse(JSON.stringify(data.power));
     console.log(data.power);
     
     this.getPowerByName(data.loadshifted);
@@ -102,6 +102,10 @@ export class LoadshiftService {
       }
       if (to === 'Curtailment') {
         minimum = -99999999999999999;
+      }
+      if (to === 'Power2Gas') {
+        const state = this.eventService.getState();
+        minimum = -state.mutate.Power2Gas;
       }
       return minimum;
   }

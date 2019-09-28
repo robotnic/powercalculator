@@ -10,55 +10,17 @@ export class NormalizeService {
 
   normalize(data) {
     // this.splitPump(data);
-    this.addCurtailment(data);
+    this.addEmptyChart(data, 'Curtailment');
+    this.addEmptyChart(data, 'Transport');
+    this.addEmptyChart(data, 'Power2Gas');
     this.sortData(data);
-    return data;
-  }
-
-  splitPump(data) {
-    const key = 'Hydro Pumped Storage';
-    let pumpUp: Chart = null;
-    let pumpDown: Chart = null;
-    data.power.forEach(chart => {
-      if (chart.key === key) {
-        console.log(chart.key, '-', key);
-        console.log('--------------------');
-        pumpUp = JSON.parse(JSON.stringify(chart));
-        pumpUp.key = 'Hydro Pumped down';
-        pumpUp.originalKey = 'Hydro Pumped down';
-        pumpUp.seriesIndex = data.power.length;
-        pumpDown = JSON.parse(JSON.stringify(chart));
-        pumpDown.key = 'Hydro Pumped up';
-        pumpDown.originalKey = 'Hydro Pumped up';
-        pumpDown.seriesIndex = data.power.length + 1;
-        pumpUp.values.forEach(value => {
-          if (value.y < 0) {
-            value.y = 0;
-          }
-        });
-
-        pumpDown.values.forEach(value => {
-          if (value.y > 0) {
-            value.y = 0;
-          }
-        });
-      }
-    });
-    data.power = data.power.filter(chart => {
-      return chart.key !== key;
-    });
-    if (pumpUp) {
-      data.power.push(pumpUp);
-    }
-    if (pumpDown) {
-      data.power.unshift(pumpDown);
-    }
     return data;
   }
 
   sortData(data) {
     const order: string[] = [
       'Hydro Pumped Storage',
+      'Power2Gas',
       'Curtailment',
       'Nuclear',
       'Hydro Run-of-river and poundage',
@@ -75,6 +37,7 @@ export class NormalizeService {
       'Solar',
       'Wind Offshore',
       'Wind Onshore',
+      'Transport',
       'Leistung [MW]'];
 
     data.power = data.power.sort((a, b) => {
@@ -82,13 +45,14 @@ export class NormalizeService {
     });
   }
 
-  addCurtailment(data) {
+  addEmptyChart(data, key) {
     const chart: Chart = JSON.parse(JSON.stringify(data.power[0]));
     chart.values.forEach(item => {
       item.y = 0;
     });
-    chart.key = 'Curtailment';
-    chart.originalKey = 'Curtailment';
+    chart.key = key;
+    chart.originalKey = key;
+    chart.source = 'powercalculator';
     data.power.unshift(chart);
   }
 }

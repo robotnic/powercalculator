@@ -28,6 +28,11 @@ export class EventService {
       calcing: '',
       loaded: '',
       loading: ''
+    },
+    view: {
+      navigate: false,
+      mutate: true,
+      charts: ''
     }
   };
   state: State = this.hashService.getStateHash(this.defaultState);
@@ -59,12 +64,14 @@ export class EventService {
       }
     }
     if (this.observers[type]) {
-        this.observers[type].forEach(observer => {
-          observer.next(this.state);
-        });
-      }
-      this.hashService.setStateHash(this.state, this.defaultState);
- 
+      this.observers[type].forEach(observer => {
+        observer.next(this.state);
+      });
+    }
+    this.setHash();
+  }
+  setHash() {
+    this.hashService.setStateHash(this.state, this.defaultState);
   }
   getState() {
     return this.state;

@@ -2,6 +2,7 @@ export interface State {
   navigate: Navigate;
   mutate: Mutate;
   message: Message;
+  view: View;
 }
 interface Mutate {
   'Wind Onshore': number;
@@ -24,4 +25,10 @@ interface Message {
   calcing: string;
   loaded: string;
   loading: string;
+}
+
+interface View {
+  navigate: boolean;
+  mutate: boolean;
+  charts: string;
 }

@@ -45,6 +45,7 @@ export class ImportexportService {
     const sum: Chart = JSON.parse(JSON.stringify(template));
     sum.key = name;
     sum.originalKey = name;
+    sum.source = 'powercalculator';
     sum.values.forEach((value) => {
       value.y = 0;
     });

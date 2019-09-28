@@ -13,7 +13,7 @@ export class HashService {
       let suburl = '&' + s + '=';
       let hit = false;
       // tslint:disable-next-line:forin
-      if (s === 'navigate' || s === 'mutate') {
+      if (s === 'navigate' || s === 'mutate' || s === 'view') {
         for (const v in state[s]) {
           if (state[s][v] !== defaultState[s][v] && state[s][v]) {
             suburl += v + ':' + state[s][v] + ';';

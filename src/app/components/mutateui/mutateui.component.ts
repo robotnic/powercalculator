@@ -3,9 +3,9 @@ import { EventService } from 'src/app/eventhandler.service';
 import { CountriesService } from 'src/app/loader/countries.service';
 import { Loader } from 'src/app/loader/loader.service';
 import { Data } from 'src/app/models/data';
-import {FormControl} from '@angular/forms';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 
 import * as moment from 'moment';
 import { State } from 'src/app/models/state';
@@ -36,9 +36,9 @@ export const MY_FORMATS = {
     // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
     // application's root module. We provide it at the component level here, due to limitations of
     // our example generation script.
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
 
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
 export class MutateuiComponent implements OnInit {
@@ -54,12 +54,13 @@ export class MutateuiComponent implements OnInit {
 
   timetype;
 
-  constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) { }
+  constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) {}
 
   ngOnInit() {
     const date: moment.Moment = moment().add('day', -2);
     const state = this.eventService.getState();
     this.state = state;
+
     this.eventService.setState('navigate', state.navigate);
 
     this.countryService.countries().then(countries => {
@@ -68,13 +69,17 @@ export class MutateuiComponent implements OnInit {
     this.loader.power().subscribe((power: Data) => {
       const data: Data = power;
       this.layers.length = 0;
-      if (data.loadshifted) {
+      if (data.power) {
         // tslint:disable-next-line:forin
-        for (const c in data.loadshifted) {
-          const chart = data.loadshifted[c];
+        for (let c = 0; c < data.power.length; c++) {
+          const chart = data.power[c];
+          let value = '';
+          if (state.view.charts[c] !== '1') {
+            value = 'checked';
+          }
           this.layers.push({
             key: chart.key,
-            value: true,
+            value: value,
             color: chart.color
           });
         }
@@ -89,7 +94,6 @@ export class MutateuiComponent implements OnInit {
       this.eventService.setState('mutate', this.state.mutate);
     }, 30);
   }
-
 
   inc(type) {
     let delta = 1;
@@ -146,5 +150,33 @@ export class MutateuiComponent implements OnInit {
   refresh() {
     this.eventService.setState('navigate.refresh', true);
     this.eventService.setState('navigate.refresh', false);
+  }
+  panelaction() {
+    this.eventService.setHash();
+  }
+  showall() {
+    this.layers.forEach(layer => {
+      layer.value = true;
+    });
+    this.layeraction();
+  }
+  toggle() {
+    this.layers.forEach(layer => {
+      layer.value = !layer.value;
+    });
+    this.layeraction();
+  }
+  layeraction() {
+    let layercode = '';
+    console.log(this.layers);
+    this.layers.forEach(layer => {
+      if (!layer.value) {
+        layercode += '1';
+      } else {
+        layercode += '0';
+      }
+    });
+    console.log(layercode);
+    this.eventService.setState('view.charts', layercode);
   }
 }

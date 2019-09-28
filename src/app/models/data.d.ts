@@ -1,6 +1,7 @@
 import { Chart } from './charts';
 import { Rules } from './rules';
 import { Installed } from './installed';
+import { Consumption } from './consumption';
 import { Config } from './config';
 import { Sum } from './sum';
 import { Meta } from './meta';
@@ -10,6 +11,7 @@ export interface Data {
   loadshifted: Chart[];
   hydrofill: Chart;
   installed: Installed;
+  consumption: Consumption;
   meta: Meta;
   config: Config;
   rules: Rules;

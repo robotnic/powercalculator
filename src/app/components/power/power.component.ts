@@ -8,6 +8,7 @@ declare let d3: any;
 import * as moment from 'moment';
 import { Data } from 'src/app/models/data';
 import { Chart } from 'src/app/models/charts';
+import { State } from 'src/app/models/state';
 
 @Component({
   selector: 'app-power',
@@ -19,6 +20,8 @@ import { Chart } from 'src/app/models/charts';
 export class PowerComponent implements OnInit {
   displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta', 'money', 'co2', 'co2percent'];
   dataSource;
+  view;
+  charts;
   math = Math;
   constructor(
     private loader: Loader,
@@ -46,6 +49,7 @@ export class PowerComponent implements OnInit {
           })
         }
       },
+      showLegend: false,
       duration: () => {
         let duration = 0;
         switch (this.timetype) {
@@ -79,7 +83,7 @@ export class PowerComponent implements OnInit {
       },
       x: function(d) { return d.x; },
       y: function(d) { return d.y; },
-      useInteractiveGuideline: false,
+      useInteractiveGuideline: true,
       interactiveLayer: {
         tooltip: {
           contentGenerator: (e, div) => {
@@ -195,20 +199,30 @@ export class PowerComponent implements OnInit {
 
   ngOnInit() {
     this.loader.power().subscribe((original: Data) => {
-      this.data = original;
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
       this.country = original.meta.country;
       this.timetype = original.meta.timetype;
       this.calculator.mutate().then((modified: Data) => {
+        this.data = modified;
+        console.log('das große ding', modified);
         const sum = this.makeSum(modified.sum);
         this.dataSource = new MatTableDataSource(sum);
-        const chart = this.reduce(modified);
-        this.nvd3.updateWithData(chart);
+        this.charts = this.reduce(modified);
+        this.nvd3.updateWithData(this.charts);
         this.eventService.setState('message.calced', 'render');
         this.eventService.setState('message.calcing', '');
         this.previousdate = modified.meta.date;
       });
+    });
+    this.eventService.on('view').subscribe((state: State) => {
+      this.charts.forEach((chart, i) => {
+        chart.disabled = false;
+        if (state.view.charts[i] === '1') {
+          chart.disabled = true;
+        }
+      });
+      this.nvd3.updateWithData(this.charts);
     });
   }
 

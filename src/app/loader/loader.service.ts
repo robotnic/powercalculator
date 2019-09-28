@@ -6,6 +6,7 @@ import { ConfigService } from './config.service';
 import { RulesService } from './rules.service';
 import { EventService } from '../eventhandler.service';
 import { HydrofillService } from './hydrofill.service';
+import { ConsumptionService } from './consumption.service';
 import * as moment from 'moment';
 import { Calculator } from '../calculator/calculator.service';
 import { Data } from '../models/data';
@@ -13,6 +14,7 @@ import { Chart } from '../models/charts';
 import { Installed } from '../models/installed';
 import { Config } from '../models/config';
 import { Rules } from '../models/rules';
+import { Consumption } from '../models/consumption';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +31,8 @@ export class Loader {
     private configService: ConfigService,
     private hydrofillService: HydrofillService,
     private rulesService: RulesService,
-    private calculator: Calculator
+    private calculator: Calculator,
+    private consumptionService: ConsumptionService
   ) {}
   power() {
     return new Observable((observer) => {
@@ -77,6 +80,7 @@ export class Loader {
         this.configService.config(),
         this.rulesService.rules(),
         this.hydrofillService.hydrofill(year, state.navigate.country),
+        this.consumptionService.load()
       ];
       Promise.all(promises).then((data) => {
         this.data = {
@@ -85,6 +89,7 @@ export class Loader {
           config: <Config>data[2],
           rules: <Rules>data[3],
           hydrofill: <Chart>data[4],
+          consumption: <Consumption>data[5],
           meta: {
             date: <string>this.currentDate,
             country: <string>this.currentCountry,
