@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { Loader } from '../../loader/loader.service';
 import { Calculator } from '../../calculator/calculator.service';
 import { EventService } from '../../eventhandler.service';
@@ -17,9 +17,7 @@ import { State } from 'src/app/models/state';
   encapsulation: ViewEncapsulation.None
 
 })
-export class PowerComponent implements OnInit {
-  displayedColumns: string[] = ['key', 'power', 'loadshifted', 'delta', 'money', 'co2', 'co2percent'];
-  dataSource;
+export class PowerComponent implements OnInit, OnDestroy {
   view;
   charts;
   math = Math;
@@ -96,7 +94,7 @@ export class PowerComponent implements OnInit {
               <td style="color:${chart.color}">◼</td>
               <td>${chart.key}</td>
               <td</td>
-              <td>${Math.round(chart.value * 10) / 10}</td>
+              <td>${Math.round(chart.value * 100) / 100} GW</td>
               </tr>`;
             });
             html += '</table>';
@@ -206,8 +204,8 @@ export class PowerComponent implements OnInit {
       this.calculator.mutate().then((modified: Data) => {
         this.data = modified;
         console.log('das große ding', modified);
-        const sum = this.makeSum(modified.sum);
-        this.dataSource = new MatTableDataSource(sum);
+        //const sum = this.makeSum(modified.sum);
+        //this.dataSource = new MatTableDataSource(sum);
         this.charts = this.reduce(modified);
         this.nvd3.updateWithData(this.charts);
         this.eventService.setState('message.calced', 'render');
@@ -238,7 +236,7 @@ export class PowerComponent implements OnInit {
         key: key,
         power: Math.round(sum[key].original),
         loadshifted: Math.round(sum[key].modified),
-        delta: Math.round(sum[key].delta),
+        delta: Math.round(sum[key].deltaEnergy),
         money: sum[key].delta * 40 * 1000,
         co2: sum[key].co2,
         co2percent: co2percent
@@ -266,5 +264,8 @@ export class PowerComponent implements OnInit {
       chart.values = values;
     });
     return data.loadshifted;
+  }
+  ngOnDestroy() {
+    console.log('destroy');
   }
 }

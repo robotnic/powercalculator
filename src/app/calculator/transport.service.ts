@@ -19,7 +19,7 @@ export class TransportService {
     const originalByName = this.getPowerByName(data.power);
     const modifiedByName = this.getPowerByName(data.loadshifted);
     modifiedByName['Transport'].values.forEach((item, i) => {
-      const p = everageFossilPower / 4 * transport;
+      const p = everageFossilPower / 2 * transport;
       item.y = p;
       modifiedByName['Leistung [MW]'].values[i].y = originalByName['Leistung [MW]'].values[i].y + p;
     });

@@ -51,6 +51,7 @@ export class MutateuiComponent implements OnInit {
   day = 6;
   date;
   state: State;
+  previousState: State;
 
   timetype;
 
@@ -106,6 +107,23 @@ export class MutateuiComponent implements OnInit {
     }
     this.change();
   }
+  over() {
+    console.log('over');
+    this.previousState = JSON.parse(JSON.stringify(this.state));
+    this.state.mutate = {
+      'Solar': 0,
+      'Wind Onshore': 0,
+      'Wind Offshore': 0,
+      'Transport': 0,
+      'Power2Gas': 0
+    };
+    this.change();
+  }
+  out() {
+    console.log('out');
+    this.state = this.previousState;
+    this.change();
+  }
 
   dec(type) {
     let delta = 1;
@@ -153,6 +171,13 @@ export class MutateuiComponent implements OnInit {
   }
   panelaction() {
     this.eventService.setHash();
+  }
+  resetMutate() {
+    // tslint:disable-next-line:forin
+    for (const m in this.previousState.mutate) {
+      this.previousState.mutate[m] = 0;
+    }
+    this.change();
   }
   showall() {
     this.layers.forEach(layer => {

@@ -119,6 +119,8 @@
           <input matInput (input)="change()" placeholder="P2G" type="number" min="0" [(ngModel)]="state.mutate['Power2Gas']" style="width:50px;">
         </mat-form-field>
       </div>
+      <br/>
+      <button mat-button (click)="resetMutate()" (mouseenter)="over()" (mouseleave)="out()">reset</button>
     </mat-expansion-panel>
 
    <mat-expansion-panel>
@@ -131,7 +133,7 @@
    <span [style.backgroundColor]="layer.color" class="legendcolor"></span>  {{layer.key}}
    </mat-checkbox>
    <button mat-button (click)="showall()">show all</button>
-   <button mat-button (click)="toggle()">toggle</button>
+   <button mat-button (click)="toggle()">invert selection</button>
    </mat-expansion-panel>
 
   </mat-accordion>

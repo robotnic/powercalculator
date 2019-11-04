@@ -10,7 +10,6 @@ interface Mutate {
   'Solar': number;
   'Power2Gas': number;
   'Transport': number;
-  'quickview': boolean;
 }
 
 interface Navigate {

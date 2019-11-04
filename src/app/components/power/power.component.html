@@ -1,96 +1,31 @@
-<div  (window:resize)="onResize($event)">
+<div (window:resize)="onResize($event)">
 
-<div class="area  mat-elevation-z0">
-<div class="meta">
-<h1> {{country}}</h1>
-<app-state></app-state>
-</div>
-<nvd3 #nvd3 [options]="options" ></nvd3>
-<br/>
-<br/>
-<br/>
-<br/>
-<div *ngIf="data" class="energydiv">
-<h2>Energie</h2>
-<p>The money in the table is based on 40 €/MHh.</p>
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div class="area  mat-elevation-z0">
+    <div class="meta">
+      <h1> {{country}}</h1>
+      <app-state></app-state>
+    </div>
+    <nvd3 #nvd3 [options]="options"></nvd3>
+    <br />
+    <br />
+    <br />
+    <!--
+    <h2>source</h2>
+    <div *ngFor="let chart of data.loadshifted" style="font-size:10px">
+      {{chart.key}} - {{chart.source}}
+    </div>
+  -->
 
-  <!-- Key Column -->
-  <ng-container matColumnDef="key">
-    <th mat-header-cell *matHeaderCellDef> Key </th>
-    <td mat-cell *matCellDef="let element"> {{element.key}} </td>
-  </ng-container>
-
-  <!-- Position Column -->
-  <ng-container matColumnDef="power">
-    <th mat-header-cell *matHeaderCellDef> original </th>
-    <td mat-cell *matCellDef="let element"> {{element.power | number:'':'fr'}} GWh</td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="loadshifted">
-    <th mat-header-cell *matHeaderCellDef> modified </th>
-    <td mat-cell *matCellDef="let element"> {{element.loadshifted | number:'':'fr'}} GWh</td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="delta">
-    <th mat-header-cell *matHeaderCellDef> delta </th>
-    <td mat-cell *matCellDef="let element"> {{element.delta | number:'':'fr'}} GWh</td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="money">
-    <th mat-header-cell *matHeaderCellDef> money </th>
-    <td mat-cell *matCellDef="let element"><span *ngIf="math.abs(element.money) > 1000">{{element.money | currency:'€':'symbol':'0.0-0':'fr'}}</span></td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="co2">
-    <th mat-header-cell *matHeaderCellDef> co2 </th>
-    <td mat-cell *matCellDef="let element">  <span *ngIf="element.co2">{{element.co2/1000 | number:'0.0-0':'fr'}} Mt</span></td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="co2percent">
-    <th mat-header-cell *matHeaderCellDef> co2% </th>
-    <td mat-cell *matCellDef="let element">  <span *ngIf="element.co2percent">{{element.co2percent}} %</span></td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-</div>
-<div *ngIf="data">
-  <br/>
-  <br/>
-  <br/>
-  <mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      data source
-    </mat-panel-title>
-    <mat-panel-description>
-      ENTSOE API urls
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-<h2>source</h2>
-<div *ngFor="let chart of data.loadshifted" style="font-size:10px">
-  {{chart.key}} - {{chart.source}}
-</div>
-
-</mat-expansion-panel>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-</div>
-<!--
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+  </div>
+  <!--
 <pre>
   {{data|json}}
 </pre>
 -->
 </div>
 <app-mutateui></app-mutateui>
-</div>

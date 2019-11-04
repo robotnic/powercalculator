@@ -15,6 +15,7 @@ export class LoadshiftService {
   constructor(private eventService: EventService) {}
 
   loadshift(data: Data) {
+    data.power = JSON.parse(JSON.stringify(data.power));
     // data.loadshifted = JSON.parse(JSON.stringify(data.power));
     console.log(data.power);
     

@@ -4,7 +4,7 @@ import { NvD3Module } from 'ng2-nvd3';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule, MatTabsModule, MatSelectModule, MatCheckboxModule, MatExpansionModule,
-  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatTableModule } from '@angular/material';
+  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatTableModule, MatSortModule, MatRadioModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -21,6 +21,8 @@ import 'nvd3';
 import { StateComponent } from './components/state/state.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { EnergyComponent } from './components/energy/energy.component';
+import { TablesComponent } from './components/tables/tables.component';
 
 registerLocaleData(localeFr);
 
@@ -32,7 +34,9 @@ registerLocaleData(localeFr);
     DateComponent,
     DatepickerComponent,
     MutateuiComponent,
-    StateComponent
+    StateComponent,
+    EnergyComponent,
+    TablesComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,9 @@ registerLocaleData(localeFr);
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSortModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

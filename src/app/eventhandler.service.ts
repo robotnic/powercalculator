@@ -20,8 +20,7 @@ export class EventService {
       'Wind Offshore': 0,
       'Solar': 0,
       'Power2Gas': 0,
-      'Transport': 0,
-      'quickview': false
+      'Transport': 0
     },
     message: {
       calced: '',
