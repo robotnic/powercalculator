@@ -21,7 +21,6 @@ export class NormalizeService {
     const order: string[] = [
       'Hydro Pumped Storage',
       'Power2Gas',
-      'Curtailment',
       'Nuclear',
       'Hydro Run-of-river and poundage',
       'Hydro Water Reservoir',
@@ -38,6 +37,7 @@ export class NormalizeService {
       'Wind Offshore',
       'Wind Onshore',
       'Transport',
+      'Curtailment',
       'Leistung [MW]'];
 
     data.power = data.power.sort((a, b) => {

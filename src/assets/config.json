@@ -123,7 +123,7 @@
     "color": "DeepSkyBlue"
   },
   "Curtailment": {
-    "color": "black"
+    "color": "#ffcfcf"
   },
   "Power2Gas": {
     "color": "darkblue"
@@ -219,7 +219,7 @@
     "color": "#dcdcdc"
   },
   "Export": {
-    "color": "lightgrey"
+    "color": "#00000020"
   },
   "Residential": {
     "color": "blue"

@@ -1,5 +1,5 @@
 export interface Sum {
-  [index: string]: SumItem;
+  [index: number]: SumItem;
 }
 export interface SumItem {
   key: string;

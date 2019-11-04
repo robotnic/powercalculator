@@ -8,11 +8,11 @@ export class SummaryService {
 
   constructor() { }
   calcSummary(data) {
-    data.sum = {};
+    data.sum = [];
     for (let p = 0; p < data.power.length; p++) {
       const key = data.power[p].key;
       if (!key.startsWith('hydrofill')) {
-        data.sum[key] = this.makeSum(data, p);
+        data.sum.push(this.makeSum(data, p));
       }
     }
   }

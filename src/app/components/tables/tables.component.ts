@@ -47,8 +47,8 @@ export class TablesComponent implements OnInit, AfterViewInit {
       this.timetype = original.meta.timetype;
       this.calculator.mutate().then((modified: Data) => {
         this.data = modified;
-        console.log('das große ding', modified);
-        let sum = this.makeSum(modified.sum);
+        console.log('das große ding', modified.sum);
+        let sum =  modified.sum;
         console.log('sum', sum);
         sum = sum.filter(item => {
           return item.key !== 'Leistung [MW]';

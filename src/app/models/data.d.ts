@@ -3,7 +3,7 @@ import { Rules } from './rules';
 import { Installed } from './installed';
 import { Consumption } from './consumption';
 import { Config } from './config';
-import { Sum } from './sum';
+import { SumItem } from './sum';
 import { Meta } from './meta';
 
 export interface Data {
@@ -15,5 +15,5 @@ export interface Data {
   meta: Meta;
   config: Config;
   rules: Rules;
-  sum: Sum;
+  sum: SumItem[];
 }

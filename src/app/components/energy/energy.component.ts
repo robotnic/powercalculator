@@ -139,6 +139,7 @@ export class EnergyComponent implements OnInit {
 
   makeNodes(data) {
     const nodes = [];
+    console.log('makeNodes', data.sum);
     // tslint:disable-next-line:forin
     for (const s in data.sum) {
       const node = {
@@ -150,20 +151,20 @@ export class EnergyComponent implements OnInit {
     return nodes;
   }
   makeLinks(data) {
+    console.log('makeLinks', data.sum);
     const links = [];
-    // tslint:disable-next-line:forin
-    for (const s in data.sum) {
+    data.sum.forEach((item, s) => {
       const link = {
-        source: s,
+        source: item.key,
         target: 'Electricity',
-        value: data.sum[s].modified,
-        color: data.config[s].color,
+        value: item.modified,
+        color: data.config[item.key].color,
         type: 'electricity'
       };
-      if (s !== 'Leistung [MW]') {
+      if (item.key !== 'Leistung [MW]') {
         links.push(link);
       }
-    }
+    });
     return links;
   }
 
