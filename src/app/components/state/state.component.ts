@@ -61,8 +61,10 @@ export class StateComponent implements OnInit {
   calcDate() {
     const eventstate = this.eventService.getState();
     const date = moment(eventstate.navigate.date, 'YYYYMMDD');
-    const startOfWeek = date.startOf('week');
-    const endOfWeek = date.clone().endOf('week');
+    let endOfWeek = date.clone();
+    let startOfWeek = date.clone();
+    endOfWeek = endOfWeek.endOf('week');
+    startOfWeek = endOfWeek.startOf('week');
     let thedate = 'unknown';
     switch (eventstate.navigate.timetype) {
       case 'day':
