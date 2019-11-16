@@ -16,6 +16,7 @@ import { Data } from '../models/data';
 })
 export class Calculator {
   data: Data;
+  originalData: Data;
   calcId = null;
   constructor(
     private normalizeService: NormalizeService,
@@ -54,14 +55,15 @@ export class Calculator {
       await this.unlock({ 'message.calced': 'hydro', 'message.calcing': 'decorate' }, this.calcId);
       this.decorate(data);
       await this.unlock({ 'message.calced': 'decorate' }, this.calcId);
-      this.data = data;
+      this.originalData = data;
     } catch (e) {
       console.error('init error', e);
     }
   }
 
   async calculate(calcId) {
-    const data = this.data;
+    const data = JSON.parse(JSON.stringify(this.originalData));
+    this.data = data;
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
     await this.unlock({ 'message.calcing': 'transport' }, calcId);
     this.transportService.add(data);
