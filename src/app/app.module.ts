@@ -4,7 +4,7 @@ import { NvD3Module } from 'ng2-nvd3';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule, MatTabsModule, MatSelectModule, MatCheckboxModule, MatExpansionModule,
-  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatTableModule, MatSortModule, MatRadioModule } from '@angular/material';
+  MatIconModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatTableModule, MatSortModule, MatRadioModule, MatGridListModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -23,6 +23,8 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { EnergyComponent } from './components/energy/energy.component';
 import { TablesComponent } from './components/tables/tables.component';
+import { ElectrictableComponent } from './electrictable/electrictable.component';
+import { EnergytableComponent } from './energytable/energytable.component';
 
 registerLocaleData(localeFr);
 
@@ -36,7 +38,9 @@ registerLocaleData(localeFr);
     MutateuiComponent,
     StateComponent,
     EnergyComponent,
-    TablesComponent
+    TablesComponent,
+    ElectrictableComponent,
+    EnergytableComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +63,8 @@ registerLocaleData(localeFr);
     MatTableModule,
     ReactiveFormsModule,
     MatSortModule,
-    MatRadioModule
+    MatRadioModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

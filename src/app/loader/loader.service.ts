@@ -35,11 +35,17 @@ export class Loader {
     private consumptionService: ConsumptionService
   ) {}
   power() {
+    console.log('give power')
     return new Observable((observer) => {
       // observable execution
       this.load().subscribe(data => {
-        const rdata = JSON.parse(JSON.stringify(data));
-        observer.next(rdata);
+        console.log(data);
+        if (data) {
+          const rdata = JSON.parse(JSON.stringify(data));
+          observer.next(rdata);
+        } else {
+          console.log('no data');
+        }
       });
     });
   }
@@ -50,6 +56,8 @@ export class Loader {
     return new Observable(observer => {
       if (this.data) {
         observer.next(this.data);
+      } else {
+        this.loaddata(observer);
       }
       this.eventHandler.on('navigate').subscribe(() => {
         this.loaddata(observer);
