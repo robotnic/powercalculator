@@ -35,11 +35,9 @@ export class Loader {
     private consumptionService: ConsumptionService
   ) {}
   power() {
-    console.log('give power')
     return new Observable((observer) => {
       // observable execution
       this.load().subscribe(data => {
-        console.log(data);
         if (data) {
           const rdata = JSON.parse(JSON.stringify(data));
           observer.next(rdata);
@@ -81,7 +79,6 @@ export class Loader {
       this.currentCountry = state.navigate.country;
       this.currentTimetype = state.navigate.timetype;
       const year = moment(state.navigate.date, 'YYYYMMDD').format('YYYY');
-      console.log('YEAR', year);
       const promises = [
         this.powerService.charts(),
         this.installedService.installed(),

@@ -32,11 +32,13 @@ export class StorageService {
   }
   interpolateValues(time, values) {
     let result = 0;
-    for (let v = 0; v < values.length; v++) {
-      const value: ChartValue = values[v];
-      result = value.y;
-      if (value.x > time) {
-        break;
+    if (values) {
+      for (let v = 0; v < values.length; v++) {
+        const value: ChartValue = values[v];
+        result = value.y;
+        if (value.x > time) {
+          break;
+        }
       }
     }
     return result;
@@ -57,10 +59,10 @@ export class StorageService {
             const original: number = item.y;
             const modified: number = data.loadshifted[i].values[v].y;
             const delta: number = original - modified;
-            if (delta ) {
+            if (delta) {
               total += delta;
             }
-            hydrofillclone.values[v].y += total * 1000 / 4;   // todo: will not work for all countries
+            hydrofillclone.values[v].y += total * 1000 / 4; // todo: will not work for all countries
           });
         }
       });

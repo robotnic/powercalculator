@@ -15,5 +15,17 @@ export interface Data {
   meta: Meta;
   config: Config;
   rules: Rules;
-  sum: SumItem[];
+  sum: Sum;
+}
+interface Sum {
+  electricity: SumObj;
+  energy: SumObj;
+}
+interface SumObj {
+  key: string;
+  items: SumItem[],
+  totals: Total
+}
+interface Total {
+  [key: string]: number;
 }

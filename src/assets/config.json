@@ -67,7 +67,7 @@
   "Derived heat": {
     "co2": 0
   },
-  "Geothermie": {
+  "Geothermal": {
     "co2": 0,
     "color": "red"
   },
@@ -234,6 +234,9 @@
     "color": "lime"
   },
 
+  "Other renewable": {
+    "color": "lime"
+  },
   "sum": {
     "color": "white"
   },

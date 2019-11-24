@@ -28,7 +28,7 @@ export class Calculator {
     private summaryService: SummaryService,
     private chartvisibilityService: ChartvisibilityService,
     private transportService: TransportService,
-    private fixchartsService: FixchartsService
+    private fixchartsService: FixchartsService,
   ) {}
 
   mutate() {
@@ -62,6 +62,7 @@ export class Calculator {
   }
 
   async calculate(calcId) {
+    try {
     const data = JSON.parse(JSON.stringify(this.originalData));
     this.data = data;
     data.loadshifted = JSON.parse(JSON.stringify(data.power));
@@ -75,9 +76,13 @@ export class Calculator {
     this.storageService.addStorage(data);
     await this.unlock({ 'message.calced': 'pump', 'message.calcing': 'sum' }, calcId);
     this.summaryService.calcSummary(data);
-    await this.unlock({ 'message.calced': 'sum', 'message.calcing': 'render' }, calcId);
+    await this.unlock({ 'message.calcing': 'render', 'message.calced': 'sum' }, calcId);
     this.chartvisibilityService.set(data);
-    return data;
+    await this.unlock({ 'message.calced': 'render' }, calcId);
+    } catch (e) {
+      console.trace(e);
+    }
+    return this.data;
   }
 
   unlock(obj, calcId) {

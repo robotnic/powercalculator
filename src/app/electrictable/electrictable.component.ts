@@ -13,7 +13,7 @@ import { Data } from 'src/app/models/data';
   templateUrl: './electrictable.component.html',
   styleUrls: ['./electrictable.component.less']
 })
-export class ElectrictableComponent implements OnInit, AfterViewInit, OnChanges {
+export class ElectrictableComponent implements  AfterViewInit, OnChanges {
   @ViewChild(MatSort) sort: MatSort;
   @Input() data: any;
 
@@ -24,65 +24,24 @@ export class ElectrictableComponent implements OnInit, AfterViewInit, OnChanges 
   };
   displayedColumns = this.display.energy;
   total = {};
-  date;
-  previousdate;
-  country;
-  meta;
-  timetype;
   dataSource;
   math = Math;
   tabletype = 'energy';
 
   constructor(
-    private loader: Loader,
-    private calculator: Calculator,
-    private eventService: EventService
   ) {}
 
   ngOnChanges() {
-    let sum = this.data.sum;
-    console.log('sum', sum);
+    console.log(this.data.sum);
+    let sum = this.data.sum.electricity.items;
     sum = sum.filter(item => {
       return item.key !== 'Leistung [MW]';
     });
-    this.calcTotal(sum);
+    this.total = this.data.sum.electricity.totals;
     this.dataSource = new MatTableDataSource(sum);
     this.sortBy('deltaMoney');
-    console.log('this.dataSource', this.dataSource);
     this.dataSource.sort = this.sort;
-    console.log('change', this.data);
   }
-
-  ngOnInit() {
-    console.log('init');
-    /*
-    this.loader.power().subscribe((original: Data) => {
-      console.log('data');
-      this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
-      this.meta = original.meta;
-      this.country = original.meta.country;
-      this.timetype = original.meta.timetype;
-      this.calculator.mutate().then((modified: Data) => {
-        this.data = modified;
-        console.log('das große ding', modified.sum);
-        let sum =  modified.sum;
-        console.log('sum', sum);
-        sum = sum.filter(item => {
-          return item.key !== 'Leistung [MW]';
-        });
-        this.calcTotal(sum);
-        this.dataSource = new MatTableDataSource(sum);
-        this.sortBy('deltaMoney');
-        console.log('this.dataSource', this.dataSource);
-        this.dataSource.sort = this.sort;
-        this.eventService.setState('message.calced', 'render');
-        this.eventService.setState('message.calcing', '');
-        this.previousdate = modified.meta.date;
-      });
-    });
-    */
-  }
-
   sortBy(type) {
     this.dataSource.data.sort((a: any, b: any) => {
       if (a[type] === b[type]) {
@@ -95,42 +54,10 @@ export class ElectrictableComponent implements OnInit, AfterViewInit, OnChanges 
       }
     });
   }
-
-  calcTotal(sum) {
-    const total = {};
-    sum.forEach(item => {
-      // tslint:disable-next-line:forin
-      for (const i in item) {
-        if (!this.total[i]) {
-          total[i] = 0;
-        }
-        if (!isNaN(item[i])) {
-          total[i] += item[i];
-        }
-      }
-      this.total = total;
-      /*
-      if (item.key === 'Leistung [MW]') {
-        console.log(item);
-        this.total = item;
-      }
-      */
-    });
-  }
-
-  makeSum(sum) {
-    const sumlist = [];
-    // tslint:disable-next-line:forin
-    for (const key in sum) {
-      sumlist.push(sum[key]);
-    }
-    return sumlist;
-  }
   getTotal(name) {
     return this.total[name] || '0';
   }
   changeTableType(event) {
-    console.log('tabletype', event.value, this.display);
     this.displayedColumns = this.display[event.value];
   }
   ngAfterViewInit() {

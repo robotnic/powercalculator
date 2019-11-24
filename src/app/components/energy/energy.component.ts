@@ -59,7 +59,7 @@ export class EnergyComponent implements OnInit {
   draw(energy) {
     const layout = d3Sankey.sankey().extent([
       [170, 10],
-      [840, 580]
+      [1240, 650]
     ]);
     const diagram = d3Sankey.sankeyDiagram()
     .linkColor(function(d) { return d.color; })
@@ -153,7 +153,7 @@ export class EnergyComponent implements OnInit {
   makeLinks(data) {
     console.log('makeLinks', data.sum);
     const links = [];
-    data.sum.forEach((item, s) => {
+    data.sum.electricity.items.forEach((item, s) => {
       const link = {
         source: item.key,
         target: 'Electricity',

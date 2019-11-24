@@ -16,16 +16,65 @@
       </ng-container>
 
       <ng-container matColumnDef="original">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> original </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> original [GWh]</th>
         <td mat-cell *matCellDef="let element"> {{element.original  | number:'0.0-0':'fr'}} </td>
-        <td mat-footer-cell *matFooterCellDef> Total </td>
+        <td mat-footer-cell *matFooterCellDef>  {{getTotal('original') | number:'0.0-1':'fr'}}  </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modified">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified [GWh]</th>
+        <td mat-cell *matCellDef="let element"> {{element.modified  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('modified') | number:'0.0-1':'fr'}}  </td>
       </ng-container>
 
       <ng-container matColumnDef="originalCo2">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> original CO2 </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> original CO2 [Mt]</th>
         <td mat-cell *matCellDef="let element"> {{element.originalCo2  | number:'0.0-0':'fr'}} </td>
-        <td mat-footer-cell *matFooterCellDef> Total </td>
+        <td mat-footer-cell *matFooterCellDef>  {{getTotal('originalCo2') | number:'0.0-1':'fr'}}  </td>
       </ng-container>
+
+      <ng-container matColumnDef="deltaEnergy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> delta </th>
+        <td mat-cell *matCellDef="let element"> {{element.deltaEnergy  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaEnergy') | number:'0.0-1':'fr'}}  </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deltaCo2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> delta CO2 [Mt]</th>
+        <td mat-cell *matCellDef="let element"> {{element.deltaCo2  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaCo2') | number:'0.0-1':'fr'}}  </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modifiedCo2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified CO2 [Mt]</th>
+        <td mat-cell *matCellDef="let element"> {{element.modifiedCo2  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('modifiedCo2') | number:'0.0-1':'fr'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modifiedMoney">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified[€]</th>
+        <td mat-cell *matCellDef="let element"> {{element.modifiedMoney  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('modifiedMoney') | number:'0.0-1':'fr'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="originalMoney">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> original[€]</th>
+        <td mat-cell *matCellDef="let element"> {{element.originalMoney  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('originalMoney') | number:'0.0-1':'fr'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deltaMoney">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> delta[€]</th>
+        <td mat-cell *matCellDef="let element"> {{element.deltaMoney  | number:'0.0-0':'fr'}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaMoney') | number:'0.0-1':'fr'}} </td>
+      </ng-container>
+
+
+
+
+
+
+
 
 
 

@@ -30,7 +30,7 @@
 
       <ng-container matColumnDef="deltaEnergy">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> delta [GWh]</th>
-        <td mat-cell *matCellDef="let element"> {{element.deltaEnergy | number:'0.0-1':'fr'}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.deltaEnergy| number:'0.0-1':'fr'}} </td>
         <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaEnergy')  | number:'0.0-1':'fr'}} </td>
       </ng-container>
 

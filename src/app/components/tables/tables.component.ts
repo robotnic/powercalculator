@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material';
 
 import * as moment from 'moment';
 import { Calculator } from 'src/app/calculator/calculator.service';
-import { TablecalcService } from 'src/app/calculator/tablecalc.service';
 import { EventService } from 'src/app/eventhandler.service';
 import { Data } from 'src/app/models/data';
 
@@ -29,8 +28,7 @@ export class TablesComponent implements OnInit  {
   constructor(
     private loader: Loader,
     private calculator: Calculator,
-    private eventService: EventService,
-    private tablecalcService: TablecalcService
+    private eventService: EventService
   ) {}
 
   ngOnInit() {
@@ -43,7 +41,6 @@ export class TablesComponent implements OnInit  {
       this.timetype = original.meta.timetype;
       this.calculator.mutate().then((modified: Data) => {
         this.data = modified;
-        this.tables = this.tablecalcService.calcTables(modified);
         this.eventService.setState('message.calced', 'render');
         this.eventService.setState('message.calcing', '');
         this.previousdate = modified.meta.date;

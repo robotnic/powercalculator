@@ -2,10 +2,12 @@
   <span *ngIf="loading.length"> loading: </span>
   <span *ngFor="let thing of loading" title="{{thing}}">{{thing}} </span>
 
-
   <span *ngFor="let thing of calcing" title="{{thing}}">{{thing}} </span>
   <span *ngIf="!loading.length && !calcing.length"> {{thedate}} </span>
+  <span *ngIf="!loading.length && !calcing.length && figures"> / CO2 {{figures.percentCo2 | number:'1.0-0'}} %  </span>
+  <span *ngIf="!loading.length && !calcing.length && figures"> / {{figures.modified | number:'1.0-0':'fr'}} GWh  </span>
 <br/>
   <span class="error" *ngIf="notloaded.length"> error: </span>
   <span class="error" *ngFor="let thing of notloaded" title="{{thing}}">{{thing}} </span>
 </p>
+

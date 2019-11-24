@@ -13,9 +13,13 @@ export class StateComponent implements OnInit {
   calcing = [];
   notloaded = [];
   thedate;
+  figures;
   constructor(private eventService: EventService) {}
 
   ngOnInit() {
+    this.eventService.on('figures').subscribe((state: any) => {
+      this.figures = state.figures;
+    });
     this.eventService.on('message').subscribe((state: State) => {
       // tslint:disable-next-line:forin
       for (const k in state.message) {
@@ -64,7 +68,7 @@ export class StateComponent implements OnInit {
     let endOfWeek = date.clone();
     let startOfWeek = date.clone();
     endOfWeek = endOfWeek.endOf('week');
-    startOfWeek = endOfWeek.startOf('week');
+    startOfWeek = startOfWeek.startOf('week');
     let thedate = 'unknown';
     switch (eventstate.navigate.timetype) {
       case 'day':
