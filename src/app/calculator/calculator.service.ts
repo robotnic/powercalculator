@@ -35,7 +35,9 @@ export class Calculator {
     return new Promise((resolve, reject) => {
       this.calcId = Math.random();
       this.calculate(this.calcId).then(data => {
-        resolve(data);
+        if (data.sum) {
+          resolve(data);
+        }
       }, e => {
         reject();
       });
@@ -43,18 +45,19 @@ export class Calculator {
   }
   async init(data) {
     this.calcId = Math.random();
+    const calcId = this.calcId;
     try {
-      await this.unlock({ 'message.calcing': 'fix' }, this.calcId);
+      await this.unlock({ 'message.calcing': 'fix' }, calcId);
       this.fixchartsService.fix(data);
-      await this.unlock({ 'message.calced': 'fix', 'message.calcing': 'normalize' }, this.calcId);
+      await this.unlock({ 'message.calced': 'fix', 'message.calcing': 'normalize' }, calcId);
       this.normalizeService.normalize(data);
-      await this.unlock({ 'message.calced': 'normalize', 'message.calcing': 'importexport' }, this.calcId);
+      await this.unlock({ 'message.calced': 'normalize', 'message.calcing': 'importexport' }, calcId);
       this.importexportService.calc(data);
-      await this.unlock({ 'message.calced': 'importexport', 'message.calcing': 'hydro' }, this.calcId);
+      await this.unlock({ 'message.calced': 'importexport', 'message.calcing': 'hydro' }, calcId);
       this.storageService.calcHydrofill(data);
-      await this.unlock({ 'message.calced': 'hydro', 'message.calcing': 'decorate' }, this.calcId);
+      await this.unlock({ 'message.calced': 'hydro', 'message.calcing': 'decorate' }, calcId);
       this.decorate(data);
-      await this.unlock({ 'message.calced': 'decorate' }, this.calcId);
+      await this.unlock({ 'message.calced': 'decorate' }, calcId);
       this.originalData = data;
     } catch (e) {
       console.error('init error', e);

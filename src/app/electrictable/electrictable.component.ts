@@ -13,7 +13,7 @@ import { Data } from 'src/app/models/data';
   templateUrl: './electrictable.component.html',
   styleUrls: ['./electrictable.component.less']
 })
-export class ElectrictableComponent implements  AfterViewInit, OnChanges {
+export class ElectrictableComponent implements AfterViewInit, OnChanges {
   @ViewChild(MatSort) sort: MatSort;
   @Input() data: any;
 
@@ -28,19 +28,19 @@ export class ElectrictableComponent implements  AfterViewInit, OnChanges {
   math = Math;
   tabletype = 'energy';
 
-  constructor(
-  ) {}
+  constructor() {}
 
   ngOnChanges() {
-    console.log(this.data.sum);
-    let sum = this.data.sum.electricity.items;
-    sum = sum.filter(item => {
-      return item.key !== 'Leistung [MW]';
-    });
-    this.total = this.data.sum.electricity.totals;
-    this.dataSource = new MatTableDataSource(sum);
-    this.sortBy('deltaMoney');
-    this.dataSource.sort = this.sort;
+    if (this.data.sum) {
+      let sum = this.data.sum.electricity.items;
+      sum = sum.filter(item => {
+        return item.key !== 'Leistung [MW]';
+      });
+      this.total = this.data.sum.electricity.totals;
+      this.dataSource = new MatTableDataSource(sum);
+      this.sortBy('deltaMoney');
+      this.dataSource.sort = this.sort;
+    }
   }
   sortBy(type) {
     this.dataSource.data.sort((a: any, b: any) => {

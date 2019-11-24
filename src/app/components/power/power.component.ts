@@ -21,6 +21,8 @@ export class PowerComponent implements OnInit, OnDestroy {
   view;
   charts;
   math = Math;
+  loaderSubscription: any;
+  eventSubscription: any;
   constructor(
     private loader: Loader,
     private calculator: Calculator,
@@ -196,7 +198,7 @@ export class PowerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loader.power().subscribe((original: Data) => {
+    this.loaderSubscription = this.loader.power().subscribe((original: Data) => {
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
       this.country = original.meta.country;
@@ -213,7 +215,7 @@ export class PowerComponent implements OnInit, OnDestroy {
         this.previousdate = modified.meta.date;
       });
     });
-    this.eventService.on('view').subscribe((state: State) => {
+    this.eventSubscription = this.eventService.on('view').subscribe((state: State) => {
       this.charts.forEach((chart, i) => {
         chart.disabled = false;
         if (state.view.charts[i] === '1') {
@@ -267,5 +269,7 @@ export class PowerComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     console.log('destroy');
+    this.eventSubscription.unsubscribe();
+    this.loaderSubscription.unsubscribe();
   }
 }

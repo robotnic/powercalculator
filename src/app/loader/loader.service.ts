@@ -24,6 +24,7 @@ export class Loader {
   currentCountry;
   currentTimetype;
   data: Data;
+  loadSubscription: any;
   constructor(
     private powerService: PowerService,
     private eventHandler: EventService,
@@ -37,8 +38,9 @@ export class Loader {
   power() {
     return new Observable((observer) => {
       // observable execution
-      this.load().subscribe(data => {
+      this.loadSubscription = this.load().subscribe(data => {
         if (data) {
+          console.log('loaded something');
           const rdata = JSON.parse(JSON.stringify(data));
           observer.next(rdata);
         } else {
@@ -57,10 +59,12 @@ export class Loader {
       } else {
         this.loaddata(observer);
       }
-      this.eventHandler.on('navigate').subscribe(() => {
+      this.eventHandler.on('navigate').subscribe((e) => {
+        console.log('navigate', e);
         this.loaddata(observer);
       });
       this.eventHandler.on('mutate').subscribe(() => {
+        console.log('mutate');
         this.loaddata(observer);
       });
     });

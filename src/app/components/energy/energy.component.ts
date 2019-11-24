@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Loader } from 'src/app/loader/loader.service';
 import { Calculator } from 'src/app/calculator/calculator.service';
 import { EventService } from 'src/app/eventhandler.service';
@@ -12,8 +12,9 @@ import * as d3Sankey from 'd3-sankey-diagram';
   templateUrl: './energy.component.html',
   styleUrls: ['./energy.component.less']
 })
-export class EnergyComponent implements OnInit {
+export class EnergyComponent implements OnInit, OnDestroy {
   data: Data;
+  loaderSubscription: any;
   constructor(
     private loader: Loader,
     private calculator: Calculator,
@@ -21,7 +22,8 @@ export class EnergyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loader.power().subscribe((original: Data) => {
+    this.loaderSubscription = this.loader.power().subscribe((original: Data) => {
+      console.log('loaded in energy component');
       this.calculator.mutate().then((modified: Data) => {
         this.data = modified;
         const sankey = this.makeSum(modified);
@@ -233,5 +235,8 @@ export class EnergyComponent implements OnInit {
       }
     }
     return links;
+  }
+  ngOnDestroy() {
+    this.loaderSubscription.unsubscribe();
   }
 }

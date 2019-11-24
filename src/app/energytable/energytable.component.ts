@@ -24,12 +24,14 @@ export class EnergytableComponent implements OnInit, OnChanges, AfterViewInit {
   };
   displayedColumns = this.display.energy;
 
-  ngOnInit() {}
+  ngOnInit() {};
   ngOnChanges() {
-    this.dataSource = new MatTableDataSource(this.data.sum.energy.items);
-    this.total = this.data.sum.energy.totals;
-    this.sortBy('original');
-    this.dataSource.sort = this.sort;
+    if (this.data.sum) {
+      this.dataSource = new MatTableDataSource(this.data.sum.energy.items);
+      this.total = this.data.sum.energy.totals;
+      this.sortBy('original');
+      this.dataSource.sort = this.sort;
+    }
   }
   sortBy(type) {
     this.dataSource.data.sort((a: any, b: any) => {

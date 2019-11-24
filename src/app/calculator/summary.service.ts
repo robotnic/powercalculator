@@ -181,7 +181,7 @@ export class SummaryService {
         deltaTime = 1;
         break;
       default:
-        console.error('missing resolution', chart.key, chart.resolution);
+        //console.error('missing resolution', chart.key, chart.resolution);
     }
     return deltaTime;
   }

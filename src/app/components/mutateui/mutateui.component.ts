@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventService } from 'src/app/eventhandler.service';
 import { CountriesService } from 'src/app/loader/countries.service';
 import { Loader } from 'src/app/loader/loader.service';
@@ -41,7 +41,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
-export class MutateuiComponent implements OnInit {
+export class MutateuiComponent implements OnInit, OnDestroy {
   countries: string[] = [];
   timeout = null;
   country;
@@ -54,6 +54,7 @@ export class MutateuiComponent implements OnInit {
   previousState: State;
 
   timetype;
+  loaderSubscription: any;
 
   constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) {}
 
@@ -67,7 +68,7 @@ export class MutateuiComponent implements OnInit {
     this.countryService.countries().then(countries => {
       this.countries = Object.keys(countries);
     });
-    this.loader.power().subscribe((power: Data) => {
+    this.loaderSubscription = this.loader.power().subscribe((power: Data) => {
       const data: Data = power;
       this.layers.length = 0;
       if (data.power) {
@@ -203,5 +204,8 @@ export class MutateuiComponent implements OnInit {
     });
     console.log(layercode);
     this.eventService.setState('view.charts', layercode);
+  }
+  ngOnDestroy() {
+    this.loaderSubscription.unsubscribe();
   }
 }

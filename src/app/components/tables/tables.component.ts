@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Loader } from 'src/app/loader/loader.service';
 import { MatSort } from '@angular/material';
 
@@ -12,7 +12,7 @@ import { Data } from 'src/app/models/data';
   templateUrl: './tables.component.html',
   styleUrls: ['./tables.component.less']
 })
-export class TablesComponent implements OnInit  {
+export class TablesComponent implements OnInit, OnDestroy  {
   total = {};
   tables = {};
   date;
@@ -24,6 +24,7 @@ export class TablesComponent implements OnInit  {
   dataSource;
   math = Math;
   tabletype = 'energy';
+  powerSubscription: any;
 
   constructor(
     private loader: Loader,
@@ -33,7 +34,7 @@ export class TablesComponent implements OnInit  {
 
   ngOnInit() {
     console.log('inittable');
-    this.loader.power().subscribe((original: Data) => {
+    this.powerSubscription = this.loader.power().subscribe((original: Data) => {
       console.log('original', original);
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
@@ -46,5 +47,8 @@ export class TablesComponent implements OnInit  {
         this.previousdate = modified.meta.date;
       });
     });
+  }
+  ngOnDestroy() {
+    this.powerSubscription.unsubscribe();
   }
 }
