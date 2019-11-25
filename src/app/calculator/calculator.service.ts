@@ -74,7 +74,7 @@ export class Calculator {
     await this.unlock({ 'message.calcing': 'loadshift', 'message.calced': 'transport' }, calcId);
     this.loadshiftService.loadshift(data);
     await this.unlock({ 'message.calced': 'loadshift', 'message.calcing': 'timeshift' }, calcId);
-    this.timeshiftService.timeshift(data);
+    //this.timeshiftService.timeshift(data);
     await this.unlock({ 'message.calced': 'timeshift', 'message.calcing': 'pump' }, calcId);
     this.storageService.addStorage(data);
     await this.unlock({ 'message.calced': 'pump', 'message.calcing': 'sum' }, calcId);
