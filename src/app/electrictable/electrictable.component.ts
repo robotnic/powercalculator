@@ -1,12 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges } from '@angular/core';
-import { Loader } from 'src/app/loader/loader.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material';
 
-import * as moment from 'moment';
-import { Calculator } from 'src/app/calculator/calculator.service';
-import { EventService } from 'src/app/eventhandler.service';
-import { Data } from 'src/app/models/data';
 
 @Component({
   selector: 'app-electrictable',

@@ -3,9 +3,9 @@ import { Loader } from 'src/app/loader/loader.service';
 import { MatSort } from '@angular/material';
 
 import * as moment from 'moment';
-import { Calculator } from 'src/app/calculator/calculator.service';
 import { EventService } from 'src/app/eventhandler.service';
 import { Data } from 'src/app/models/data';
+import { CalcschedulerService } from 'src/app/calculator/calcscheduler.service';
 
 @Component({
   selector: 'app-tables',
@@ -28,19 +28,18 @@ export class TablesComponent implements OnInit, OnDestroy  {
 
   constructor(
     private loader: Loader,
-    private calculator: Calculator,
+    private scheduler: CalcschedulerService,
     private eventService: EventService
   ) {}
 
   ngOnInit() {
     console.log('inittable');
     this.powerSubscription = this.loader.power().subscribe((original: Data) => {
-      console.log('original', original);
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
       this.country = original.meta.country;
       this.timetype = original.meta.timetype;
-      this.calculator.mutate().then((modified: Data) => {
+      this.scheduler.mutate().then((modified: Data) => {
         this.data = modified;
         this.eventService.setState('message.calced', 'render');
         this.eventService.setState('message.calcing', '');

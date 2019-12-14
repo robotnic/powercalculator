@@ -16,7 +16,6 @@ export class PowerService {
   charts() {
     return new Promise((resolve) => {
       const state: State = this.eventService.getState();
-      console.log(state);
       const date: moment.Moment = moment(state.navigate.date, 'YYYYMMDD');
       const start: moment.Moment = moment(date).startOf(state.navigate.timetype as unitOfTime.StartOf);
       const end: moment.Moment = moment(start).add(state.navigate.timetype + 's' as unitOfTime.DurationConstructor, +1);
@@ -38,7 +37,6 @@ export class PowerService {
           });
         }
       } else {
-        console.log(state.navigate.timetype, start, end);
         this.eventService.setState('message.loading', 'power');
         this.loadChart(start, end, state.navigate.country, state.navigate.refresh).then((chart: Chart) => {
           this.eventService.setState('message.loading', '');

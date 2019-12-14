@@ -37,9 +37,7 @@ export class SummaryService {
   calcEnergy(data) {
     this.state = this.eventService.getState();
     const transport = this.state.mutate.Transport;
-    console.log('THE STATE', transport);
     const factor = this.getDurationFactor(data.power);
-    console.log('calcenergy', factor, data.consumption);
     const sumObj = {};
     const sum = {
       items: [],
@@ -86,7 +84,6 @@ export class SummaryService {
       row.modifiedMoney = row.modified * 50000;
       row.deltaMoney = row.modifiedMoney - row.originalMoney;
       if (row.key === 'Electricity') {
-        console.log('hot swap', data.sum.electricity.totals, row);
         row = data.sum.electricity.totals;
         row.key = 'Electrity';
       }
@@ -101,7 +98,6 @@ export class SummaryService {
     const end = power[0].values[power[0].values.length - 1].x;
     const duration = end - start;
     const yearDuration = 365 * 24 * 60 * 60 * 1000;
-    console.log('duration', start, end, duration / 1000);
     return duration / yearDuration;
   }
 
@@ -117,7 +113,6 @@ export class SummaryService {
       }
     }
     sum.totals = this.makeTotals(sum.items);
-    console.log(sum);
     return sum;
   }
 

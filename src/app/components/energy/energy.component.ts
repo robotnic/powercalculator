@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Loader } from 'src/app/loader/loader.service';
-import { Calculator } from 'src/app/calculator/calculator.service';
 import { EventService } from 'src/app/eventhandler.service';
 import * as moment from 'moment';
 import { Data } from 'src/app/models/data';
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey-diagram';
+import { CalcschedulerService } from 'src/app/calculator/calcscheduler.service';
 
 @Component({
   selector: 'app-energy',
@@ -17,14 +17,13 @@ export class EnergyComponent implements OnInit, OnDestroy {
   loaderSubscription: any;
   constructor(
     private loader: Loader,
-    private calculator: Calculator,
+    private scheduler: CalcschedulerService,
     private eventService: EventService
   ) {}
 
   ngOnInit() {
     this.loaderSubscription = this.loader.power().subscribe((original: Data) => {
-      console.log('loaded in energy component');
-      this.calculator.mutate().then((modified: Data) => {
+      this.scheduler.mutate().then((modified: Data) => {
         this.data = modified;
         const sankey = this.makeSum(modified);
         this.addEV(sankey);
@@ -141,7 +140,6 @@ export class EnergyComponent implements OnInit, OnDestroy {
 
   makeNodes(data) {
     const nodes = [];
-    console.log('makeNodes', data.sum);
     // tslint:disable-next-line:forin
     for (const s in data.sum) {
       const node = {
@@ -153,7 +151,6 @@ export class EnergyComponent implements OnInit, OnDestroy {
     return nodes;
   }
   makeLinks(data) {
-    console.log('makeLinks', data.sum);
     const links = [];
     data.sum.electricity.items.forEach((item, s) => {
       const link = {
@@ -207,7 +204,6 @@ export class EnergyComponent implements OnInit, OnDestroy {
         factor = 1;
         break;
     }
-    console.log('factor', factor, state.navigate.timetype);
     const links = [];
     // tslint:disable-next-line:forin
     for (const s in data.consumption) {

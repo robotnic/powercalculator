@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Scheduler } from 'rxjs';
 import { PowerService } from './power.service';
 import { InstalledService } from './installed.service';
 import { ConfigService } from './config.service';
@@ -8,13 +8,13 @@ import { EventService } from '../eventhandler.service';
 import { HydrofillService } from './hydrofill.service';
 import { ConsumptionService } from './consumption.service';
 import * as moment from 'moment';
-import { Calculator } from '../calculator/calculator.service';
 import { Data } from '../models/data';
 import { Chart } from '../models/charts';
 import { Installed } from '../models/installed';
 import { Config } from '../models/config';
 import { Rules } from '../models/rules';
 import { Consumption } from '../models/consumption';
+import { CalcschedulerService } from '../calculator/calcscheduler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class Loader {
     private configService: ConfigService,
     private hydrofillService: HydrofillService,
     private rulesService: RulesService,
-    private calculator: Calculator,
+    private scheduler: CalcschedulerService,
     private consumptionService: ConsumptionService
   ) {}
   power() {
@@ -40,7 +40,6 @@ export class Loader {
       // observable execution
       this.loadSubscription = this.load().subscribe(data => {
         if (data) {
-          console.log('loaded something');
           const rdata = JSON.parse(JSON.stringify(data));
           observer.next(rdata);
         } else {
@@ -60,11 +59,9 @@ export class Loader {
         this.loaddata(observer);
       }
       this.eventHandler.on('navigate').subscribe((e) => {
-        console.log('navigate', e);
         this.loaddata(observer);
       });
       this.eventHandler.on('mutate').subscribe(() => {
-        console.log('mutate');
         this.loaddata(observer);
       });
     });
@@ -107,10 +104,12 @@ export class Loader {
           sum: null,
           loadshifted: null
         };
-        this.calculator.init(this.data).then(() => {
+        this.scheduler.init(this.data).then(() => {
           if (this.data.power) {
             observer.next(this.data);
           }
+        }, error => {
+          console.log('error');
         });
       });
     } else {

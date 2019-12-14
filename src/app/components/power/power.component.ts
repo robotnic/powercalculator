@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { Loader } from '../../loader/loader.service';
-import { Calculator } from '../../calculator/calculator.service';
 import { EventService } from '../../eventhandler.service';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -9,6 +8,7 @@ import * as moment from 'moment';
 import { Data } from 'src/app/models/data';
 import { Chart } from 'src/app/models/charts';
 import { State } from 'src/app/models/state';
+import { CalcschedulerService } from 'src/app/calculator/calcscheduler.service';
 
 @Component({
   selector: 'app-power',
@@ -25,7 +25,7 @@ export class PowerComponent implements OnInit, OnDestroy {
   eventSubscription: any;
   constructor(
     private loader: Loader,
-    private calculator: Calculator,
+    private scheduler: CalcschedulerService,
     private eventService: EventService
   ) {}
   @ViewChild('nvd3') private nvd3: any;
@@ -203,9 +203,8 @@ export class PowerComponent implements OnInit, OnDestroy {
       this.meta = original.meta;
       this.country = original.meta.country;
       this.timetype = original.meta.timetype;
-      this.calculator.mutate().then((modified: Data) => {
+      this.scheduler.mutate().then((modified: Data) => {
         this.data = modified;
-        console.log('das große ding', modified);
         //const sum = this.makeSum(modified.sum);
         //this.dataSource = new MatTableDataSource(sum);
         this.charts = this.reduce(modified);
@@ -268,7 +267,6 @@ export class PowerComponent implements OnInit, OnDestroy {
     return data.loadshifted;
   }
   ngOnDestroy() {
-    console.log('destroy');
     this.eventSubscription.unsubscribe();
     this.loaderSubscription.unsubscribe();
   }

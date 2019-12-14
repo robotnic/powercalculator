@@ -10,15 +10,19 @@ import { State } from 'src/app/models/state';
 })
 export class StateComponent implements OnInit {
   loading = [];
-  calcing = [];
+  calcing = '';
   notloaded = [];
   thedate;
   figures;
   constructor(private eventService: EventService) {}
 
   ngOnInit() {
+    this.thedate = this.calcDate();
     this.eventService.on('figures').subscribe((state: any) => {
       this.figures = state.figures;
+    });
+    this.eventService.on('calcing').subscribe((state: any) => {
+      this.calcing = state.calcing;
     });
     this.eventService.on('message').subscribe((state: State) => {
       // tslint:disable-next-line:forin
@@ -40,14 +44,8 @@ export class StateComponent implements OnInit {
             break;
           case 'calcing':
             if (state.message[k]) {
-              this.calcing.push(state.message[k]);
+              this.calcing = state.message[k];
             }
-            break;
-          case 'calced':
-            this.calcing = this.calcing.filter(item => {
-              return item !== state.message[k];
-            });
-            this.thedate = this.calcDate(); // date
             break;
           case 'notloaded':
             const thing: any = state;
