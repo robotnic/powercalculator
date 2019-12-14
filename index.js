@@ -6,8 +6,8 @@ app.use(compression());
 
 
 const PORT = process.env.PORT || 3000
-//const baseUrl = 'https://entsoe.herokuapp.com'
-const baseUrl = 'https://entsoeapi.azurewebsites.net'
+const baseUrl = 'https://entsoe.herokuapp.com'
+//const baseUrl = 'https://entsoeapi.azurewebsites.net'
 
 
 
