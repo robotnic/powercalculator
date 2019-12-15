@@ -1,5 +1,5 @@
 export interface Installed {
-    [index: string]: InstalledType;
+    [index: number]: InstalledType;
 }
 interface InstalledType {
   [index: string]: number;

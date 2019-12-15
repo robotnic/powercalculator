@@ -20,7 +20,7 @@ export class LoadshiftService {
 
     this.getPowerByName(data.loadshifted);
     const state = this.eventService.getState();
-    const year:any = state.navigate.date.substring(0, 4);
+    let year = parseInt(state.navigate.date.substring(0, 4), 10);
 
     /* Iterate over rules.json and values */
     data.rules.loadshift.from.forEach(from => {
@@ -32,7 +32,6 @@ export class LoadshiftService {
           if (harvest > 0) {
             console.log('data.installed', data.installed, year);
             while (!data.installed[year]) {
-              year = parseInt(year);
               year--;
               if (year < 2000) {
                 break;
