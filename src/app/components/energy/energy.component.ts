@@ -27,11 +27,20 @@ export class EnergyComponent implements OnInit, OnDestroy {
         this.data = modified;
         const sankey = this.makeSum(modified);
         this.addEV(sankey);
+//        this.addGasStorage(sankey);
         sankey.order = this.makeOrder(sankey.links);
         this.draw(sankey);
         this.eventService.setState('message.calced', 'render');
         this.eventService.setState('message.calcing', '');
       });
+    });
+  }
+
+  addGasStorage(sankey) {
+    console.log('add storage', sankey);
+    sankey.nodes.push({
+      id: 'Gas Storage',
+      title: 'Gas Storage'
     });
   }
 
@@ -63,20 +72,20 @@ export class EnergyComponent implements OnInit, OnDestroy {
       [1240, 650]
     ]);
     const diagram = d3Sankey.sankeyDiagram()
-    .linkColor(function(d) { return d.color; })
-    .linkTitle(function(d) {
-      let title = d.source.title;
-      title += ' → ';
-      title += d.target.title;
-      title += ' ' + Math.round(d.value ) + ' GWh';
-      return title;
-    });
+      .linkColor(function(d) { return d.color; })
+      .linkTitle(function(d) {
+        let title = d.source.title;
+        title += ' → ';
+        title += d.target.title;
+        title += ' ' + Math.round(d.value) + ' GWh';
+        return title;
+      });
 
     //d3.json('assets/energy.json', function(energy) {
-      layout.ordering(energy.order);
-      d3.select('#sankey')
-        .datum(layout(energy))
-        .call(diagram);
+    layout.ordering(energy.order);
+    d3.select('#sankey')
+      .datum(layout(energy))
+      .call(diagram);
 
     //});
   }
@@ -91,51 +100,35 @@ export class EnergyComponent implements OnInit, OnDestroy {
     };
     sankey.links = this.makeLinksConsumption(data);
     sankey.links = this.makeLinks(data).concat(sankey.links);
+    sankey.links = this.makeThePower2Gas(sankey.links);
     sankey.nodes = this.makeNodesConsumption(sankey.links);
     //sankey.rankSet = this.makeRankSet(sankey.links);
     //sankey.order = this.makeOrder(sankey.links);
     return sankey;
   }
-
-  makeRankSet(links) {
-    const start = {
-      type: 'start',
-      nodes: []
-    };
-    const middle = {
-      type: 'middle',
-      nodes: ['Electricity']
-    };
-
-    const end = {
-      type: 'end',
-      nodes: []
-    };
-    const rankset = [start, middle, end];
-    links.forEach(link => {
-      if (link.source !== 'Electricity') {
-        start.nodes.push(link.source);
-      }
-      if (link.target !== 'Electricity') {
-        end.nodes.push(link.target);
-      }
-    });
-    return rankset;
-  }
-
   makeOrder(links) {
     const start = [];
     const middle = ['Electricity'];
+    const middle2 = [];
     const end = [];
     links.forEach(link => {
-      if (link.source !== 'Electricity') {
-        start.push(link.source);
-      }
-      if (link.target !== 'Electricity') {
-        end.push(link.target);
+      if (link.target === 'Power2Gas') {
+        middle2.push(link.target);
+      } else {
+        if (link.source !== 'Electricity') {
+          start.push(link.source);
+        }
+        if (link.target !== 'Electricity') {
+          end.push(link.target);
+        }
       }
     });
-    return [[start], [middle], [end]];
+    return [
+      [start],
+      [middle],
+      [middle2],
+      [end]
+    ];
   }
 
   makeNodes(data) {
@@ -153,9 +146,6 @@ export class EnergyComponent implements OnInit, OnDestroy {
   makeLinks(data) {
     const links = [];
     console.log('sankey', data.sum.electricity);
-    data.sum.electricity.items.forEach(item => {
-      console.log(item.key, item.modified);
-    })
     data.sum.electricity.items.forEach((item, s) => {
       const link = {
         source: item.key,
@@ -173,6 +163,14 @@ export class EnergyComponent implements OnInit, OnDestroy {
         links.push(link);
       }
     });
+    /*
+    links.push({
+      source: 'Power2Gas',
+      target: 'Residential',
+      value: 5,
+      color: 'red',
+    });
+    */
     return links;
   }
 
@@ -201,7 +199,7 @@ export class EnergyComponent implements OnInit, OnDestroy {
     let factor = 1;
     switch (state.navigate.timetype) {
       case 'day':
-        factor = 365 ;
+        factor = 365;
         break;
       case 'week':
         factor = 365 / 7;
@@ -217,11 +215,11 @@ export class EnergyComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:forin
     for (const s in data.consumption) {
       for (const t in data.consumption[s]) {
-      let color = 'red';
-      if (data.config[t]) {
-        color = data.config[t].color;
-      }
-      // tslint:disable-next-line:forin
+        let color = 'red';
+        if (data.config[t]) {
+          color = data.config[t].color;
+        }
+        // tslint:disable-next-line:forin
         const link = {
           source: t,
           target: s,
@@ -229,7 +227,7 @@ export class EnergyComponent implements OnInit, OnDestroy {
           color: color,
           type: 'not electricity'
         };
-        if (link.value < 0)  {
+        if (link.value < 0) {
           link.source = s;
           link.target = t;
           link.value = -link.value;
@@ -241,7 +239,54 @@ export class EnergyComponent implements OnInit, OnDestroy {
     }
     return links;
   }
-  ngOnDestroy() {
-    this.loaderSubscription.unsubscribe();
+
+  makeThePower2Gas(links) {
+    let hasGas = 0;
+    links.forEach(item => {
+      if (item.target === 'Power2Gas') {
+        hasGas = item.value * 0.7;
+      }
+    });
+    links.forEach(item => {
+      if (item.source === 'Natural gas') {
+        if (item.value < hasGas) {
+          item.source = 'Power2Gas';
+          item.color = 'lightblue';
+          hasGas -= item.value;
+        } else {
+          if (hasGas > 0) {
+            links.push({
+              source: 'Power2Gas',
+              target: item.target,
+              value: hasGas,
+              color: 'lightblue',
+            });
+            item.value -= hasGas;
+            hasGas = 0;
+          }
+        }
+      }
+    });
+    if (hasGas > 0) {
+      links.push({
+        source: 'Power2Gas',
+        target: 'Gas Storage',
+        value: hasGas,
+        color: 'lightblue',
+      });
+    }
+      /*
+          links.push({
+            source: 'Power2Gas',
+            target: 'residential',
+            value: 5,
+            color: 'red',
+          });
+          */
+      return links;
+    }
+
+    ngOnDestroy() {
+      this.loaderSubscription.unsubscribe();
+    }
   }
-}

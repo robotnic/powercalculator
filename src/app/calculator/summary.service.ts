@@ -96,7 +96,6 @@ export class SummaryService {
             power2gas = JSON.parse(JSON.stringify(item));
             // tslint:disable-next-line:forin
             for (let t in item) {
-              console.log(t, row[t]);
               if (t !== 'key') {
                 power2gas[t] = -power2gas[t] * 0.7;
                 row[t] -= power2gas[t];

@@ -2,3 +2,4 @@ power2gas + curtailment to sankey
 tab change bug
 unify w,co2,€ radios
 reduce power2gas from gas
+put constants into config file
