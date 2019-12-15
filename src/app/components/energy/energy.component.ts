@@ -152,6 +152,10 @@ export class EnergyComponent implements OnInit, OnDestroy {
   }
   makeLinks(data) {
     const links = [];
+    console.log('sankey', data.sum.electricity);
+    data.sum.electricity.items.forEach(item => {
+      console.log(item.key, item.modified);
+    })
     data.sum.electricity.items.forEach((item, s) => {
       const link = {
         source: item.key,
@@ -160,6 +164,11 @@ export class EnergyComponent implements OnInit, OnDestroy {
         color: data.config[item.key].color,
         type: 'electricity'
       };
+      if (link.value < 0) {
+        link.source = 'Electricity';
+        link.target = item.key;
+        link.value = -link.value;
+      }
       if (item.key !== 'Leistung [MW]') {
         links.push(link);
       }
@@ -168,7 +177,7 @@ export class EnergyComponent implements OnInit, OnDestroy {
   }
 
   makeNodesConsumption(links) {
-    let names = [];
+    const names = [];
     const nodes = [];
     // tslint:disable-next-line:forin
     links.forEach(link => {

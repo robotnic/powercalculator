@@ -39,6 +39,7 @@ export class SummaryService {
     const transport = this.state.mutate.Transport;
     const factor = this.getDurationFactor(data.power);
     const sumObj = {};
+    let power2gas = null;
     const sum = {
       items: [],
       totals: {}
@@ -73,7 +74,7 @@ export class SummaryService {
       if (s === 'Gas/Diesel Oil (w/o bio)' || s === 'Motor Gasoline (w/o bio)') {
         row.modified = row.original * (100 - transport) / 100;
       }
-
+/*
       if (data.config[s] && data.config[s].co2) {
         row.originalCo2 = row.original * data.config[s].co2 / 1000;
         row.modifiedCo2 = row.modified * data.config[s].co2 / 1000;
@@ -87,8 +88,37 @@ export class SummaryService {
         row = data.sum.electricity.totals;
         row.key = 'Electrity';
       }
+      */
+
+      if (row.key === 'Natural gas') {
+        data.sum.electricity.items.forEach(item => {
+          if (item.key === 'Power2Gas') {
+            power2gas = JSON.parse(JSON.stringify(item));
+            // tslint:disable-next-line:forin
+            for (let t in item) {
+              console.log(t, row[t]);
+              if (t !== 'key') {
+                power2gas[t] = -power2gas[t] * 0.7;
+                row[t] -= power2gas[t];
+              }
+            }
+          }
+        });
+      }
+
+      if (data.config[s] && data.config[s].co2) {
+        row.originalCo2 = row.original * data.config[s].co2 / 1000;
+        row.modifiedCo2 = row.modified * data.config[s].co2 / 1000;
+      }
+      row.deltaEnergy = row.modified - row.original;
+      row.deltaCo2 = row.modifiedCo2 - row.originalCo2;
+      row.originalMoney = row.original * 50000;
+      row.modifiedMoney = row.modified * 50000;
+      row.deltaMoney = row.modifiedMoney - row.originalMoney;
+ 
       sum.items.push(row);
     }
+    sum.items.push(power2gas);
     sum.totals = this.makeTotals(sum.items);
     return sum;
   }
