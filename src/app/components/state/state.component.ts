@@ -19,6 +19,7 @@ export class StateComponent implements OnInit {
   ngOnInit() {
     this.thedate = this.calcDate();
     this.eventService.on('figures').subscribe((state: any) => {
+      this.thedate = this.calcDate();
       this.figures = state.figures;
     });
     this.eventService.on('calcing').subscribe((state: any) => {

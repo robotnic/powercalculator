@@ -21,8 +21,6 @@ export class TransportService {
       const p = everageFossilPower / 3 * transport;
       item.y = p;
       if (modifiedByName['Leistung [MW]'] && modifiedByName['Leistung [MW]'].values[i] ) {
-        console.log(modifiedByName['Leistung [MW]'].values);
-        console.log(originalByName['Leistung [MW]'].values[i].y, p);
         modifiedByName['Leistung [MW]'].values[i].y = originalByName['Leistung [MW]'].values[i].y + p;
       }
     });

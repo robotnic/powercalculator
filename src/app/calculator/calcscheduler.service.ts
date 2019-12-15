@@ -72,7 +72,7 @@ export class CalcschedulerService {
   schedule(type, data) {
       if (this.reject) {
         try {
-        this.reject('stopcalc');
+          this.reject('stopcalc');
         } catch (e) {
           console.log('soso');
         }
@@ -87,7 +87,10 @@ export class CalcschedulerService {
       this.process(data).then(() => {
         this.reject = null;
         resolve(data);
-      });
+      }, error => {
+        this.reject = null;
+        this.reject('stopcalc');
+      })
     });
   }
 

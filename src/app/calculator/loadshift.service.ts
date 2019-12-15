@@ -30,7 +30,6 @@ export class LoadshiftService {
         let harvest: number = this.harvestPower(from, i, faktor);
         data.rules.loadshift.to.forEach(to => {
           if (harvest > 0) {
-            console.log('data.installed', data.installed, year);
             while (!data.installed[year]) {
               year--;
               if (year < 2000) {
