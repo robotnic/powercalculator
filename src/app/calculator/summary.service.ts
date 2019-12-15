@@ -78,9 +78,7 @@ export class SummaryService {
       }
 
       if (row.key === 'Electricity') {
-        console.log('----el----', row);
         const el = data.sum.electricity.totals;
-        console.log(el);
         row = el;
         row.key = 'Electricity';
       };
