@@ -23,7 +23,7 @@
       </ng-container>
 
       <ng-container matColumnDef="originalCo2">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> original CO2 [Mt]</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> original CO2 [kt]</th>
         <td mat-cell *matCellDef="let element"> {{element.originalCo2  | number:'0.0-0':'fr'}} </td>
         <td mat-footer-cell *matFooterCellDef>  {{getTotal('originalCo2') | number:'0.0-1':'fr'}}  </td>
       </ng-container>
@@ -35,13 +35,13 @@
       </ng-container>
 
       <ng-container matColumnDef="deltaCo2">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> delta CO2 [Mt]</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> delta CO2 [kt]</th>
         <td mat-cell *matCellDef="let element"> {{element.deltaCo2  | number:'0.0-0':'fr'}} </td>
         <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaCo2') | number:'0.0-1':'fr'}}  </td>
       </ng-container>
 
       <ng-container matColumnDef="modifiedCo2">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified CO2 [Mt]</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> modified CO2 [kt]</th>
         <td mat-cell *matCellDef="let element"> {{element.modifiedCo2  | number:'0.0-0':'fr'}} </td>
         <td mat-footer-cell *matFooterCellDef> {{getTotal('modifiedCo2') | number:'0.0-1':'fr'}} </td>
       </ng-container>
