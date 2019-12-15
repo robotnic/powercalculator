@@ -15,8 +15,8 @@ export class ElectrictableComponent implements AfterViewInit, OnChanges {
 
   display = {
     'energy': ['key', 'original', 'modified', 'deltaEnergy'],
-    'co2': ['key', 'originalCo2', 'modifiedCo2', 'deltaCo2'],
-    'money': ['key', 'originalMoney', 'modifiedMoney', 'deltaMoney']
+    'co2': ['key', 'co2perMWh', 'originalCo2', 'modifiedCo2', 'deltaCo2'],
+    'money': ['key', 'moneyPerMWh', 'originalMoney', 'modifiedMoney', 'deltaMoney']
   };
   displayedColumns = this.display.energy;
   total = {};

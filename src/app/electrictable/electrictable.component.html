@@ -24,7 +24,7 @@
       </ng-container>
 
       <ng-container matColumnDef="deltaEnergy">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> delta [GWh]</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Δ [GWh]</th>
         <td mat-cell *matCellDef="let element"> {{element.deltaEnergy| number:'0.0-1':'fr'}} </td>
         <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaEnergy')  | number:'0.0-1':'fr'}} </td>
       </ng-container>
@@ -67,8 +67,22 @@
       <ng-container matColumnDef="deltaMoney">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Δ money €</th>
         <td mat-cell *matCellDef="let element"><span>{{element.deltaMoney | number:'0.0-0':'fr'}}</span></td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotal('money') | number:'0.0-0':'fr' }} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('deltaMoney') | number:'0.0-0':'fr' }} </td>
       </ng-container>
+
+      <ng-container matColumnDef="co2perMWh">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>co2 kg/MWh</th>
+        <td mat-cell *matCellDef="let element"><span>{{element.co2perMWh | number:'0.0-0':'fr'}}</span></td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('co2perMWh') | number:'0.0-0':'fr' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="moneyPerMWh">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>€/MWh</th>
+        <td mat-cell *matCellDef="let element"><span>{{element.moneyPerMWh | number:'0.0-0':'fr'}}</span></td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotal('moneyPerMWh') | number:'0.0-0':'fr' }} </td>
+      </ng-container>
+
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

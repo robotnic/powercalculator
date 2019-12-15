@@ -67,6 +67,8 @@ export class SummaryService {
         modifiedCo2: 0,
         deltaEnergy: 0,
         deltaCo2: 0,
+        co2perMWh: 0,
+        moneyPerMWh: 50,
         originalMoney: 0,
         modifiedMoney: 0,
         deltaMoney: 0,
@@ -74,22 +76,14 @@ export class SummaryService {
       if (s === 'Gas/Diesel Oil (w/o bio)' || s === 'Motor Gasoline (w/o bio)') {
         row.modified = row.original * (100 - transport) / 100;
       }
-/*
-      if (data.config[s] && data.config[s].co2) {
-        row.originalCo2 = row.original * data.config[s].co2 / 1000;
-        row.modifiedCo2 = row.modified * data.config[s].co2 / 1000;
-      }
-      row.deltaEnergy = row.modified - row.original;
-      row.deltaCo2 = row.modifiedCo2 - row.originalCo2;
-      row.originalMoney = row.original * 50000;
-      row.modifiedMoney = row.modified * 50000;
-      row.deltaMoney = row.modifiedMoney - row.originalMoney;
-      if (row.key === 'Electricity') {
-        row = data.sum.electricity.totals;
-        row.key = 'Electrity';
-      }
-      */
 
+      if (row.key === 'Electricity') {
+        console.log('----el----', row);
+        const el = data.sum.electricity.totals;
+        console.log(el);
+        row = el;
+        row.key = 'Electricity';
+      };
       if (row.key === 'Natural gas') {
         data.sum.electricity.items.forEach(item => {
           if (item.key === 'Power2Gas') {
@@ -103,16 +97,18 @@ export class SummaryService {
             }
           }
         });
+        row.moneyPerMWh = 15;
       }
 
       if (data.config[s] && data.config[s].co2) {
         row.originalCo2 = row.original * data.config[s].co2 / 1000;
         row.modifiedCo2 = row.modified * data.config[s].co2 / 1000;
+        row.co2perMWh = data.config[s].co2 ;
       }
       row.deltaEnergy = row.modified - row.original;
       row.deltaCo2 = row.modifiedCo2 - row.originalCo2;
-      row.originalMoney = row.original * 50000;
-      row.modifiedMoney = row.modified * 50000;
+      row.originalMoney = row.original * row.moneyPerMWh * 1000;
+      row.modifiedMoney = row.modified * row.moneyPerMWh * 1000;
       row.deltaMoney = row.modifiedMoney - row.originalMoney;
  
       sum.items.push(row);
@@ -156,6 +152,8 @@ export class SummaryService {
         totals[key] += item[key];
       }
     });
+    totals['moneyPerMWh'] = totals['moneyPerMWh'] / items.length;
+    totals['co2perMWh'] = totals['modifiedCo2'] / totals['modified'] * 1000;
     return totals;
   }
 
@@ -167,6 +165,8 @@ export class SummaryService {
       originalCo2: 0,
       modifiedCo2: 0,
       deltaCo2: 0,
+      co2perMWh: 0,
+      moneyPerMWh: 40,
       originalMoney: 0,
       modifiedMoney: 0,
       deltaMoney: 0,
@@ -185,6 +185,7 @@ export class SummaryService {
       if (data.power[p] && data.config[data.power[p].originalKey] && !isNaN(data.config[data.power[p].originalKey].co2)) {
         co2factor = data.config[data.power[p].originalKey].co2 / 1000;
       }
+      sum.co2perMWh = co2factor * 1000;
       sum.modifiedCo2 = sum.modified * co2factor;
       sum.originalCo2 = sum.original * co2factor;
       sum.deltaCo2 = sum.deltaEnergy * co2factor;

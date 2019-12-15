@@ -17,19 +17,27 @@ export class LoadshiftService {
   loadshift(data: Data) {
     data.power = JSON.parse(JSON.stringify(data.power));
     // data.loadshifted = JSON.parse(JSON.stringify(data.power));
-    
+
     this.getPowerByName(data.loadshifted);
     const state = this.eventService.getState();
-    const year = state.navigate.date.substring(0, 4);
+    const year:any = state.navigate.date.substring(0, 4);
 
     /* Iterate over rules.json and values */
     data.rules.loadshift.from.forEach(from => {
       let totalharvest = 0;
       const faktor: number = this.makeFaktor(data.installed, state, from);
-      for (let i = 0; i < data.power[0].values.length; i++) {  // loop over time
+      for (let i = 0; i < data.power[0].values.length; i++) { // loop over time
         let harvest: number = this.harvestPower(from, i, faktor);
         data.rules.loadshift.to.forEach(to => {
           if (harvest > 0) {
+            console.log('data.installed', data.installed, year);
+            while (!data.installed[year]) {
+              year = parseInt(year);
+              year--;
+              if (year < 2000) {
+                break;
+              }
+            }
             const delta = this.movePower(harvest, data.installed[year][to], to, i, totalharvest);
             harvest += delta;
             if (to === 'Hydro Pumped Storage') {
@@ -95,19 +103,19 @@ export class LoadshiftService {
   minimum is a negativ value für pumps,...
   */
   getMin(installed, to) {
-      // add power2gas, batteries here, ...
-      let minimum = 0;
-      if (to === 'Hydro Pumped Storage') {
-        minimum = -installed / 1000;
-      }
-      if (to === 'Curtailment') {
-        minimum = -99999999999999999;
-      }
-      if (to === 'Power2Gas') {
-        const state = this.eventService.getState();
-        minimum = -state.mutate.Power2Gas;
-      }
-      return minimum;
+    // add power2gas, batteries here, ...
+    let minimum = 0;
+    if (to === 'Hydro Pumped Storage') {
+      minimum = -installed / 1000;
+    }
+    if (to === 'Curtailment') {
+      minimum = -99999999999999999;
+    }
+    if (to === 'Power2Gas') {
+      const state = this.eventService.getState();
+      minimum = -state.mutate.Power2Gas;
+    }
+    return minimum;
   }
   /* helper */
   getPowerByName(power) {

@@ -41,7 +41,6 @@ export class TablesComponent implements OnInit, OnDestroy  {
       this.timetype = original.meta.timetype;
       this.scheduler.mutate().then((modified: Data) => {
         this.data = modified;
-        this.eventService.setState('message.calced', 'render');
         this.eventService.setState('message.calcing', '');
         this.previousdate = modified.meta.date;
       });

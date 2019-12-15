@@ -17,26 +17,29 @@ export class TimeshiftService {
     const takeover = {};
     for (let i = 0; i < data.power[0].values.length; i++) {
       data.rules.timeshift.from.forEach(from => {
-        const original = originalByName[from].values[i];
-        const modified = modifiedByName[from].values[i];
-        let harvest = original.y - modified.y;
-        if (takeover[from]) {
-          harvest += takeover[from];
-        }
-        data.rules.timeshift.to.forEach(to => {
-          if (modifiedByName[to] && harvest > 0) {
-            harvest += this.releaseSavedEnergy(harvest, modifiedByName[to].values[i], modifiedByName[from].values[i], data.installed[from]);
+        if (originalByName[from]) {
+          const original = originalByName[from].values[i];
+          const modified = modifiedByName[from].values[i];
+          let harvest = original.y - modified.y;
+          if (takeover[from]) {
+            harvest += takeover[from];
           }
-        });
-        if (!takeover[from]) {
-          takeover[from] = 0;
+          data.rules.timeshift.to.forEach(to => {
+            if (modifiedByName[to] && harvest > 0) {
+              harvest += this.releaseSavedEnergy(harvest, modifiedByName[to].values[i], modifiedByName[from].values[i], data.installed[from]);
+            }
+          });
+          if (!takeover[from]) {
+            takeover[from] = 0;
+          }
+          takeover[from] = harvest;
         }
-        takeover[from] = harvest;
       });
     }
   }
 
   releaseSavedEnergy(harvest, modifiedTo, modifiedFrom, installed) {
+    let delta = 0;
     const oldToY = modifiedTo.y;
     let available = harvest;
     if (available > modifiedTo.y) {
@@ -45,9 +48,11 @@ export class TimeshiftService {
     if (available > (installed / 1000 - modifiedFrom.y)) {
       available = installed / 1000 - modifiedFrom.y;
     }
-    modifiedTo.y = modifiedTo.y - available;
-    modifiedFrom.y = modifiedFrom.y + available;
-    const delta = modifiedTo.y - oldToY;
+    if (modifiedTo) {
+      modifiedTo.y = modifiedTo.y - available;
+      modifiedFrom.y = modifiedFrom.y + available;
+      delta = modifiedTo.y - oldToY;
+    }
     return delta;
   }
 
