@@ -1,10 +1,5 @@
 <div>
   <h2>Total Energy</h2>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="tabletype" (change)="changeTableType($event)">
-    <mat-radio-button value="energy">Energy</mat-radio-button>
-    <mat-radio-button value="co2">CO2</mat-radio-button>
-    <mat-radio-button value="money">Money</mat-radio-button>
-  </mat-radio-group>
   <div id="tableParent">
     <table *ngIf="dataSource" mat-table [dataSource]="dataSource" matSort>
 

@@ -14,7 +14,7 @@ export class EnergytableComponent implements OnInit, OnChanges, AfterViewInit {
   constructor() {}
   @ViewChild(MatSort) sort: MatSort;
   @Input() data: Data;
-  tabletype = 'energy';
+  @Input() tabletype: string;
 
 
   display = {
@@ -32,6 +32,7 @@ export class EnergytableComponent implements OnInit, OnChanges, AfterViewInit {
       this.sortBy('original');
       this.dataSource.sort = this.sort;
     }
+    this.displayedColumns = this.display[this.tabletype];
   }
   sortBy(type) {
     this.dataSource.data.sort((a: any, b: any) => {
@@ -47,9 +48,6 @@ export class EnergytableComponent implements OnInit, OnChanges, AfterViewInit {
   }
   getTotal(name) {
     return this.total[name] || '0';
-  }
-  changeTableType(event) {
-    this.displayedColumns = this.display[event.value];
   }
   ngAfterViewInit() {
     if (this.dataSource) {

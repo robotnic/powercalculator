@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material';
 export class ElectrictableComponent implements AfterViewInit, OnChanges {
   @ViewChild(MatSort) sort: MatSort;
   @Input() data: any;
+  @Input() tabletype: string;
 
   display = {
     'energy': ['key', 'original', 'modified', 'deltaEnergy'],
@@ -21,7 +22,7 @@ export class ElectrictableComponent implements AfterViewInit, OnChanges {
   total = {};
   dataSource;
   math = Math;
-  tabletype = 'energy';
+//  tabletype = 'energy';
 
   constructor() {}
 
@@ -36,6 +37,7 @@ export class ElectrictableComponent implements AfterViewInit, OnChanges {
       this.sortBy('deltaMoney');
       this.dataSource.sort = this.sort;
     }
+    this.displayedColumns = this.display[this.tabletype];
   }
   sortBy(type) {
     this.dataSource.data.sort((a: any, b: any) => {
