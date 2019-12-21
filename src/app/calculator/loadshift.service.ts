@@ -140,15 +140,19 @@ export class LoadshiftService {
       if (year > parseInt(selected, 10)) {
         selected = yr;
       }
-      latest = yr;
+      if (yr < (new Date()).getFullYear()) {
+        latest = yr;
+      }
     }
     if (!isNaN(state.mutate[key])) {
       if (installed[latest]) {
         const now = installed[latest][key] || 1;
         const past = installed[selected][key] || 1;
+        console.log('now', installed[latest]);
         factor = (now + state.mutate[key] * 1000) / past;
       }
     }
+    console.log('factor', key, factor);
     return factor;
   }
 }
