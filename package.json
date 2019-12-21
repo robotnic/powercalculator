@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node index.js",
-    "test": "ng serve --proxy-config proxy.conf.json --watch",
+    "local": "ng serve --proxy-config proxy.conf.json --watch",
     "build": "ng build --prod --source-map  --build-optimizer",
     "test2": "ng test",
     "lint": "ng lint",
