@@ -62,7 +62,9 @@ export class StorageService {
             if (delta) {
               total += delta;
             }
-            hydrofillclone.values[v].y += total * 1000 / 4; // todo: will not work for all countries
+            if (hydrofillclone.values[v]) {
+              hydrofillclone.values[v].y += total * 1000 / 4; // todo: will not work for all countries
+            }
           });
         }
       });

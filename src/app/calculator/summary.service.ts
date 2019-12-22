@@ -14,7 +14,8 @@ export class SummaryService {
   calcSummary(data) {
     data.sum = {
       electricity: this.calcElectricity(data),
-      energy: {}
+      energy: {},
+      country: data.meta.country
     };
     data.sum.energy = this.calcEnergy(data);
     data.keyFigures = this.getKeyFigures(data.sum);
@@ -31,6 +32,7 @@ export class SummaryService {
       percentCo2: percent,
       original: energyTotals.original,
       modified: energyTotals.modified,
+      country: sum.country
     };
   }
 

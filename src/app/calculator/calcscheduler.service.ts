@@ -16,10 +16,7 @@ import { Data } from '../models/data';
   providedIn: 'root'
 })
 export class CalcschedulerService {
-  rules = {
-    init: ['fix', 'normalize', 'importexport', 'hydro', 'decorate'],
-    calc: ['transport', 'loadshift', 'timeshift', 'pump', 'summary', 'render']
-  };
+  rules = { };
 
   calcStack = [];
   processTimeout = null;
@@ -70,6 +67,7 @@ export class CalcschedulerService {
 
   }
   schedule(type, data) {
+    this.rules = data.rules.schedule;
       if (this.reject) {
         try {
           this.reject('stopcalc');
@@ -90,7 +88,7 @@ export class CalcschedulerService {
       }, error => {
         this.reject = null;
         this.reject('stopcalc');
-      })
+      });
     });
   }
 

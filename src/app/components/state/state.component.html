@@ -1,14 +1,13 @@
-<div id="state">
+<span id="state">
   <span *ngIf="loading.length"> loading: </span>
   <span *ngFor="let thing of loading" title="{{thing}}">{{thing}} </span>
   <span *ngIf="calcing" title="{{calcing}}">{{calcing}} </span>
-  <div id="figures">
-  <p *ngIf="!loading.length && !calcing"> {{thedate}} </p>
-  <p *ngIf="!loading.length && !calcing && figures">  {{figures.modified | number:'1.0-0':'fr'}} GWh  </p>
-  </div>
-  <span id="co2" *ngIf="!loading.length && !calcing && figures">  CO2 {{figures.percentCo2 | number:'1.0-1'}} %  </span>
-<br/>
+  <span d="figures">
+  <span *ngIf="!loading.length && !calcing"> {{thedate}}  </span>
+  <span *ngIf="!loading.length && !calcing && figures">   ❤ {{figures.modified | number:'1.0-0':'fr'}} GWh  </span>
+  </span>
+  <span d="co2" *ngIf="!loading.length && !calcing && figures"> ❤ {{figures.country}} ❤   <span title="CO2 based on 1995">CO2 {{figures.percentCo2 | number:'1.0-1'}} %  </span></span>
   <span class="error" *ngIf="notloaded.length"> error: </span>
   <span class="error" *ngFor="let thing of notloaded" title="{{thing}}">{{thing}} </span>
-</div>
+</span>
 

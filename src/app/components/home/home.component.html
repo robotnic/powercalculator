@@ -1,96 +1,177 @@
-<div>
-<div class="home">
-<h1>Power Calculator</h1>
-This tool visualizes historic electricity production data provided by ENTSO-E.
+<div class="mat-typography">
+  <div class="home">
+    <h1>Welcome to Power Calculator</h1>
+    <p class="mb-0">
+      This tool visualizes historic electricity production data provided by ENTSO-E.
+    </p>
 
-<h2>Add Renewable Power</h2>
-<p>
-Based on these data, the user can simulate a past with more renewables.
+    <h2>Simulate a past with more Renewables </h2>
+    <p> Based on the ENTSO-E data, the
+      user can select a day in the past and simulate the replacement of fossils by renewables, more electric vehicle and power2gas.
+    </p>
+    <br />
+    <br />
+    <mat-grid-list cols="12" rowHeight="480px">
+      <mat-grid-tile colspan="4">
+        <mat-card>
 
-</p>
-We can select a day in the past and simulate the replacement of fossils by renewables.
-<br/>
-<br/>
+          <mat-card-header>
+            <mat-card-title>Power</mat-card-title>
+            <mat-card-subtitle>
+              Simulate power production with more renewables</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+
+            <img class="screenshot" src="/assets/power.gif"/>
+ </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>
+                <mat-icon aria-hidden="false" aria-label="Example home icon">link</mat-icon>
+                open
+              </button>
+            </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="4">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Energy</mat-card-title>
+            <mat-card-subtitle>
+              ENTSO-E combined with non electrical energie statistics
+              Simulate power production with more renewables</mat-card-subtitle>
+          </mat-card-header>
+
+            <img class="screenshot" src="/assets/energy.gif"/>
+            <button mat-button>
+              <mat-icon aria-hidden="false" aria-label="Example home icon">link</mat-icon>
+              open
+            </button>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="4">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Numbers</mat-card-title>
+            <mat-card-subtitle>
+              <p>Find the winners and the losers</p>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <img class="screenshot" src="/assets/numbers.gif"/>
+</mat-card-content>
+            <mat-card-actions>
+              <button mat-button>
+                <mat-icon aria-hidden="false" aria-label="Example home icon">link</mat-icon>
+                open
+              </button>
+            </mat-card-actions>
+
+        </mat-card>
+
+      </mat-grid-tile>
 
 
-<img class="screenshot" src="/assets/screenshots/day5-2.gif"/>
-<br/>
-<a href="/power#navigate=date:20190723;">
+    </mat-grid-list>
+    <br />
+    <br />
+    <br />
+
+
+    <!--
+    <p>
+      <a href="/power#navigate=date:20190723;">
 Try yourself
 </a>
-<p>
-1 GWp Solar ~10 km²; 3 000 000 panels.
-<br/>
-1 GWp Wind ~200 * 5 MW Wind Turbine
-</p>
+      <p>
+        1 GWp Solar ~10 km²; 3 000 000 panels.
+        <br />
+        1 GWp Wind ~200 * 5 MW Wind Turbine
+      </p>
+      <h2>Navigate</h2>
+      <img src="/assets/navigate.png"/>
 
-<h2>Energy</h2>
-Electricity is only a part of the energy we need.
-In this tool the effect of electrified transport is shown.<br/>
-<img src="/assets/energy-transport.gif"/>
-<p>
-Replacing fossils by electricity, reduces the energy <strong>used by the customers</strong>.
-Please have in mind, that that's not equivalent to primary energy.<br/>
+      <h2>Mutate</h2>
+      <img src="/assets/mutate.png"/>
+    -->
 
-<a href="/energy">try here</a>
-</p>
 
-<h2>Szenarios</h2>
-<h3>Austria 15 GWp PV, 100% EV. April 2019.</h3>
-In the simulation we show the load of charging vehicles as a constant value.<br>
-We don't know when the E-Cars will charge. 
-<p>
-But our simulations shows that shifting charging time by some hours, could have a big impact.
-</p>
-<p>
-The red area shows the additional energy needed by electric vehicles that is not coverd by renewables.
-The black areas are curtailed energy.
-</p>
-<p>
-If there is lots of PV in the system, it would be benefitial for the grid, to charge comuter vehicles during worktime.
-</p>
-<img src="/assets/curtailment-transport.png"/>
-<br/>
-<a href="/power#datechange=date:20190423;timetype:week;country:Austria;refresh:false;&mutate=Wind%2520Onshore:7;Wind%2520Offshore:0;Solar:15;Power2Gas:0;Transport:100;quickview:false;&view=layers:0010000000000000100;&state=">
+    <h2>Introduction</h2>
+    <p>
+      To prevent the an uncontrolled climate crises, we have to rebuild our energy system.
+      The costs for solar and wind came down dramatically and are on the brink to be price-competitive without subsidies.
+    </p>
+    <p>
+      The power calculator shows the physical boundaries. It will be not easier than that.
+    </p>
+
+
+    <h2>Energy</h2>
+    Electricity is only a part of the energy we need.
+    In this tool the effect of electrified transport is shown.<br />
+    <img src="/assets/energy-transport.gif"/>
+    <p>
+      Replacing fossils by electricity, reduces the energy <strong>used by the customers</strong>.
+      Please have in mind, that that's not equivalent to primary energy.<br />
+
+      <a href="/energy">try here</a>
+    </p>
+
+    <h2>Szenarios</h2>
+    <h3>Austria 15 GWp PV, 100% EV. April 2019.</h3>
+    In the simulation we show the load of charging vehicles as a constant value.<br>
+    We don't know when the E-Cars will charge.
+    <p>
+      But our simulations shows that shifting charging time by some hours, could have a big impact.
+    </p>
+    <p>
+      The red area shows the additional energy needed by electric vehicles that is not coverd by renewables.
+      The black areas are curtailed energy.
+    </p>
+    <p>
+      If there is lots of PV in the system, it would be benefitial for the grid, to charge comuter vehicles during worktime.
+    </p>
+    <img src="/assets/curtailment-transport.png"/>
+    <br />
+    <a href="/power#datechange=date:20190423;timetype:week;country:Austria;refresh:false;&mutate=Wind%2520Onshore:7;Wind%2520Offshore:0;Solar:15;Power2Gas:0;Transport:100;quickview:false;&view=layers:0010000000000000100;&state=">
 Try
 </a>
-<h3>Power2Gas</h3>
-In this diagram PV and Power2Gas are dominant. Power2Gas is shown here before conversion losses.  
-<br/>
-<img src="/assets/pvh2.png"/>
-<br/>
-<a href="/energy#datechange=date:20190423;timetype:week;country:Austria;refresh:false;&mutate=Wind%20Onshore:7;Wind%20Offshore:0;Solar:56;Power2Gas:30;Transport:0;quickview:false;&view=layers:1111111111111111111;&state=">
+    <h3>Power2Gas</h3>
+    In this diagram PV and Power2Gas are dominant. Power2Gas is shown here before conversion losses.
+    <br />
+    <img src="/assets/pvh2.png"/>
+    <br />
+    <a href="/energy#datechange=date:20190423;timetype:week;country:Austria;refresh:false;&mutate=Wind%20Onshore:7;Wind%20Offshore:0;Solar:56;Power2Gas:30;Transport:0;quickview:false;&view=layers:1111111111111111111;&state=">
 try
 </a>
-<h3>PV Map</h3>
-How much space is needed for PV. Where do we put the installations.<br/>
-<img src="/assets/pvmap.png"/>
-<br/>
-<h3>Software Architecture</h3>
-<pre>
+    <h3>PV Map</h3>
+    How much space is needed for PV. Where do we put the installations.<br />
+    <img src="/assets/pvmap.png"/>
+    <br />
+    <h3>Software Architecture</h3>
+    <pre>
 backend
-  scraping
-  caching
-  ENTSOE in json format 
+scraping
+caching
+ENTSOE in json format 
 
 Frontend
-  Angular.io based
-  Loaders
-  Viewers
-  Calculators
-  Event Handling
+Angular.io based
+Loaders
+Viewers
+Calculators
+Event Handling
 </pre>
-<h3>Lessons learned by programming</h3>
+    <h3>Lessons learned by programming</h3>
 
 
+    <h3>The challenge </h3>
+    This tool may give an overoptimisitc view of our challenge.
+    There are so many variables an unknows and this isn't much more of a best guess.
 
 
-<h3>The challenge </h3>
-This tool may give an overoptimisitc view of our challenge. 
-There are so many variables an unknows and this isn't much more of a best guess.
-
-
-
-
-
-</div>
+  </div>
+  <div class="footer">
+    <button mat-button>Impressum</button>
+    <a href="https://github.com/robotnic/powercalculator/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/robotnic/powercalculator?style=social"></a>
+  </div>

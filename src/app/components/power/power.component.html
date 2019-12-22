@@ -1,9 +1,7 @@
 <div (window:resize)="onResize($event)">
 
-  <div class="area  mat-elevation-z0">
-    <div class="meta">
-      <h1> {{country}}</h1>
-    </div>
+  <div class="area  mat-elevation-z0 mat-typography" >
+    <h1>Electricity generation</h1>
     <nvd3 #nvd3 [options]="options"></nvd3>
     <br />
     <br />

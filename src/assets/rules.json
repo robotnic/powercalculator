@@ -1,4 +1,10 @@
 {
+
+  "schedule": {
+    "init": ["fix", "normalize", "importexport", "hydro", "decorate"],
+    "calc": ["transport", "loadshift", "timeshift", "pump", "summary", "render"]
+  },
+
   "loadshift": {
     "from": [
       "Solar",
@@ -17,8 +23,8 @@
       "Biomass",
       "Import",
       "Hydro Pumped Storage",
-      "Nuclear",
       "Power2Gas",
+      "Nuclear",
       "Curtailment"
     ]
   },

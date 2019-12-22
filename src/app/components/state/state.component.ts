@@ -24,6 +24,7 @@ export class StateComponent implements OnInit {
     });
     this.eventService.on('calcing').subscribe((state: any) => {
       this.calcing = state.calcing;
+      this.figures = state.figures;
     });
     this.eventService.on('message').subscribe((state: State) => {
       // tslint:disable-next-line:forin

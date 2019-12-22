@@ -36,7 +36,12 @@ export class LoadshiftService {
                 break;
               }
             }
-            const delta = this.movePower(harvest, data.installed[year][to], to, i, totalharvest);
+            let delta = 0;
+            try {
+              delta = this.movePower(harvest, data.installed[year][to], to, i, totalharvest);
+            } catch (e) {
+              console.log(e);
+            }
             harvest += delta;
             if (to === 'Hydro Pumped Storage') {
               totalharvest -= delta;
@@ -54,10 +59,12 @@ export class LoadshiftService {
   harvestPower(from, i, faktor) {
     let harvest = 0;
     if (this.powerByName[from]) {
-      const fromValue = this.powerByName[from].values[i];
-      const oldFromY = fromValue.y;
-      fromValue.y = fromValue.y * faktor;
-      harvest = fromValue.y - oldFromY;
+      if (this.powerByName[from].values[i]) {
+        const fromValue = this.powerByName[from].values[i];
+        const oldFromY = fromValue.y;
+        fromValue.y = fromValue.y * faktor;
+        harvest = fromValue.y - oldFromY;
+      }
     }
     return harvest;
   }
@@ -140,7 +147,7 @@ export class LoadshiftService {
       if (year > parseInt(selected, 10)) {
         selected = yr;
       }
-      if (yr < (new Date()).getFullYear()) {
+      if (parseInt(yr, 10) < (new Date()).getFullYear()) {
         latest = yr;
       }
     }
@@ -148,11 +155,9 @@ export class LoadshiftService {
       if (installed[latest]) {
         const now = installed[latest][key] || 1;
         const past = installed[selected][key] || 1;
-        console.log('now', installed[latest]);
         factor = (now + state.mutate[key] * 1000) / past;
       }
     }
-    console.log('factor', key, factor);
     return factor;
   }
 }

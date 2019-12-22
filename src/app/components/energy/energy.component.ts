@@ -15,6 +15,10 @@ import { CalcschedulerService } from 'src/app/calculator/calcscheduler.service';
 export class EnergyComponent implements OnInit, OnDestroy {
   data: Data;
   loaderSubscription: any;
+  extent = [
+    [170, 10],
+    [1240, 650]
+  ];
   constructor(
     private loader: Loader,
     private scheduler: CalcschedulerService,
@@ -22,12 +26,13 @@ export class EnergyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.extent = this.calcExtent();
     this.loaderSubscription = this.loader.power().subscribe((original: Data) => {
       this.scheduler.mutate().then((modified: Data) => {
         this.data = modified;
         const sankey = this.makeSum(modified);
         this.addEV(sankey);
-//        this.addGasStorage(sankey);
+        //        this.addGasStorage(sankey);
         sankey.order = this.makeOrder(sankey.links);
         this.draw(sankey);
         this.eventService.setState('message.calced', 'render');
@@ -67,10 +72,7 @@ export class EnergyComponent implements OnInit, OnDestroy {
   }
 
   draw(energy) {
-    const layout = d3Sankey.sankey().extent([
-      [170, 10],
-      [1240, 650]
-    ]);
+    const layout = d3Sankey.sankey().extent( this.extent);
     const diagram = d3Sankey.sankeyDiagram()
       .linkColor(function(d) { return d.color; })
       .linkTitle(function(d) {
@@ -211,7 +213,7 @@ export class EnergyComponent implements OnInit, OnDestroy {
         factor = 1;
         break;
     }
-    const links = [];
+    let links = [];
     // tslint:disable-next-line:forin
     for (const s in data.consumption) {
       for (const t in data.consumption[s]) {
@@ -232,11 +234,15 @@ export class EnergyComponent implements OnInit, OnDestroy {
           link.target = t;
           link.value = -link.value;
         }
-        if (Math.abs(link.value) > 1000 / factor) {
-          links.push(link);
-        }
+        links.push(link);
       }
     }
+
+    links = links.sort((a, b) => {
+      return b.value - a.value;
+    });
+    const l = Math.round(window.innerWidth / 50)
+    links.length = l;
     return links;
   }
 
@@ -275,18 +281,27 @@ export class EnergyComponent implements OnInit, OnDestroy {
         color: 'lightblue',
       });
     }
-      /*
-          links.push({
-            source: 'Power2Gas',
-            target: 'residential',
-            value: 5,
-            color: 'red',
-          });
-          */
-      return links;
-    }
-
-    ngOnDestroy() {
-      this.loaderSubscription.unsubscribe();
-    }
+    /*
+        links.push({
+          source: 'Power2Gas',
+          target: 'residential',
+          value: 5,
+          color: 'red',
+        });
+        */
+    return links;
   }
+
+  calcExtent() {
+    const w = window.innerWidth - 550;
+    const h = window.innerHeight - 100;
+    return [
+      [170, 10],
+      [w, h]
+    ]
+  }
+
+  ngOnDestroy() {
+    this.loaderSubscription.unsubscribe();
+  }
+}

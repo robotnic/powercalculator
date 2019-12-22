@@ -158,6 +158,26 @@ export class MutateuiComponent implements OnInit, OnDestroy {
     const date = moment();
     this.eventService.setState('navigate.date', date.format('YYYYMMDD'));
   }
+  step(value) {
+    let mod = 1;
+    switch (true) {
+      case (value < 10):
+        mod = 1;
+        break;
+      case (value <= 100 && value > 10):
+        mod = 5;
+        break;
+      case (value <= 1000 && value > 100):
+        mod = 50;
+        break;
+      case (value > 1000 ):
+        mod = 100;
+        break;
+      default:
+        console.log('default', value);
+    }
+    return mod;
+  }
 
   selectcountry(country) {
     this.eventService.setState('navigate.country', country);
