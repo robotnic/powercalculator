@@ -174,7 +174,7 @@ export class MutateuiComponent implements OnInit, OnDestroy {
         mod = 100;
         break;
       default:
-        console.log('default', value);
+        // console.log('default', value);
     }
     return mod;
   }
