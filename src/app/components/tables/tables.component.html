@@ -1,17 +1,16 @@
-<div *ngIf="data" class="energydiv  mat-typography">
-<h1>Wholesale</h1>
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="tabletype">
+<div *ngIf="data" class="energydiv">
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="tabletype">
     <mat-radio-button value="energy">Energy</mat-radio-button>
     <mat-radio-button value="co2">CO2</mat-radio-button>
     <mat-radio-button value="money">Money</mat-radio-button>
   </mat-radio-group>
   <mat-grid-list cols="10" class="tables" gutterSize="30" rowHeight="800px">
     <mat-grid-tile colspan="5" class="green">
-    <app-energytable [data]="data" [tabletype]="tabletype"></app-energytable>
+      <app-energytable [data]="data" [tabletype]="tabletype"></app-energytable>
     </mat-grid-tile>
     <mat-grid-tile colspan="5">
       <app-electrictable [data]="data" [tabletype]="tabletype"></app-electrictable>
     </mat-grid-tile>
   </mat-grid-list>
 </div>
-  <app-mutateui></app-mutateui>
+<app-mutateui></app-mutateui>
