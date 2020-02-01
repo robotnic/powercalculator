@@ -16,3 +16,8 @@ Based on the ENTSO-E data, the user can select a day in the past and simulate th
 <img src="https://powercalculator.herokuapp.com/assets/numbers.gif" width="400px"/>
 
 [demo](https://powercalculator.herokuapp.com/numbers#navigate=date:20190509;)
+
+# Install and start
+* Clone project
+* npm install
+* npm run local
