@@ -38,10 +38,11 @@
     "request": "^2.88.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "serialize-javascript": ">=2.1.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.13.9",
+    "@angular-devkit/build-angular": "^0.803.24",
     "@angular/cli": "~7.2.1",
     "@angular/compiler-cli": "^7.2.16",
     "@angular/language-service": "^7.2.16",
