@@ -302,6 +302,7 @@ export class EnergyComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('unsubscribe');
     this.loaderSubscription.unsubscribe();
   }
 }

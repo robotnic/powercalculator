@@ -70,7 +70,7 @@ export class CalcschedulerService {
     this.rules = data.rules.schedule;
       if (this.reject) {
         try {
-          this.reject('stopcalc1');
+        //  this.reject('stopcalc1');
         } catch (e) {
           console.log('soso');
         }

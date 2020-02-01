@@ -206,6 +206,7 @@ export class PowerComponent implements OnInit, OnDestroy {
       this.country = original.meta.country;
       this.timetype = original.meta.timetype;
       this.scheduler.mutate().then((modified: Data) => {
+        console.log('got now data');
         this.data = modified;
         //const sum = this.makeSum(modified.sum);
         //this.dataSource = new MatTableDataSource(sum);
