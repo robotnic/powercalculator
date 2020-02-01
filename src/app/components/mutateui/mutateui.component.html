@@ -34,10 +34,10 @@
         <mat-datepicker #dp></mat-datepicker>
       </mat-form-field>
       <br />
-      <button mat-icon-button aria-label="back" (click)="dectime(state.navigate.timetype)">
+      <button mat-icon-button aria-label="back" (click)="dectime()">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>&#160;
-      <button mat-icon-button aria-label="forward" (click)="inctime(state.navigate.timetype)">
+      <button mat-icon-button aria-label="forward" (click)="inctime()">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>&#160;
       <button mat-icon-button aria-label="reload from data source" (click)="refresh()">
@@ -48,49 +48,7 @@
         <mat-icon>today</mat-icon>
       </button>
       <br />
-      <!--
-<button mat-icon-button>⏪</button>
-<button mat-icon-button>&#9664;&#65039;</button>
-<button mat-icon-button>&#9654;&#65039;</button>
-<button mat-icon-button>⏩</button>
--->
-      <!--
-
-  <div class="inputline">
-      <button mat-button color="primary" (click)="dectime('Day')">-</button>
-      <mat-form-field class="md-block" title="day">
-        <input matInput (input) = "change()" placeholder="Day" type="number" min="0" [(ngModel)] ="day" style="width:50px;">
-      </mat-form-field>
-      <button mat-button color="primary" (click)="inctime('Day')">+</button>
-  </div>
-
-  <div class="inputline">
-      <button mat-button color="primary" (click)="dectime('week')">-</button>
-      <mat-form-field class="md-block" title="day">
-        <input matInput (input) = "change()" placeholder="Week" type="number" min="0" [(ngModel)] ="week" style="width:50px;">
-      </mat-form-field>
-      <button mat-button color="primary" (click)="inctime('week')">+</button>
-  </div>
-
-
-
-
-   <div class="inputline">
-      <button mat-button color="primary" (click)="dectime('month')">-</button>
-      <mat-form-field class="md-block" title="day">
-        <input matInput (input) = "change()" placeholder="Month" type="number" min="0" [(ngModel)] ="month" style="width:50px;">
-      </mat-form-field>
-      <button mat-button color="primary" (click)="inctime('month')">+</button>
-  </div>
- 
-  <div class="inputline">
-      <button mat-button color="primary" (click)="dectime('year')">-</button>
-      <mat-form-field class="md-block" title="day">
-        <input matInput (input) = "change()" placeholder="Year" type="number" min="0" [(ngModel)] ="year" style="width:50px;">
-      </mat-form-field>
-      <button mat-button color="primary" (click)="inctime('year')">+</button>
-  </div>
--->
+  
     </mat-expansion-panel>
     <mat-expansion-panel [(expanded)]="state.view.mutate" (opened)="panelaction()" (closed)="panelaction()">
       <mat-expansion-panel-header>
