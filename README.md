@@ -10,4 +10,9 @@ Based on the ENTSO-E data, the user can select a day in the past and simulate th
 [demo](https://powercalculator.herokuapp.com/power#navigate=date:20190509;)
 
 <img src="https://powercalculator.herokuapp.com/assets/energy.gif" width="400px"/>
+
+[demo](https://powercalculator.herokuapp.com/energy#navigate=date:20190509;)
+
 <img src="https://powercalculator.herokuapp.com/assets/numbers.gif" width="400px"/>
+
+[demo](https://powercalculator.herokuapp.com/numbers#navigate=date:20190509;)
