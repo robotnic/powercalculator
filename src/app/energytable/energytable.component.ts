@@ -19,7 +19,7 @@ export class EnergytableComponent implements OnInit, OnChanges, AfterViewInit {
 
   display = {
     'energy': ['key', 'original', 'modified', 'deltaEnergy'],
-    'co2': ['key', 'co2perMWh', 'originalCo2', 'modifiedCo2', 'deltaCo2'],
+    'co2': ['key', 'originalCo2', 'modifiedCo2', 'co2perMWh', 'deltaCo2'],
     'money': ['key', 'moneyPerMWh', 'originalMoney', 'modifiedMoney', 'deltaMoney']
   };
   displayedColumns = this.display.energy;

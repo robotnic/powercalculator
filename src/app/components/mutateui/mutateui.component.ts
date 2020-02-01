@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { EventService } from 'src/app/eventhandler.service';
 import { CountriesService } from 'src/app/loader/countries.service';
 import { Loader } from 'src/app/loader/loader.service';
@@ -42,6 +42,8 @@ export const MY_FORMATS = {
   ],
 })
 export class MutateuiComponent implements OnInit, OnDestroy {
+
+
   countries: string[] = [];
   timeout = null;
   country;
@@ -57,7 +59,23 @@ export class MutateuiComponent implements OnInit, OnDestroy {
   loaderSubscription: any;
 
   constructor(private eventService: EventService, private countryService: CountriesService, private loader: Loader) {}
+/*
+  keyEvent(event: KeyboardEvent) {
+    console.log(event);
+  }
+  */
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.code === 'KeyN') {
+      this.inctime();
+    }
 
+    if (event.code === 'KeyP') {
+      this.dectime();
+    }
+  }
+
+ 
   ngOnInit() {
     const date: moment.Moment = moment().add('day', -2);
     const state = this.eventService.getState();
@@ -138,15 +156,18 @@ export class MutateuiComponent implements OnInit, OnDestroy {
     this.change();
   }
 
-  inctime(type) {
+  inctime() {
     const state = this.eventService.getState();
+    const type: any = state.navigate.timetype;
+    console.log(type, state.navigate.timetype);
     const date = moment(state.navigate.date, 'YYYYMMDD');
     date.add(type, 1);
     this.eventService.setState('navigate.date', date.format('YYYYMMDD'));
   }
 
-  dectime(type) {
+  dectime() {
     const state = this.eventService.getState();
+    const type: any = state.navigate.timetype;
     const date = moment(state.navigate.date, 'YYYYMMDD');
     date.add(type, -1);
     this.eventService.setState('navigate.date', date.format('YYYYMMDD'));

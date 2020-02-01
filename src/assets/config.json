@@ -62,7 +62,8 @@
     "color": "darkgreen"
   },
   "Biodiesel": {
-    "co2": 0
+    "co2": 0,
+    "color": "green"
   },
   "Derived heat": {
     "co2": 0

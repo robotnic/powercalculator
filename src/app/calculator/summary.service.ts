@@ -69,7 +69,7 @@ export class SummaryService {
         modifiedCo2: 0,
         deltaEnergy: 0,
         deltaCo2: 0,
-        co2perMWh: 0,
+        co2perMWh: 1,
         moneyPerMWh: 50,
         originalMoney: 0,
         modifiedMoney: 0,
