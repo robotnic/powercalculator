@@ -54,22 +54,22 @@ export class PowerComponent implements OnInit, OnDestroy {
         let duration = 0;
         switch (this.timetype) {
           case 'day':
-            duration = 300;
+            duration = 800;
             break;
           case 'week':
             duration = 3000;
             break;
           case 'month':
-            duration = 5000;
-            if (this.previousdate !== this.meta.date) {
-              duration = 0;
-            }
+            duration = 0;
             break;
           case 'year':
             duration = 5000;
             break;
         }
         if (this.timetype !== this.previoustimetype) {
+          duration = 0;
+        }
+        if (!this.previousdate || this.previousdate === this.meta.date) {
           duration = 0;
         }
         this.previoustimetype = this.timetype;
@@ -258,7 +258,7 @@ export class PowerComponent implements OnInit, OnDestroy {
       chart.values.forEach((value, i) => {
         sum += value.y;
         if ((i % factor) === 0) {
-          if ( i > 0) {
+          if (i > 0) {
             value.y = sum / factor;
           }
           values.push(value);
