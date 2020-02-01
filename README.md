@@ -6,6 +6,8 @@ This tool visualizes historic electricity production data provided by ENTSO-E.
 Based on the ENTSO-E data, the user can select a day in the past and simulate the replacement of fossils by renewables, more electric vehicle and power2gas.
 
 <img src="https://powercalculator.herokuapp.com/assets/power.gif" width="400px"/>
+
 [demo](https://powercalculator.herokuapp.com/power#navigate=date:20190509;)
+
 <img src="https://powercalculator.herokuapp.com/assets/energy.gif" width="400px"/>
 <img src="https://powercalculator.herokuapp.com/assets/numbers.gif" width="400px"/>
