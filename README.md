@@ -19,5 +19,5 @@ Based on the ENTSO-E data, the user can select a day in the past and simulate th
 
 # Install and start
 * Clone project
-* npm install
-* npm run local
+* ```npm install```
+* ```npm run local```
