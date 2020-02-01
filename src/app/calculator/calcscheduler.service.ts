@@ -47,7 +47,7 @@ export class CalcschedulerService {
         this.mutate().then(mutdata => {
           resolve(mutdata);
         }, error => {
-          reject();
+          reject(error);
         });
       });
       //resolve(data);
@@ -70,7 +70,7 @@ export class CalcschedulerService {
     this.rules = data.rules.schedule;
       if (this.reject) {
         try {
-          this.reject('stopcalc');
+          this.reject('stopcalc1');
         } catch (e) {
           console.log('soso');
         }
@@ -86,8 +86,8 @@ export class CalcschedulerService {
         this.reject = null;
         resolve(data);
       }, error => {
+        this.reject('stopcalc2');
         this.reject = null;
-        this.reject('stopcalc');
       });
     });
   }

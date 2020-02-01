@@ -200,6 +200,7 @@ export class PowerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('---------------power--------');
     this.loaderSubscription = this.loader.power().subscribe((original: Data) => {
+      console.log('more power');
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
       this.country = original.meta.country;

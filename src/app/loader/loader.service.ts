@@ -110,6 +110,9 @@ export class Loader {
           }
         }, error => {
           console.log('error');
+        })
+        .catch(c => {
+          console.log('catch', c);
         });
       });
     } else {

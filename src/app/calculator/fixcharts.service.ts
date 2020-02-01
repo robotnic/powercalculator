@@ -12,7 +12,6 @@ export class FixchartsService {
   }
 
   removeUncomplete(data) {
-    console.log(data.power);
     try {
       let l = 0;
       data.power.forEach(item => {
