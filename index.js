@@ -26,6 +26,7 @@ app.all('/api/**', function(req, res) {
 
 app.use(express.static('dist/powercalculator'));
 
+
 app.get('*', (req, res) => {
   res.sendFile(__dirname + '/dist/powercalculator/index.html');
 });
