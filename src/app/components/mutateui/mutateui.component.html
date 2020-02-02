@@ -75,15 +75,17 @@
  
       <div class="inputline">
         <mat-form-field class="md-block" lex-gt-sm>
-          <input matInput (input)="change()" placeholder="EV%" type="number" step="5" min="0" max="100" [(ngModel)]="state.mutate['Transport']" style="width:50px;">
+          <input matInput (input)="change()" placeholder="EV%" type="number" step="5" min="0" max="100" [(ngModel)]="state.mutate['Transport']" >
         </mat-form-field>
       </div>
       <br/>
       <div class="inputline">
         <mat-form-field class="md-block" lex-gt-sm>
-          <input matInput (input)="change()" placeholder="P2G"  [step]="step(state.mutate.Power2Gas)" type="number" min="0" [(ngModel)]="state.mutate['Power2Gas']" style="width:50px;">
+          <input matInput (input)="change()" placeholder="P2G"  [step]="step(state.mutate.Power2Gas)" type="number" min="0" [(ngModel)]="state.mutate['Power2Gas']">
         </mat-form-field>
+
       </div>
+
       <br/>
       <button mat-button (click)="resetMutate()" (mouseenter)="over()" (mouseleave)="out()">reset</button>
     </mat-expansion-panel>
