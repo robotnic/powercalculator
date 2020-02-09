@@ -25,6 +25,7 @@ export class Loader {
   currentTimetype;
   data: Data;
   loadSubscription: any;
+  observers: any =  [];
   constructor(
     private powerService: PowerService,
     private eventHandler: EventService,
@@ -38,10 +39,14 @@ export class Loader {
   power() {
     return new Observable((observer) => {
       // observable execution
-      this.loadSubscription = this.load().subscribe(data => {
+      this.observers.push(observer);
+      this.load().subscribe(data => {
         if (data) {
           const rdata = JSON.parse(JSON.stringify(data));
-          observer.next(rdata);
+          console.log('have data', rdata);
+          this.observers.forEach(ob => {
+            ob.next(rdata);
+          });
         } else {
           console.log('no data');
         }
@@ -59,22 +64,27 @@ export class Loader {
         this.loaddata(observer);
       }
       this.eventHandler.on('navigate').subscribe((e) => {
+        console.log('navigate');
         this.loaddata(observer);
       });
       this.eventHandler.on('mutate').subscribe(() => {
+        console.log('mutate');
         this.loaddata(observer);
       });
     });
   }
 
   loaddata(observer) {
+    console.log('loading');
     const state = this.eventHandler.getState();
 //    console.log('STATE', state, this.currentDate, this.currentCountry);
+console.log(state);
     if (this.currentDate !== state.navigate.date ||
       this.currentCountry !== state.navigate.country ||
       this.currentTimetype !== state.navigate.timetype ||
       state.navigate.refresh
     ) {
+      console.log('tut');
       // this.eventHandler.setState('refresh', false);
       this.currentDate = state.navigate.date;
       this.currentCountry = state.navigate.country;
@@ -89,6 +99,7 @@ export class Loader {
         this.consumptionService.load()
       ];
       Promise.all(promises).then((data) => {
+        console.log('promise all');
         this.data = {
           power: <Chart[]>data[0],
           installed: <Installed>data[1],
@@ -106,6 +117,7 @@ export class Loader {
         };
         this.scheduler.init(this.data).then(() => {
           if (this.data.power) {
+            console.log(this.data);
             observer.next(this.data);
           }
         }, error => {

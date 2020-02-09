@@ -5,6 +5,7 @@ import { EnergyComponent } from './components/energy/energy.component';
 import { HomeComponent } from './components/home/home.component';
 import { TablesComponent } from './components/tables/tables.component';
 import { ElectrictableComponent } from './electrictable/electrictable.component';
+import { MutateuiComponent } from './components/mutateui/mutateui.component';
 
 const routes: Routes = [
   { path: 'power', component: PowerComponent },
@@ -12,11 +13,14 @@ const routes: Routes = [
   { path: 'numbers', component: TablesComponent },
   { path: 'et', component: ElectrictableComponent },
   { path: '',      component: HomeComponent },
+  { path: 'mutate',      component: MutateuiComponent },
   { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+        scrollPositionRestoration: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

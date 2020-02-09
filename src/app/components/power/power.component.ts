@@ -54,7 +54,7 @@ export class PowerComponent implements OnInit, OnDestroy {
         let duration = 0;
         switch (this.timetype) {
           case 'day':
-            duration = 800;
+            duration = 0;
             break;
           case 'week':
             duration = 3000;
@@ -76,14 +76,14 @@ export class PowerComponent implements OnInit, OnDestroy {
         return duration;
       },
       margin: {
-        top: 150,
-        right: 80,
+        top: 50,
+        right: 60,
         bottom: 60,
-        left: 80
+        left: 60
       },
       x: function(d) { return d.x; },
       y: function(d) { return d.y; },
-      useInteractiveGuideline: true,
+      useInteractiveGuideline: this.showLegend(),
       interactiveLayer: {
         tooltip: {
           contentGenerator: (e, div) => {
@@ -199,14 +199,14 @@ export class PowerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('---------------power--------');
-    this.loaderSubscription = this.loader.power().subscribe((original: Data) => {
+    this.loader.power().subscribe((original: Data) => {
       console.log('more power');
       this.date = moment(original.meta.date, 'YYYYMMDD').format('YYYY/MM/DD');
       this.meta = original.meta;
       this.country = original.meta.country;
       this.timetype = original.meta.timetype;
       this.scheduler.mutate().then((modified: Data) => {
-        console.log('got now data');
+        console.log('got new data');
         this.data = modified;
         //const sum = this.makeSum(modified.sum);
         //this.dataSource = new MatTableDataSource(sum);
@@ -215,6 +215,8 @@ export class PowerComponent implements OnInit, OnDestroy {
         this.eventService.setState('message.calced', 'render');
         this.eventService.setState('message.calcing', '');
         this.previousdate = modified.meta.date;
+        window.scroll(0, 0);
+
       });
     });
     this.eventSubscription = this.eventService.on('view').subscribe((state: State) => {
@@ -226,6 +228,14 @@ export class PowerComponent implements OnInit, OnDestroy {
       });
       this.nvd3.updateWithData(this.charts);
     });
+  }
+
+  showLegend() {
+    if (window.innerWidth < 1200) {
+      return false;
+    } else {
+      return false;
+    }
   }
 
   makeSum(sum) {
@@ -271,6 +281,6 @@ export class PowerComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.eventSubscription.unsubscribe();
-    this.loaderSubscription.unsubscribe();
+//    this.loaderSubscription.unsubscribe();
   }
 }

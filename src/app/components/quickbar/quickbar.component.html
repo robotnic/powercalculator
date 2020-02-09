@@ -1,0 +1,13 @@
+
+<div id="quickbar" (pressup) = "stop()" (panend)="stop()">
+  <div *ngFor="let member of members" class="incdec">
+    <button (click)="dec(member.name);change();stop()" (press)="startdec(member.name)" (pressup)="stop();">-</button>
+    <img src="/assets/quickbar/{{member.icon}}.png" class="icon"/>
+     {{state.mutate[member.name] }}
+    <button (click)="inc(member.name);change();stop()" (press)="startinc(member.name)" (pressup)="stop();" (panend)="stop()">+</button>
+    <div class="popup" *ngIf="member.name == popup">
+     {{state.mutate[member.name] }}
+     <span>{{member.unit}}</span>
+    </div>
+  </div>
+</div>

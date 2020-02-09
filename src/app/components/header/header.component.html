@@ -1,0 +1,22 @@
+<div class="all">
+  <mat-icon (click)="open = true" *ngIf="!open">dehaze</mat-icon>
+  <mat-nav-list *ngIf="open">
+    <a mat-list-item routerLink="/home" (click)="onSidenavClose()">
+        <mat-icon>home</mat-icon>
+        <span class="logo nav-caption">PowerCalculator</span>
+    </a>
+    <a mat-list-item routerLink="/power" (click)="onSidenavClose()">
+        <mat-icon>power</mat-icon> <span class="nav-caption">Power</span>   
+    </a>
+    <a mat-list-item routerLink="/energy" (click)="onSidenavClose()">
+        <mat-icon>eco</mat-icon><span class="nav-caption">Energy</span>
+    </a>
+    <a mat-list-item routerLink="/numbers" (click)="onSidenavClose()">
+        <mat-icon>list</mat-icon><span class="nav-caption">Numbers</span>
+    </a>
+    <a mat-list-item routerLink="/mutate" (click)="onSidenavClose()">
+        <mat-icon>list</mat-icon><span class="nav-caption">Mutate</span>
+    </a>
+  </mat-nav-list>
+</div>
+<app-state id="appstate" (click)="openMutate()"></app-state>

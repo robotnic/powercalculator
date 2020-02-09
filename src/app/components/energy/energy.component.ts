@@ -293,7 +293,10 @@ export class EnergyComponent implements OnInit, OnDestroy {
   }
 
   calcExtent() {
-    const w = window.innerWidth - 550;
+    let w = window.innerWidth - 200;
+    if (window.innerWidth > 1000) {
+      w = window.innerWidth - 550;
+    }
     const h = window.innerHeight - 100;
     return [
       [170, 10],
